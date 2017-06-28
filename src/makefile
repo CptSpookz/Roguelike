@@ -13,3 +13,6 @@ OUT = game.out
 
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(CFLAGS) $(LIBS)
+
+run:
+	./$(OUT)
