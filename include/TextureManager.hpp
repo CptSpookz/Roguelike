@@ -1,17 +1,24 @@
-#ifndef TEXTURE_HPP
-#define TEXTURE_HPP
+#ifndef TEXTUREMANAGER_HPP
+#define TEXTUREMANAGER_HPP
 
-#include <iostream>
+#include <map>
+#include <memory>
+#include <utility>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 class TextureManager {
   public:
-    sf::String mDirectory;
+    TextureManager();
 
-    static sf::Sprite* loadSpriteFromFile(sf::String);
+    static int addTexture(sf::String);
+
+    static void removeTexture(int);
+
+    static sf::Texture& getTexture(int);
 
   private:
+    static std::map<sf::String, std::pair<int, std::unique_ptr<sf::Texture> > > m_textures;
+    static int m_currentId;
 };
 
 #endif
