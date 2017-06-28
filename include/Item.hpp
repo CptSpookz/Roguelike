@@ -2,7 +2,7 @@
 #define _ITEM_HPP_
 #include <SFML/Graphics.hpp>
 
-class Item{
+class Item {
 protected:
   int charges;
   sf::Sprite *model;

@@ -5,6 +5,16 @@
 #include "./Item.hpp"
 #include "./data_structures.hpp"
 
+enum class HERO_CLASS{
+  WARRIOR,
+  MAGE,
+  ARCHER,
+  ASSASSIN,
+  PALADIN,
+  BARBARIAN,
+  COUNT
+};
+
 class Char{
 protected:
   double hp, baseDmg, buff;
@@ -16,19 +26,22 @@ public:
 
 class Hero : public Char{
 protected:
+  HERO_CLASS char_class;
   Item *bag;
 public:
+  Hero();
   virtual bool move() override;
   virtual bool attack() override;
 };
 
-
-struct Action{};
+Hero::Hero(){
+  char_class = static_cast<HERO_CLASS>(std::rand() % static_cast<int>(HERO_CLASS::COUNT));
+}
 
 class Enemy : public Char{
 protected:
-  BSTree<Action> brain;
-  
+  BSTree<int> brain;
+
 public:
   virtual bool move() override;
   virtual bool attack() override;
