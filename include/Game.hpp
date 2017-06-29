@@ -1,37 +1,39 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+// Bibliotecas Roguelike
 #include <TextureManager.hpp>
+#include <Level.hpp>
+
+ // Bibliotecas SFML
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+
+// Bibliotecas std
+#include <vector>
 
 class Game {
   public:
     Game(sf::RenderWindow*);
 
-    void init();
-
     void run();
 
-    void update(double);
-
-    void draw(double);
+    void draw();
 
   protected:
-    void loadUI();
 
   private:
-    // Janela principal do jogo
+    // Janela principal
     sf::RenderWindow& m_window;
 
-    // Checa se o jogo está rodando
+    // Diz se o jogo ainda está rodando
     bool m_isRunning;
 
-    // Vetor com o tamanho da tela
-    sf::Vector2u m_screenSize;
+    // Sprite teste
+    sf::Sprite m_testSprite;
 
-    // Sprites da UI
-    // Ponteiro do sprite do contorno da barra de vida
-    sf::Sprite* m_healthBarOutlineSprite;
+    // Level para o jogo
+    Level m_level;
 };
 
 #endif

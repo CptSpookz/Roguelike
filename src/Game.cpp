@@ -2,42 +2,27 @@
 
 Game::Game(sf::RenderWindow* window):
 m_window(*window),
-m_isRunning(true),
-m_screenSize({0,0}){
-  this->m_screenSize = {this->m_window.getSize().x/2, this->m_window.getSize().y/2};
-}
-
-void Game::init(){
-  this->loadUI();
+m_isRunning(true){
+  m_level = Level(*window);
+  m_testSprite.setTexture(TextureManager::getTexture(2));
 }
 
 void Game::run(){
   while(m_isRunning){
     sf::Event event;
-    if(m_window.pollEvent(event)){
-      if(event.type == sf::Event::Closed){
+    while(m_window.pollEvent(event)){
+      if(event.type == sf::Event::Closed)
         m_window.close();
-        return;
-      }
     }
 
-    m_window.clear();
-
-    m_window.display();
+    draw();
   }
-
-  m_window.close();
 }
 
-void Game::update(double delta){
+void Game::draw(){
+  m_window.clear(sf::Color::Black);
 
-}
+  m_level.draw(m_window);
 
-void Game::draw(double delta){
-
-}
-
-void Game::loadUI(){
-  // Sprite do contorno da barra de vida
-  sf::Texture& barOutlineTexture = TextureManager::getTexture(TextureManager::addTexture("../resources/sprites/ui/bar_outline.png"));
+  m_window.display();
 }

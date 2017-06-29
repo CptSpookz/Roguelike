@@ -2,11 +2,11 @@ CC = g++
 IDIR = ../include
 ISFML = ../SFML/include
 LSFML = ../SFML/lib
-CFLAGS = -I$(IDIR) -I$(ISFML) -L$(LSFML) -std=c++14
+CFLAGS = -std=c++14 -I$(IDIR) -I$(ISFML) -L$(LSFML)
 
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = GameLoop.cpp Game.cpp TextureManager.cpp
+OBJ = GameLoop.cpp Game.cpp TextureManager.cpp Level.cpp
 
 OUT = game.out
 
