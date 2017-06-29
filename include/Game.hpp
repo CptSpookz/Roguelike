@@ -31,6 +31,14 @@ class Game {
 
     // Level para o jogo
     Level m_level;
+
+    // Estado do jogo
+    GAME_STATE m_gameState;
+
+    // Sprites UI
+    // Barra de vida
+    // Contorno
+    // 
 };
 
 #endif

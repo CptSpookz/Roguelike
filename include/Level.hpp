@@ -41,12 +41,18 @@ class Level {
 
     void createPath(int, int);
 
+    void createRooms(int);
+
     void calculateWalls();
+
+    void setColor(int, int, int, int);
 
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];
 
     int m_textureIDs[static_cast<int>(TILE::COUNT)];
+
+    int m_roomNumber;
 };
 
 #endif

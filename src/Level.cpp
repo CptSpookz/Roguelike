@@ -25,9 +25,11 @@ Level::Level(sf::RenderWindow& window){
   this->addTile("../resources/sprites/wall/wall_top_t.png", TILE::WALL_TOP_T);
   this->addTile("../resources/sprites/wall/wall_top.png", TILE::WALL_TOP);
 
-  generate();
-  createPath(1, 1);
-  calculateWalls();
+  auto red = rand() % 100 + 101;
+  auto green = rand() % 100 + 101;
+  auto blue = rand() % 100 + 101;
+
+  setColor(red, green, blue, 255);
 }
 
 void Level::draw(sf::RenderWindow& window){
@@ -61,6 +63,11 @@ void Level::generate(){
       m_grid[i][j].sprite.setPosition(TILE_SIZE*i, TILE_SIZE*j);
     }
   }
+  createPath(1, 1);
+  createRooms(4);
+  calculateWalls();
+
+  m_roomNumber++;
 }
 
 void Level::createPath(int columnIndex, int rowIndex){
@@ -85,6 +92,27 @@ void Level::createPath(int columnIndex, int rowIndex){
     }
 }
 
+void Level::createRooms(int numberRooms){
+  for(int k = 0; k < numberRooms; k++){
+    auto startX = rand() % (GRID_HEIGHT - 2) + 1;
+    auto startY = rand() % (GRID_HEIGHT - 2) + 1;
+
+    auto width = rand() % 4 + 1;
+    auto height = rand() % 4 + 1;
+
+    for(int i = -1; i < width; ++i){
+      for(int j = -1; j < height; ++j){
+        auto newX = startX + i;
+        auto newY = startY + j;
+        if(newX > 0 && newX < GRID_HEIGHT-1 && newY > 0 && newY < GRID_WIDTH-1){
+          m_grid[newX][newY].type = TILE::FLOOR;
+          m_grid[newX][newY].sprite.setTexture(TextureManager::getTexture(m_textureIDs[static_cast<int>(TILE::FLOOR)]));
+        }
+      }
+    }
+  }
+}
+
 void Level::calculateWalls(){
   for(int i = 0; i < GRID_HEIGHT; i++){
     for(int j = 0; j < GRID_WIDTH; j++){
@@ -101,6 +129,14 @@ void Level::calculateWalls(){
         m_grid[i][j].type = static_cast<TILE>(score);
         m_grid[i][j].sprite.setTexture(TextureManager::getTexture(m_textureIDs[score]));
       }
+    }
+  }
+}
+
+void Level::setColor(int r, int g, int b, int a){
+  for(int i = 0; i < GRID_HEIGHT; i++){
+    for(int j = 0; j < GRID_WIDTH; j++){
+      m_grid[i][j].sprite.setColor(sf::Color(r, g, b, a));
     }
   }
 }

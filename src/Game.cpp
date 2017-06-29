@@ -1,8 +1,11 @@
 #include <Game.hpp>
 
 Game::Game(sf::RenderWindow* window):
-m_window(*window){
+m_window(*window),
+m_gameState(GAME_STATE::GAME_RUN){
   m_level = Level(*window);
+  m_level.generate();
+
   m_testSprite.setTexture(TextureManager::getTexture(2));
 }
 
@@ -21,7 +24,17 @@ void Game::run(){
 void Game::draw(){
   m_window.clear(sf::Color::Black);
 
-  m_level.draw(m_window);
+  switch(m_gameState){
+    case GAME_STATE::MAIN_MENU:
+      // código do menu
+      break;
+    case GAME_STATE::GAME_RUN:
+      m_level.draw(m_window);
+      break;
+    case GAME_STATE::GAME_END:
+      // código do fim de jogo
+      break;
+  }
 
   m_window.display();
 }

@@ -27,4 +27,11 @@ enum class TILE {
 	COUNT
 };
 
+enum class GAME_STATE {
+  MAIN_MENU,
+  GAME_RUN,
+  GAME_END,
+  COUNT
+};
+
 #endif
