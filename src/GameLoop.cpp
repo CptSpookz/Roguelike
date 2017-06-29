@@ -10,22 +10,5 @@ int main(){
 
   game.run();
 
-  /*sf::RenderWindow window(sf::VideoMode(200, 200), "roguelike");
-
-  sf::Texture texture;
-  if(!texture.loadFromFile("../resources/sprites/tile/floor.png"))
-    return 0;
-
-  sf::Sprite sprite;
-  sprite.setTexture(TextureManager::getTexture(2));
-
-  while(window.isOpen()){
-    window.clear(sf::Color::Black);
-
-    window.draw(sprite);
-
-    window.display();
-  }*/
-
   return 0;
 }

@@ -41,6 +41,8 @@ class Level {
 
     void createPath(int, int);
 
+    void calculateWalls();
+
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];
 

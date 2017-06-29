@@ -1,14 +1,13 @@
 #include <Game.hpp>
 
 Game::Game(sf::RenderWindow* window):
-m_window(*window),
-m_isRunning(true){
+m_window(*window){
   m_level = Level(*window);
   m_testSprite.setTexture(TextureManager::getTexture(2));
 }
 
 void Game::run(){
-  while(m_isRunning){
+  while(m_window.isOpen()){
     sf::Event event;
     while(m_window.pollEvent(event)){
       if(event.type == sf::Event::Closed)

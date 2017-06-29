@@ -26,9 +26,6 @@ class Game {
     // Janela principal
     sf::RenderWindow& m_window;
 
-    // Diz se o jogo ainda está rodando
-    bool m_isRunning;
-
     // Sprite teste
     sf::Sprite m_testSprite;
 

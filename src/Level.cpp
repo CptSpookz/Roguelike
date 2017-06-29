@@ -8,10 +8,26 @@ Level::Level(sf::RenderWindow& window){
   this->addTile("../resources/sprites/tile/floor_alt.png", TILE::FLOOR_ALT);
 
   // Load wall textures
-  std::cout << this->addTile("../resources/sprites/wall/wall_single.png", TILE::WALL_SINGLE);
+  this->addTile("../resources/sprites/wall/wall_bottom_end.png", TILE::WALL_BOTTOM_END);
+  this->addTile("../resources/sprites/wall/wall_bottom_left.png", TILE::WALL_BOTTOM_LEFT);
+  this->addTile("../resources/sprites/wall/wall_bottom_right.png", TILE::WALL_BOTTOM_RIGHT);
+  this->addTile("../resources/sprites/wall/wall_bottom_t.png", TILE::WALL_BOTTOM_T);
+  this->addTile("../resources/sprites/wall/wall_intersection.png", TILE::WALL_INTERSECTION);
+  this->addTile("../resources/sprites/wall/wall_side_left_end.png", TILE::WALL_SIDE_LEFT_END);
+  this->addTile("../resources/sprites/wall/wall_side_left_t.png", TILE::WALL_SIDE_LEFT_T);
+  this->addTile("../resources/sprites/wall/wall_side_right_end.png", TILE::WALL_SIDE_RIGHT_END);
+  this->addTile("../resources/sprites/wall/wall_side_right_t.png", TILE::WALL_SIDE_RIGHT_T);
+  this->addTile("../resources/sprites/wall/wall_side.png", TILE::WALL_SIDE);
+  this->addTile("../resources/sprites/wall/wall_single.png", TILE::WALL_SINGLE);
+  this->addTile("../resources/sprites/wall/wall_top_end.png", TILE::WALL_TOP_END);
+  this->addTile("../resources/sprites/wall/wall_top_left.png", TILE::WALL_TOP_LEFT);
+  this->addTile("../resources/sprites/wall/wall_top_right.png", TILE::WALL_TOP_RIGHT);
+  this->addTile("../resources/sprites/wall/wall_top_t.png", TILE::WALL_TOP_T);
+  this->addTile("../resources/sprites/wall/wall_top.png", TILE::WALL_TOP);
 
   generate();
   createPath(1, 1);
+  calculateWalls();
 }
 
 void Level::draw(sf::RenderWindow& window){
@@ -67,4 +83,24 @@ void Level::createPath(int columnIndex, int rowIndex){
         createPath(newX, newY);
       }
     }
+}
+
+void Level::calculateWalls(){
+  for(int i = 0; i < GRID_HEIGHT; i++){
+    for(int j = 0; j < GRID_WIDTH; j++){
+      if(m_grid[i][j].type != TILE::FLOOR){
+        int score = 0;
+        if(i > 0)
+          score += (m_grid[i-1][j].type != TILE::FLOOR)?8:0;
+        if(j < GRID_WIDTH-1)
+          score += (m_grid[i][j+1].type != TILE::FLOOR)?4:0;
+        if(i < GRID_HEIGHT-1)
+          score += (m_grid[i+1][j].type != TILE::FLOOR)?2:0;
+        if(j > 0)
+          score += (m_grid[i][j-1].type != TILE::FLOOR)?1:0;
+        m_grid[i][j].type = static_cast<TILE>(score);
+        m_grid[i][j].sprite.setTexture(TextureManager::getTexture(m_textureIDs[score]));
+      }
+    }
+  }
 }
