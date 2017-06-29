@@ -2,7 +2,8 @@
 
 Level::Level(){}
 
-Level::Level(sf::RenderWindow& window){
+Level::Level(sf::RenderWindow& window):
+m_origin({0, 0}){
   // Load floor textures
   this->addTile("../resources/sprites/tile/floor.png", TILE::FLOOR);
   this->addTile("../resources/sprites/tile/floor_alt.png", TILE::FLOOR_ALT);
@@ -24,6 +25,9 @@ Level::Level(sf::RenderWindow& window){
   this->addTile("../resources/sprites/wall/wall_top_right.png", TILE::WALL_TOP_RIGHT);
   this->addTile("../resources/sprites/wall/wall_top_t.png", TILE::WALL_TOP_T);
   this->addTile("../resources/sprites/wall/wall_top.png", TILE::WALL_TOP);
+
+  m_origin.x = (window.getSize().x - TILE_SIZE * GRID_HEIGHT);
+  m_origin.y = (window.getSize().y - TILE_SIZE * GRID_WIDTH);
 
   auto red = rand() % 100 + 101;
   auto green = rand() % 100 + 101;
@@ -60,7 +64,7 @@ void Level::generate(){
         m_grid[i][j].sprite.setTexture(TextureManager::getTexture(m_textureIDs[static_cast<int>(TILE::WALL_SINGLE)]));
         m_grid[i][j].type = TILE::WALL_SINGLE;
       }
-      m_grid[i][j].sprite.setPosition(TILE_SIZE*i, TILE_SIZE*j);
+      m_grid[i][j].sprite.setPosition(TILE_SIZE*i,TILE_SIZE*j);
     }
   }
   createPath(1, 1);

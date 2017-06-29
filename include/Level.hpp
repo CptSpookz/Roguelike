@@ -53,6 +53,8 @@ class Level {
     int m_textureIDs[static_cast<int>(TILE::COUNT)];
 
     int m_roomNumber;
+
+    sf::Vector2i m_origin;
 };
 
 #endif

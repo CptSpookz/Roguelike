@@ -20,14 +20,15 @@ class Game {
 
     void draw();
 
+    void loadUI();
+
+    void drawUI();
+
   protected:
 
   private:
     // Janela principal
     sf::RenderWindow& m_window;
-
-    // Sprite teste
-    sf::Sprite m_testSprite;
 
     // Level para o jogo
     Level m_level;
@@ -36,9 +37,14 @@ class Game {
     GAME_STATE m_gameState;
 
     // Sprites UI
-    // Barra de vida
-    // Contorno
-    // 
+    // Barra de vida e mana
+    // Vida
+    sf::Sprite m_healthBarOutline;
+    sf::Sprite m_healthBar;
+
+    // Mana
+    sf::Sprite m_manaBarOutline;
+    sf::Sprite m_manaBar;
 };
 
 #endif
