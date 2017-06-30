@@ -1,20 +1,33 @@
 #ifndef _ITEM_HPP_
 #define _ITEM_HPP_
-#include "Object.hpp"
+
+// Roguelike
+#include <Object.hpp>
+#include <DataStructures.hpp>
 
 // SFML
 #include <SFML/Graphics.hpp>
 
 class Item {
-  public:
+public:
     virtual void itemAction() = 0;
 
-  protected:
-    // item base Sprite
+protected:
+    Item();
+	
+	// item base Sprite
     sf::Sprite m_sprite;
 
     // item charges left
     int m_charges;
 };
+
+class ItemBag : public Linkedlist<Item>{
+private:
+	int maxSlots;
+public:
+	ItemBag();
+	bool isFull();
+}
 
 #endif

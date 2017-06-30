@@ -1,9 +1,9 @@
 #include <Hero.hpp>
 
 Hero::Hero(){
-  m_charHp = 0;
-  m_charBaseDmg = 0;
-  m_charBuffDmg = 0;
+  m_charHp = 200;
+  m_charBaseDmg = 25;
+  m_charBuffDmg = 1;
   m_position = {0, 0};
 }
 

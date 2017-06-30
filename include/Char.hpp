@@ -13,14 +13,7 @@
 
 
 class Char {
-  public:
-    virtual void move(Level&) = 0;
-
-    virtual void attack() = 0;
-
-    virtual void draw(sf::RenderWindow&) = 0;
-
-  protected:
+protected:
     // char sprite
     sf::Sprite m_sprite;
 
@@ -28,13 +21,36 @@ class Char {
     sf::Vector2f m_position;
 
     // base HP
-    double m_charHp;
+    double m_charMaxHp;
+	
+	// current HP
+	double m_charHp;
 
     // base damage
     double m_charBaseDmg;
 
     // damage buff
     double m_charBuffDmg;
+	
+	
+ public:
+    double getMaxHP(){return m_charMaxHp;};
+		
+	double getHP(){return m_charHp;};
+	void setHP(double);
+	
+	double getBaseDmg(){return m_charBaseDmg;);
+	
+	double getBuffDmg(){return m_charBuffDmg;};
+	void setBuffDmg(double);
+	
+	double getDmg(){return m_charBaseDmg * m_charBuffDmg;};
+	
+	virtual void move(Level&) = 0;
+
+    virtual void attack() = 0;
+
+    virtual void draw(sf::RenderWindow&) = 0;
 };
 
 /*class Enemy : public Char{
