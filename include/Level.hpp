@@ -47,6 +47,10 @@ class Level {
 
     void setColor(int, int, int, int);
 
+    bool isSolid(int, int);
+
+    Tile* getTile(sf::Vector2f);
+
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];
 

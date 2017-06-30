@@ -29,6 +29,13 @@ m_origin({0, 0}){
   m_origin.x = (window.getSize().x - TILE_SIZE * GRID_HEIGHT);
   m_origin.y = (window.getSize().y - TILE_SIZE * GRID_WIDTH);
 
+  for(int i = 0; i < GRID_HEIGHT; i++){
+    for(int j = 0; j < GRID_WIDTH; j++){
+      m_grid[i][j].columnIndex = i;
+      m_grid[i][j].rowIndex = j;
+    }
+  }
+
   auto red = rand() % 100 + 101;
   auto green = rand() % 100 + 101;
   auto blue = rand() % 100 + 101;
@@ -143,4 +150,15 @@ void Level::setColor(int r, int g, int b, int a){
       m_grid[i][j].sprite.setColor(sf::Color(r, g, b, a));
     }
   }
+}
+
+bool Level::isSolid(int columnIndex, int rowIndex){
+  return (m_grid[columnIndex][rowIndex].type != TILE::FLOOR && m_grid[columnIndex][rowIndex].type != TILE::FLOOR_ALT);
+}
+
+Tile* Level::getTile(sf::Vector2f position){
+  int i = static_cast<int>(position.x)/TILE_SIZE;
+  int j = static_cast<int>(position.y)/TILE_SIZE;
+
+  return &m_grid[i][j];
 }

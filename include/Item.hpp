@@ -1,13 +1,19 @@
-#ifndef _ITEM_HPP_
-#define _ITEM_HPP_
+#ifndef ITEM_HPP
+#define ITEM_HPP
+
+// SFML
 #include <SFML/Graphics.hpp>
 
 class Item {
-protected:
-  int charges;
-  sf::Sprite *model;
-public:
-  virtual void item_action() = 0;
+  public:
+    virtual void itemAction() = 0;
+
+  protected:
+    // item base Sprite
+    sf::Sprite m_sprite;
+
+    // item charges left
+    int m_charges;
 };
 
 #endif

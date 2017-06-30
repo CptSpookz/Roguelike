@@ -28,8 +28,8 @@
   São Carlos - SP, 2017.
 */
 
-#ifndef _DATA_STRUCTURES_HPP_
-#define _DATA_STRUCTURES_HPP_
+#ifndef DATASTRUCTURES_HPP
+#define DATASTRUCTURES_HPP
 
 template<class T>
 class Node {
