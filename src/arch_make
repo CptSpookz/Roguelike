@@ -20,4 +20,4 @@ run:
 	./$(OUT)
 
 clean:
-	rm $(OUT)
+	rm $(OUT) $(IDIR)/*.gch
