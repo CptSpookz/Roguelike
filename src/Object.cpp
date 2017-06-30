@@ -3,130 +3,129 @@
 
 // Default constructor.
 Object::Object() :
-position{ 0.f, 0.f },
-animationSpeed(0),
-isAnimated(false),
-frameCount(0),
-currentFrame(0),
-frameWidth(0),
-frameHeight(0),
-timeDelta(0){}
+m_position{ 0.f, 0.f },
+m_animationSpeed(0),
+m_isAnimated(false),
+m_frameCount(0),
+m_currentFrame(0),
+m_frameWidth(0),
+m_frameHeight(0),
+m_timeDelta(0){}
 
 // Gives the object the given sprite.
 bool Object::SetSprite(sf::Texture& texture, bool isSmooth, int frames, int frameSpeed) {
 	// Create a sprite from the loaded texture.
-	this->sprite.setTexture(texture);
+	m_sprite.setTexture(texture);
 
 	// Set animation speed.
-	this->animationSpeed = frameSpeed;
+	m_animationSpeed = frameSpeed;
 
 	// Store the number of frames.
-	this->frameCount = frames;
+	m_frameCount = frames;
 
 	// Calculate frame dimensions.
-	sf::Vector2u texSize = sprite.getTexture()->getSize();
-	frameWidth = texSize.x / frameCount;
-	frameHeight = texSize.y;
+	sf::Vector2u texSize = m_sprite.getTexture()->getSize();
+	m_frameWidth = texSize.x / m_frameCount;
+	m_frameHeight = texSize.y;
 
 	// Check if animated or static.
 	if (frames > 1){
 		// Set sprite as animated.
-		this->isAnimated = true;
+		m_isAnimated = true;
 
 		// Set the texture rect of the first frame.
-		sprite.setTextureRect(sf::IntRect(0, 0, frameWidth, frameHeight));
+		m_sprite.setTextureRect(sf::IntRect(0, 0, m_frameWidth, m_frameHeight));
 	}
 	else{
 		// Set sprite as non animated.
-		this->isAnimated = false;
+		m_isAnimated = false;
 	}
 
 	// Set the origin of the sprite.
-	sprite.setOrigin(frameWidth / 2.f, frameHeight / 2.f);
+	m_sprite.setOrigin(m_frameWidth / 2.f, m_frameHeight / 2.f);
 
 	return true;
 }
 
 // Sets the position of the object.
 void Object::SetPosition(sf::Vector2f position) {
-	this->position.x = position.x;
-	this->position.y = position.y;
-	sprite.setPosition(this->position.x, this->position.y);
+	m_position.x = position.x;
+	m_position.y = position.y;
+	m_sprite.setPosition(m_position.x, m_position.y);
 }
 
 // Sets the animation state of the object.
 void Object::SetAnimated(bool isAnimated) {
-	this->isAnimated = isAnimated;
+	m_isAnimated = isAnimated;
 
-	if (this->isAnimated)
-		currentFrame = 0;
+	if (m_isAnimated)
+		m_currentFrame = 0;
 
 	else
 		// set the texture rect of the first frame
-		sprite.setTextureRect(sf::IntRect(0, 0, frameWidth, frameHeight));
+		m_sprite.setTextureRect(sf::IntRect(0, 0, m_frameWidth, m_frameHeight));
 }
 
 // Draws the object to the given render window.
 void Object::Draw(sf::RenderWindow &window, float timeDelta)
 {
 	// check if the sprite is animated
-	if (isAnimated) {
+	if (m_isAnimated) {
 		// add the elapsed time since the last draw call to the aggregate
-		this->timeDelta += timeDelta;
+		m_timeDelta += timeDelta;
 
 		// check if the frame should be updated
-		if (this->timeDelta >= (1.f / animationSpeed))
+		if (m_timeDelta >= (1.f / m_animationSpeed))
 		{
 			NextFrame();
-			this->timeDelta = 0;
+			m_timeDelta = 0;
 		}
 	}
 
-	window.draw(this->sprite);
+	window.draw(m_sprite);
 }
 
 // Advances the sprite forward a frame.
-void Object::NextFrame()
-{
+void Object::NextFrame(){
 	// check if we reached the last frame
-	if (currentFrame == (frameCount - 1))
-		currentFrame = 0;
+	if (m_currentFrame == (m_frameCount - 1))
+		m_currentFrame = 0;
 	else
-		currentFrame++;
+		m_currentFrame++;
 
 	// update the texture rect
-	sprite.setTextureRect(sf::IntRect(frameWidth * currentFrame, 0, frameWidth, frameHeight));
+	m_sprite.setTextureRect(sf::IntRect(m_frameWidth * m_currentFrame, 0, m_frameWidth, m_frameHeight));
 }
 
 // Default constructor.
 Entity::Entity() :
-currentTextureIndex(static_cast<int>(ANIMATION_STATE::WALK_DOWN)),
-health(0),
-maxHealth(0),
-mana(0),
-maxMana(0),
-attack(0),
-defense(0),
-strength(0),
-dexterity(0),
-stamina(0),
-speed(0),
-velocity({0.f, 0.f}){}
+m_currentTextureIndex(static_cast<int>(ANIMATION_STATE::WALK_DOWN)),
+m_health(0),
+m_maxHealth(0),
+m_mana(0),
+m_maxMana(0),
+m_attack(0),
+m_defense(0),
+m_strength(0),
+m_dexterity(0),
+m_stamina(0),
+m_speed(0),
+m_velocity({0.f, 0.f}){}
 
 // Override the default Object::Update function.
 void Entity::Update(float timeDelta){
 	// Choose animation state.
-	ANIMATION_STATE animState = static_cast<ANIMATION_STATE>(currentTextureIndex);
+	ANIMATION_STATE animState = static_cast<ANIMATION_STATE>(m_currentTextureIndex);
 
-	if ((velocity.x != 0) || (velocity.y != 0)){
-		if (abs(velocity.x) > abs(velocity.y)){
-			if (velocity.x <= 0)
+	if ((m_velocity.x != 0) || (m_velocity.y != 0)){
+		if (abs(m_velocity.x) > abs(m_velocity.y)){
+			if (m_velocity.x <= 0)
 				animState = ANIMATION_STATE::WALK_LEFT;
 			else
 				animState = ANIMATION_STATE::WALK_RIGHT;
 		}
 		else{
-			if (velocity.y <= 0)
+			if (m_velocity.y <= 0)
 				animState = ANIMATION_STATE::WALK_UP;
 			else
 				animState = ANIMATION_STATE::WALK_DOWN;
@@ -134,11 +133,11 @@ void Entity::Update(float timeDelta){
 	}
 
 	// Set animation speed.
-	if ((velocity.x == 0) && (velocity.y == 0)){
+	if ((m_velocity.x == 0) && (m_velocity.y == 0)){
 		// The character is still.
 		if (IsAnimated()){
 			// Update sprite to idle version.
-			currentTextureIndex += 4;
+			m_currentTextureIndex += 4;
 
 			// Stop movement animations.
 			SetAnimated(false);
@@ -148,7 +147,7 @@ void Entity::Update(float timeDelta){
 		// The character is moving.
 		if (!IsAnimated()){
 			// Update sprite to walking version.
-			currentTextureIndex -= 4;
+			m_currentTextureIndex -= 4;
 
 			// Start movement animations.
 			SetAnimated(true);
@@ -156,33 +155,33 @@ void Entity::Update(float timeDelta){
 	}
 
 	// Set the sprite.
-	if (currentTextureIndex != static_cast<int>(animState)){
-	 	currentTextureIndex = static_cast<int>(animState);
-		sprite.setTexture(TextureManager::getTexture(textureIDs[currentTextureIndex]));
+	if (m_currentTextureIndex != static_cast<int>(animState)){
+	 	m_currentTextureIndex = static_cast<int>(animState);
+		m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[m_currentTextureIndex]));
 	}
 }
 
 // Sets the entities attack stat.
 void Entity::SetAttack(int attackValue){
-  attack = attackValue;
+  m_attack = attackValue;
 }
 
 // Sets the entities defense stat.
 void Entity::SetDefense(int defenseValue){
-	defense = defenseValue;
+	m_defense = defenseValue;
 }
 
 // Sets the entities strength stat.
 void Entity::SetStrength(int strengthValue){
-	strength = strengthValue;
+	m_strength = strengthValue;
 }
 
 // Sets the entities dexterity stat.
 void Entity::SetDexterity(int dexterityValue){
-	dexterity = dexterityValue;
+	m_dexterity = dexterityValue;
 }
 
 // Sets the entities stamina stat.
 void Entity::SetStamina(int staminaValue){
-	stamina = staminaValue;
+	m_stamina = staminaValue;
 }

@@ -12,7 +12,7 @@
 #include <SFML/Graphics.hpp>
 
 
-class Char{
+class Char {
   public:
     virtual void move(Level&) = 0;
 

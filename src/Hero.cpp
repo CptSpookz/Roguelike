@@ -20,13 +20,13 @@ void Hero::move(Level& level){
   sf::Vector2f newPosition = m_position;
   sf::Vector2f movement = {0, 0};
 
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
     movement.y += -.5;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
     movement.y += .5;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
     movement.x += -.5;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
     movement.x += .5;
 
   if(collides(sf::Vector2f(movement.x ,0), level))

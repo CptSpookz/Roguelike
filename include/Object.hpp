@@ -5,19 +5,19 @@
 
 class Object {
 private:
-	int animationSpeed;
-  bool isAnimated;
-  int frameCount;
-  int currentFrame;
-	int frameWidth;
-	int frameHeight;
-	float timeDelta;
+	int m_animationSpeed;
+  bool m_isAnimated;
+  int m_frameCount;
+  int m_currentFrame;
+	int m_frameWidth;
+	int m_frameHeight;
+	float m_timeDelta;
 
   void NextFrame();
 
 protected:
-	sf::Sprite sprite;
-	sf::Vector2f position;
+	sf::Sprite m_sprite;
+	sf::Vector2f m_position;
 
 public:
 
@@ -27,45 +27,34 @@ public:
 	virtual void Update(float timeDelta) {};
 
 	void SetPosition(sf::Vector2f position);
-	sf::Vector2f GetPosition() const {return this->position;};
+	sf::Vector2f GetPosition() const {return m_position;};
 
 	bool SetSprite(sf::Texture& texture, bool isSmooth, int frames = 1, int frameSpeed = 0);
-	sf::Sprite& GetSprite() {return this->sprite;};
+	sf::Sprite& GetSprite() {return m_sprite;};
 
-	int GetFrameCount() const {return this->frameCount;};
+	int GetFrameCount() const {return m_frameCount;};
 
 	void SetAnimated(bool isAnimated);
-  bool IsAnimated() {return this->isAnimated;};
+  bool IsAnimated() {return m_isAnimated;};
 
 };
 
 class Entity : public Object {
 protected:
-	int textureIDs[static_cast<int>(ANIMATION_STATE::COUNT)];
+	int m_textureIDs[static_cast<int>(ANIMATION_STATE::COUNT)];
+	int m_currentTextureIndex;
+	int m_health;
+	int m_maxHealth;
+	int m_mana;
+	int m_maxMana;
+	int m_attack;
+	int m_defense;
+	int m_strength;
+	int m_dexterity;
+	int m_stamina;
+	int m_speed;
 
-	int currentTextureIndex;
-
-	int health;
-
-	int maxHealth;
-
-	int mana;
-
-	int maxMana;
-
-	int attack;
-
-	int defense;
-
-	int strength;
-
-	int dexterity;
-
-	int stamina;
-
-	int speed;
-
-  sf::Vector2f velocity;
+  sf::Vector2f m_velocity;
 
 public:
 
@@ -73,19 +62,19 @@ public:
 
 	virtual void Update(float timeDelta) override;
 
-	int GetHealth() const {return this->health;};
+	int GetHealth() const {return m_health;};
 
-	int GetMaxHealth() const {return this->maxHealth;};
+	int GetMaxHealth() const {return m_maxHealth;};
 
-	int GetAttack() const {return this->attack;};
+	int GetAttack() const {return m_attack;};
 
-	int GetDefense() const {return this->defense;};
+	int GetDefense() const {return m_defense;};
 
-	int GetStrength() const {return this->strength;};
+	int GetStrength() const {return m_strength;};
 
-	int GetDexterity() const {return this->dexterity;};
+	int GetDexterity() const {return m_dexterity;};
 
-	int GetStamina() const {return this->stamina;};
+	int GetStamina() const {return m_stamina;};
 
 	void SetAttack(int attackValue);
 
