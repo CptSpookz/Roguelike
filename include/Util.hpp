@@ -31,6 +31,18 @@ enum class GAME_STATE {
   COUNT
 };
 
+enum class ANIMATION_STATE {
+	WALK_UP,
+	WALK_DOWN,
+	WALK_RIGHT,
+	WALK_LEFT,
+	IDLE_UP,
+	IDLE_DOWN,
+	IDLE_RIGHT,
+	IDLE_LEFT,
+	COUNT
+};
+
 enum class HERO_CLASS{
   WARRIOR,
   MAGE,

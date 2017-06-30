@@ -1,3 +1,6 @@
+#ifndef _ITEM_HPP_
+#define _ITEM_HPP_
+#include "Object.hpp"
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
