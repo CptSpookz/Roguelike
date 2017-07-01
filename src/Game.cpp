@@ -5,6 +5,11 @@ m_window(*window),
 m_gameState(GAME_STATE::GAME_RUN),
 m_level(Level(*window)),
 m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
+  m_view.reset(sf::FloatRect(0, 0, 500, 500));
+
+  m_window.setFramerateLimit(60);
+  m_window.setView(m_view);
+
   if(!m_uiFont.loadFromFile("../resources/font/uiFont.ttf")){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
@@ -23,20 +28,27 @@ void Game::run(){
       if(event.type == sf::Event::Closed)
         m_window.close();
     }
-    update();
+    auto timeDelta = m_gameClock.restart().asSeconds();
+
+    update(timeDelta);
 
     draw();
   }
 }
 
-void Game::update(){
+void Game::update(float delta){
   sf::Vector2i zero(0, 0);
   sf::Vector2i healthSize(240*100/100, 16);
   m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
   sf::Vector2i manaSize(240*100/100, 16);
   m_manaBar.setTextureRect(sf::IntRect(zero, healthSize));
 
-  m_hero.move(m_level);
+  m_hero.move(m_level, delta);
+
+  m_view.setCenter(m_hero.getCenterPosition());
+  m_window.setView(m_view);
+
+  updateUI(m_view);
 }
 
 void Game::draw(){
@@ -128,6 +140,31 @@ void Game::loadUI(){
   m_luckValue.setCharacterSize(22);
   m_luckValue.setFillColor(sf::Color::White);
   m_luckValue.setPosition(465, m_window.getSize().y - 33);
+}
+
+void Game::updateUI(sf::View view){
+  auto viewTranslation = view.getCenter() - view.getSize()/2.f;
+  auto left = viewTranslation.x;
+  auto top = viewTranslation.y;
+  auto down = view.getSize().y + top;
+
+  // Barras no topo
+  m_healthBarOutline.setPosition(left + 10, top + 10);
+  m_healthBar.setPosition(left + 10, top + 10);
+
+  m_manaBarOutline.setPosition(left + 10, top + 36);
+  m_manaBar.setPosition(left + 10, top + 36);
+
+  // Status no fundo
+  m_blackBar.setPosition(left, down - 36);
+  m_attackStat.setPosition(left + 10, down - 26);
+  m_attackValue.setPosition(left + 31, down - 33);
+  m_defenseStat.setPosition(left + 148, down - 26);
+  m_defenseValue.setPosition(left + 169, down - 33);
+  m_speedStat.setPosition(left + 296, down - 26);
+  m_speedValue.setPosition(left + 317, down - 33);
+  m_luckStat.setPosition(left + 444, down - 26);
+  m_luckValue.setPosition(left + 465, down - 33);
 }
 
 void Game::drawUI(){

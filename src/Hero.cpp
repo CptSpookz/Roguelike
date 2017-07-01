@@ -16,18 +16,18 @@ void Hero::initHero(HERO_CLASS classHero){
   }
 }
 
-void Hero::move(Level& level){
+void Hero::move(Level& level, float delta){
   sf::Vector2f newPosition = m_position;
   sf::Vector2f movement = {0, 0};
 
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-    movement.y += -.5;
+    movement.y += -100 * delta;
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-    movement.y += .5;
+    movement.y += 100 * delta;
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-    movement.x += -.5;
+    movement.x += -100 * delta;
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    movement.x += .5;
+    movement.x += 100 * delta;
 
   if(collides(sf::Vector2f(movement.x ,0), level))
     newPosition.x = m_position.x;
@@ -67,4 +67,9 @@ bool Hero::collides(sf::Vector2f movement, Level& level){
       return true;
   }
   return false;
+}
+
+sf::Vector2f Hero::getCenterPosition(){
+  sf::Vector2f centerPosition = {m_position.x + 15, m_position.y + 15};
+  return centerPosition;
 }
