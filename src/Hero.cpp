@@ -1,7 +1,8 @@
 #include <Hero.hpp>
 
 Hero::Hero(){
-  m_charHp = 200;
+  m_charMaxHp = 200;
+  m_charHp = m_charMaxHp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
   m_position = {0, 0};
@@ -16,7 +17,7 @@ void Hero::initHero(HERO_CLASS classHero){
   }
 }
 
-void Hero::move(Level& level, float delta){
+void Hero::update(Level& level, float delta){
   sf::Vector2f newPosition = m_position;
   sf::Vector2f movement = {0, 0};
 
@@ -44,6 +45,11 @@ void Hero::move(Level& level, float delta){
 }
 
 void Hero::attack(){}
+
+void Hero::takeDamage(double damage){
+  auto afterHealth = m_charHp - damage;
+  m_charHp = std::max(afterHealth, 0.0);
+}
 
 void Hero::draw(sf::RenderWindow& window){
   window.draw(m_sprite);

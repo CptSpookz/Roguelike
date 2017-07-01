@@ -38,17 +38,33 @@ void Game::run(){
 
 void Game::update(float delta){
   sf::Vector2i zero(0, 0);
-  sf::Vector2i healthSize(240*100/100, 16);
-  m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
+  sf::Vector2i healthSize(240*m_hero.getHP()/m_hero.getMaxHP(), 16);
   sf::Vector2i manaSize(240*100/100, 16);
-  m_manaBar.setTextureRect(sf::IntRect(zero, healthSize));
 
-  m_hero.move(m_level, delta);
+  if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
+    m_gameState = GAME_STATE::GAME_END;
 
-  m_view.setCenter(m_hero.getCenterPosition());
-  m_window.setView(m_view);
+  switch(m_gameState){
+    case GAME_STATE::MAIN_MENU:
 
-  updateUI(m_view);
+      break;
+
+    case GAME_STATE::GAME_RUN:
+      m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
+      m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
+
+      m_hero.update(m_level, delta);
+
+      m_view.setCenter(m_hero.getCenterPosition());
+      m_window.setView(m_view);
+
+      updateUI(m_view);
+      break;
+
+    case GAME_STATE::GAME_END:
+
+      break;
+  }
 }
 
 void Game::draw(){

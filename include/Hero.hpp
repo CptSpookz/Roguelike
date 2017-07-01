@@ -12,9 +12,11 @@ class Hero: public Char {
 
     void initHero(HERO_CLASS);
 
-    virtual void move(Level&, float);
+    virtual void update(Level&, float);
 
     virtual void attack();
+
+    void takeDamage(double);
 
     virtual void draw(sf::RenderWindow&);
 

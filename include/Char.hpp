@@ -46,7 +46,7 @@ protected:
 
 	double getDmg(){return m_charBaseDmg * m_charBuffDmg;};
 
-	virtual void move(Level&, float) = 0;
+	virtual void update(Level&, float) = 0;
 
     virtual void attack() = 0;
 
