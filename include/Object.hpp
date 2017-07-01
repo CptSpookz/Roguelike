@@ -1,7 +1,7 @@
 #ifndef _OBJECT_HPP_
 #define _OBJECT_HPP_
 #include <SFML/Graphics.hpp>
-#include "./Util.hpp"
+#include <Util.hpp>
 
 class Object {
 private:

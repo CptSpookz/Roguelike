@@ -22,30 +22,30 @@ protected:
 
     // base HP
     double m_charMaxHp;
-	
-	// current HP
-	double m_charHp;
+
+	  // current HP
+	  double m_charHp;
 
     // base damage
     double m_charBaseDmg;
 
     // damage buff
     double m_charBuffDmg;
-	
-	
+
+
  public:
-    double getMaxHP(){return m_charMaxHp;};
-		
+  double getMaxHP(){return m_charMaxHp;};
+
 	double getHP(){return m_charHp;};
 	void setHP(double);
-	
-	double getBaseDmg(){return m_charBaseDmg;);
-	
+
+	double getBaseDmg(){return m_charBaseDmg;};
+
 	double getBuffDmg(){return m_charBuffDmg;};
 	void setBuffDmg(double);
-	
+
 	double getDmg(){return m_charBaseDmg * m_charBuffDmg;};
-	
+
 	virtual void move(Level&) = 0;
 
     virtual void attack() = 0;

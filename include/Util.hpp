@@ -47,10 +47,19 @@ enum class HERO_CLASS{
   WARRIOR,
   MAGE,
   ARCHER,
-  ASSASSIN,
+  THIEF,
   PALADIN,
-  BARBARIAN,
   COUNT
+};
+
+// Player traits.
+enum class PLAYER_TRAIT {
+	ATTACK,
+	DEFENSE,
+	STRENGTH,
+	DEXTERITY,
+	STAMINA,
+	COUNT
 };
 
 #endif
