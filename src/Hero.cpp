@@ -10,18 +10,31 @@ Hero::Hero(){
 }
 
 void Hero::initHero(HERO_CLASS classHero){
-  if(classHero == HERO_CLASS::WARRIOR)
+  if(classHero == HERO_CLASS::WARRIOR){
     //auto heroTextureId = TextureManager::addTexture("../resources/sprites/players/warrior/warrior_idle_down.png");
     m_className = "warrior";
-  else if (classHero == HERO_CLASS::MAGE)
+    m_charBaseDmg *= 2;
+    m_charMaxHp *= 1.5;
+    m_charHp = m_charMaxHp;
+  }
+  else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
-  else if (classHero == HERO_CLASS::ARCHER)
+  }
+  else if (classHero == HERO_CLASS::ARCHER){
     m_className = "archer";
-  else if (classHero == HERO_CLASS::THIEF)
+    m_charBaseDmg *= 4;
+    m_charSpeed = 300;
+  }
+  else if (classHero == HERO_CLASS::THIEF){
     m_className = "thief";
-  else if (classHero == HERO_CLASS::PALADIN)
+    m_charBaseDmg *= 3;
+    m_charSpeed = 400;
+  }
+  else if (classHero == HERO_CLASS::PALADIN){
     m_className = "paladin";
-
+    m_charMaxHp *= 3;
+    m_charHp = m_charMaxHp;
+  }
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_up.png");
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_DOWN)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_down.png");
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_LEFT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_left.png");
