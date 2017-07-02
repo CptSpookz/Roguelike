@@ -3,7 +3,6 @@
 
 // Roguelike
 #include <Char.hpp>
-
 #include <iostream>
 
 class Hero: public Char {
@@ -12,14 +11,18 @@ class Hero: public Char {
 
     void initHero(HERO_CLASS);
 
-    virtual void move(Level&);
+    virtual void update(Level&, float);
 
-    virtual void attack();
+    virtual void attack() override;
 
-    virtual void draw(sf::RenderWindow&);
+    void takeDamage(double);
+
+    sf::Vector2f getCenterPosition();
 
   private:
     bool collides(sf::Vector2f, Level&);
+
+    sf::String m_className;
 };
 
 #endif

@@ -2,7 +2,7 @@ CC = g++
 IDIR = ../include
 ISFML = ../SFML/include
 LSFML = ../SFML/lib
-CFLAGS = -std=c++14 -I$(IDIR)
+CFLAGS = -I$(IDIR) -I$(ISFML) -L$(LSFML) -std=c++14
 
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 

@@ -14,7 +14,7 @@ public:
 
 protected:
     Item();
-	
+
 	// item base Sprite
     sf::Sprite m_sprite;
 
@@ -22,12 +22,12 @@ protected:
     int m_charges;
 };
 
-class ItemBag : public Linkedlist<Item>{
+/*class ItemBag : public LinkedList<Item>{
 private:
 	int maxSlots;
 public:
 	ItemBag();
 	bool isFull();
-}
+};*/
 
 #endif

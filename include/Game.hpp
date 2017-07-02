@@ -9,6 +9,7 @@
  // Bibliotecas SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 
 // Bibliotecas std
 #include <iostream>
@@ -20,11 +21,13 @@ class Game {
 
     void run();
 
-    void draw();
+    void draw(float);
 
-    void update();
+    void update(float);
 
     void loadUI();
+
+    void updateUI(sf::View);
 
     void drawUI();
 
@@ -42,6 +45,12 @@ class Game {
 
     // Estado do jogo
     GAME_STATE m_gameState;
+
+    // Relógio
+    sf::Clock m_gameClock;
+
+    // View
+    sf::View m_view;
 
     // Fonte 8-bit
     sf::Font m_uiFont;
