@@ -21,7 +21,7 @@ class Game {
 
     void run();
 
-    void draw();
+    void draw(float);
 
     void update(float);
 

@@ -5,30 +5,61 @@ Hero::Hero(){
   m_charHp = m_charMaxHp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
-  m_position = {0, 0};
+  m_charSpeed = 200;
+  m_position = {0.f,0.f};
 }
 
 void Hero::initHero(HERO_CLASS classHero){
-  if(classHero == HERO_CLASS::WARRIOR){
-    auto heroTextureId = TextureManager::addTexture("../resources/sprites/char/warrior/warrior_idle.png");
-    m_sprite.setTexture(TextureManager::getTexture(heroTextureId));
-    m_sprite.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
-    m_position = m_sprite.getPosition();
-  }
+  if(classHero == HERO_CLASS::WARRIOR)
+    //auto heroTextureId = TextureManager::addTexture("../resources/sprites/players/warrior/warrior_idle_down.png");
+    m_className = "warrior";
+  else if (classHero == HERO_CLASS::MAGE)
+    m_className = "mage";
+  else if (classHero == HERO_CLASS::ARCHER)
+    m_className = "archer";
+  else if (classHero == HERO_CLASS::THIEF)
+    m_className = "thief";
+  else if (classHero == HERO_CLASS::PALADIN)
+    m_className = "paladin";
+
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_up.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_DOWN)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_down.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_LEFT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_left.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_RIGHT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_right.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_idle_up.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_DOWN)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_idle_down.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_LEFT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_idle_left.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_RIGHT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_idle_right.png");
+
+  setSprite(TextureManager::getTexture(m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)]), 8, 12);
+  m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_UP);
+  m_sprite.setOrigin(sf::Vector2f(13.f, 18.f));
+  m_position = m_sprite.getPosition();
 }
 
 void Hero::update(Level& level, float delta){
   sf::Vector2f newPosition = m_position;
-  sf::Vector2f movement = {0, 0};
+  sf::Vector2f movement({0.f, 0.f});
 
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-    movement.y += -100 * delta;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-    movement.y += 100 * delta;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-    movement.x += -100 * delta;
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    movement.x += 100 * delta;
+  // next sprite after movement
+  int animState = m_currentTexID;
+
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
+    movement.y += -m_charSpeed * delta;
+    animState = static_cast<int>(ANIMATION_STATE::WALK_UP);
+  }
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
+    movement.y += m_charSpeed * delta;
+    animState = static_cast<int>(ANIMATION_STATE::WALK_DOWN);
+  }
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+    movement.x += -m_charSpeed * delta;
+    animState = static_cast<int>(ANIMATION_STATE::WALK_LEFT);
+  }
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
+    movement.x += m_charSpeed * delta;
+    animState = static_cast<int>(ANIMATION_STATE::WALK_RIGHT);
+  }
 
   if(collides(sf::Vector2f(movement.x ,0), level))
     newPosition.x = m_position.x;
@@ -42,6 +73,52 @@ void Hero::update(Level& level, float delta){
 
   m_position = newPosition;
   m_sprite.setPosition(m_position);
+
+  if (m_currentTexID != animState){
+      m_currentTexID = animState;
+      m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[m_currentTexID]));
+  }
+
+  if (movement.x == 0 && movement.y == 0){
+    if (isMoving()){
+      switch (m_currentTexID) {
+        case static_cast<int>(ANIMATION_STATE::WALK_UP):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::IDLE_UP);
+          break;
+        case static_cast<int>(ANIMATION_STATE::WALK_DOWN):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::IDLE_DOWN);;
+          break;
+        case static_cast<int>(ANIMATION_STATE::WALK_LEFT):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::IDLE_LEFT);
+          break;
+        case static_cast<int>(ANIMATION_STATE::WALK_RIGHT):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::IDLE_RIGHT);;
+          break;
+      }
+      m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[m_currentTexID]));
+      setMovement(false);
+    }
+  }
+  else {
+    if (!isMoving()){
+      switch (m_currentTexID) {
+        case static_cast<int>(ANIMATION_STATE::IDLE_UP):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_UP);
+          break;
+        case static_cast<int>(ANIMATION_STATE::IDLE_DOWN):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_DOWN);
+          break;
+        case static_cast<int>(ANIMATION_STATE::IDLE_LEFT):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_LEFT);
+          break;
+        case static_cast<int>(ANIMATION_STATE::IDLE_RIGHT):
+          m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_RIGHT);
+          break;
+      }
+      m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[m_currentTexID]));
+      setMovement(true);
+    }
+  }
 }
 
 void Hero::attack(){}
@@ -49,10 +126,6 @@ void Hero::attack(){}
 void Hero::takeDamage(double damage){
   auto afterHealth = m_charHp - damage;
   m_charHp = std::max(afterHealth, 0.0);
-}
-
-void Hero::draw(sf::RenderWindow& window){
-  window.draw(m_sprite);
 }
 
 bool Hero::collides(sf::Vector2f movement, Level& level){

@@ -1,4 +1,5 @@
 #include <Game.hpp>
+#include <iostream>
 
 Game::Game(sf::RenderWindow* window):
 m_window(*window),
@@ -14,7 +15,8 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
 
-  m_hero.initHero(HERO_CLASS::WARRIOR);
+  m_hero.initHero(HERO_CLASS::THIEF);
+  m_hero.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
 
   loadUI();
 
@@ -22,17 +24,22 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
 }
 
 void Game::run(){
+  float currentTime = m_gameClock.restart().asSeconds();
+
   while(m_window.isOpen()){
     sf::Event event;
     while(m_window.pollEvent(event)){
       if(event.type == sf::Event::Closed)
         m_window.close();
     }
-    auto timeDelta = m_gameClock.restart().asSeconds();
+
+    float newTime = m_gameClock.getElapsedTime().asSeconds();
+    float timeDelta = std::max(0.f, newTime - currentTime);
+    currentTime = newTime;
 
     update(timeDelta);
 
-    draw();
+    draw(timeDelta);
   }
 }
 
@@ -67,7 +74,7 @@ void Game::update(float delta){
   }
 }
 
-void Game::draw(){
+void Game::draw(float delta){
   m_window.clear(sf::Color::Black);
 
   switch(m_gameState){
@@ -78,7 +85,7 @@ void Game::draw(){
       // renderiza o mapa
       m_level.draw(m_window);
 
-      m_hero.draw(m_window);
+      m_hero.draw(m_window, delta);
 
       // renderiza a ui
       drawUI();
