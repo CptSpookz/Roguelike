@@ -70,7 +70,7 @@ void Game::update(float delta){
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
       m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
 
-      m_attackValue.setString(std::to_string(m_hero.getBuffDmg()));
+      m_attackValue.setString(std::to_string(m_hero.getDmg()));
       m_speedValue.setString(std::to_string(m_hero.getMovSpd()));
 
       m_hero.update(m_level, delta);
