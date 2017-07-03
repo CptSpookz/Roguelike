@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 // Bibliotecas Roguelike
+#include <Button.hpp>
 #include <Hero.hpp>
 #include <Level.hpp>
 #include <TextureManager.hpp>
@@ -31,6 +32,8 @@ class Game {
 
     void drawUI();
 
+    void mouseClick();
+
   protected:
 
   private:
@@ -54,6 +57,9 @@ class Game {
 
     // Fonte 8-bit
     sf::Font m_uiFont;
+
+    // Botões do menu inicial
+    Button m_buttons[3];
 
     // Sprites UI
     // Barra preta no fundo da tela

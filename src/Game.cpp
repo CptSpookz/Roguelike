@@ -3,7 +3,7 @@
 
 Game::Game(sf::RenderWindow* window):
 m_window(*window),
-m_gameState(GAME_STATE::GAME_RUN),
+m_gameState(GAME_STATE::MAIN_MENU),
 m_level(Level(*window)),
 m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_view.reset(sf::FloatRect(0, 0, 500, 500));
@@ -18,6 +18,12 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_hero.initHero(HERO_CLASS::THIEF);
   m_hero.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
 
+  // botões do menu inicial
+  auto playButtonId = TextureManager::addTexture("../resources/sprites/buttons/btn_start.png");
+
+  m_buttons[0].setTexture(TextureManager::getTexture(playButtonId));
+  m_buttons[0].centerHorizontal(m_window.getSize().x, 250);
+
   loadUI();
 
   m_level.generate();
@@ -31,6 +37,8 @@ void Game::run(){
     while(m_window.pollEvent(event)){
       if(event.type == sf::Event::Closed)
         m_window.close();
+      if(event.type == sf::Event::MouseButtonPressed)
+        mouseClick();
     }
 
     float newTime = m_gameClock.getElapsedTime().asSeconds();
@@ -60,6 +68,9 @@ void Game::update(float delta){
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
       m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
 
+      m_attackValue.setString(std::to_string(m_hero.getBuffDmg()));
+      m_speedValue.setString(std::to_string(m_hero.getMovSpd()));
+
       m_hero.update(m_level, delta);
 
       m_view.setCenter(m_hero.getCenterPosition());
@@ -79,7 +90,8 @@ void Game::draw(float delta){
 
   switch(m_gameState){
     case GAME_STATE::MAIN_MENU:
-      // código do menu
+      m_buttons[0].draw(m_window);
+
       break;
     case GAME_STATE::GAME_RUN:
       // renderiza o mapa
@@ -212,4 +224,10 @@ void Game::drawUI(){
   m_window.draw(m_defenseValue);
   m_window.draw(m_speedValue);
   m_window.draw(m_luckValue);
+}
+
+void Game::mouseClick(){
+  if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+  if(m_buttons[0].isPressed(sf::Mouse::getPosition(m_window)))
+    m_gameState = GAME_STATE::GAME_RUN;
 }
