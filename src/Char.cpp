@@ -18,9 +18,29 @@ void Char::setBaseDmg(double dmgVal){
 		m_charBaseDmg = dmgVal;
 }
 
-void Char::setBuffDmg(double buffVal){
-	if(buffVal >= 1)
-		m_charBuffDmg = buffVal;
+void Char::setBuffDmg(double dmgBuff){
+	if(dmgBuff >= 1)
+		m_charBuffDmg = dmgBuff;
+}
+
+void Char::setBaseDef(double defVal){
+	if (defVal > 0)
+		m_charBaseDef = defVal;
+}
+
+void Char::setBuffDef(double defBuff){
+	if (defBuff >= 1)
+		m_charBuffDef = defBuff;
+}
+
+void Char::setBaseSpd(int spdVal){
+	if (spdVal > 50)
+		m_charSpeed = spdVal;
+}
+
+void Char::setBuffSpd(int spdBuff){
+	if (spdBuff >= 1)
+		m_charBuffSpeed = spdBuff;
 }
 
 void Char::update(float timeDelta){
