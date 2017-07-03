@@ -19,15 +19,16 @@ void Hero::initHero(HERO_CLASS classHero){
   }
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
+    m_charBaseDmg *= 2.5;
   }
   else if (classHero == HERO_CLASS::ARCHER){
     m_className = "archer";
-    m_charBaseDmg *= 4;
+    m_charBaseDmg *= 3;
     m_charSpeed = 300;
   }
   else if (classHero == HERO_CLASS::THIEF){
     m_className = "thief";
-    m_charBaseDmg *= 3;
+    m_charBaseDmg *= 2.5;
     m_charSpeed = 400;
   }
   else if (classHero == HERO_CLASS::PALADIN){
@@ -139,6 +140,11 @@ void Hero::attack(){}
 void Hero::takeDamage(double damage){
   auto afterHealth = m_charHp - damage;
   m_charHp = std::max(afterHealth, 0.0);
+}
+
+void Hero::setMP(double mp){
+  if (mp >= 0)
+    m_charMp = mp;
 }
 
 bool Hero::collides(sf::Vector2f movement, Level& level){

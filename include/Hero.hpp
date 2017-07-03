@@ -17,12 +17,22 @@ class Hero: public Char {
 
     void takeDamage(double);
 
+    double getMaxMP() const {return m_charMaxMp;};
+  	double getMP() const {return m_charMp;};
+  	void setMP(double);
+
     sf::Vector2f getCenterPosition();
 
   private:
     bool collides(sf::Vector2f, Level&);
 
     sf::String m_className;
+
+    // base MP
+    double m_charMaxMp;
+
+    // current MP
+    double m_charMp;
 };
 
 #endif

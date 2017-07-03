@@ -25,8 +25,17 @@ protected:
     // damage buff
     double m_charBuffDmg;
 
-    // character's movement speed
+    // base defense
+    double m_charBaseDef;
+
+    // defense buff
+    double m_charBuffDef;
+
+    // character's base movement speed
     int m_charSpeed;
+
+    // character's buff movement speed
+    int m_charBuffSpeed;
 
     // character's current velocity
     sf::Vector2f m_charVel;
@@ -44,8 +53,18 @@ protected:
 	void setBuffDmg(double);
 	double getDmg() const {return m_charBaseDmg * m_charBuffDmg;};
 
-  void setMovSpd(int);
-  int getMovSpd() const {return m_charSpeed;};
+  double getBaseDef() const {return m_charBaseDef;};
+  void setBaseDef(double);
+	double getBuffDef() const {return m_charBuffDef;};
+	void setBuffDef(double);
+	double getDef() const {return m_charBaseDef * m_charBuffDef;};
+
+  int getBaseSpd() const {return m_charSpeed;};
+  void setBaseSpd(int);
+  int getBuffSpd() const {return m_charBuffSpeed;};
+  void setBuffSpd(int);
+  int getMovSpd() const {return m_charSpeed * m_charBuffSpeed;};
+
   sf::Vector2f getVel() const {return m_charVel;};
 
   virtual void update(float) override;
