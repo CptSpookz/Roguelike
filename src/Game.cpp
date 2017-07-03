@@ -15,7 +15,9 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
 
-  m_hero.initHero(HERO_CLASS::THIEF);
+  auto classHero = static_cast<HERO_CLASS>(rand()%static_cast<int>(HERO_CLASS::COUNT));
+
+  m_hero.initHero(classHero);
   m_hero.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
 
   // botões do menu inicial
