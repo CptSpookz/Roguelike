@@ -146,13 +146,13 @@ bool Hero::collides(sf::Vector2f movement, Level& level){
 
   Tile* checkTiles[4];
 
-  checkTiles[0] = level.getTile(sf::Vector2f(newPosition.x, newPosition.y));
+  checkTiles[0] = level.getTile(sf::Vector2f(newPosition.x - 10, newPosition.y));
 
   checkTiles[1] = level.getTile(sf::Vector2f(newPosition.x + 15, newPosition.y));
 
   checkTiles[2] = level.getTile(sf::Vector2f(newPosition.x + 15, newPosition.y + 15));
 
-  checkTiles[3] = level.getTile(sf::Vector2f(newPosition.x, newPosition.y + 15));
+  checkTiles[3] = level.getTile(sf::Vector2f(newPosition.x - 10, newPosition.y + 15));
 
   for(int i = 0; i < 4; i++){
     if(level.isSolid(checkTiles[i]->columnIndex, checkTiles[i]->rowIndex))

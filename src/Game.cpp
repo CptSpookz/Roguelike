@@ -15,16 +15,18 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
 
-  auto classHero = static_cast<HERO_CLASS>(rand()%static_cast<int>(HERO_CLASS::COUNT));
-
-  m_hero.initHero(classHero);
   m_hero.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
 
   // botões do menu inicial
-  auto playButtonId = TextureManager::addTexture("../resources/sprites/buttons/btn_start.png");
+  auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
+  auto defaultBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_default_border.png");
 
-  m_buttons[0].setTexture(TextureManager::getTexture(playButtonId));
-  m_buttons[0].centerHorizontal(m_window.getSize().x, 250);
+  m_menuButtons.setOutline(TextureManager::getTexture(outlineButton));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
 
   loadUI();
 
@@ -39,8 +41,9 @@ void Game::run(){
     while(m_window.pollEvent(event)){
       if(event.type == sf::Event::Closed)
         m_window.close();
-      if(event.type == sf::Event::MouseButtonPressed)
-        mouseClick();
+      if(m_gameState == GAME_STATE::MAIN_MENU){
+        menuButtonsEvent(event);
+      }
     }
 
     float newTime = m_gameClock.getElapsedTime().asSeconds();
@@ -92,8 +95,7 @@ void Game::draw(float delta){
 
   switch(m_gameState){
     case GAME_STATE::MAIN_MENU:
-      m_buttons[0].draw(m_window);
-
+      m_menuButtons.draw(m_window);
       break;
     case GAME_STATE::GAME_RUN:
       // renderiza o mapa
@@ -228,8 +230,15 @@ void Game::drawUI(){
   m_window.draw(m_luckValue);
 }
 
-void Game::mouseClick(){
-  if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-  if(m_buttons[0].isPressed(sf::Mouse::getPosition(m_window)))
-    m_gameState = GAME_STATE::GAME_RUN;
+void Game::menuButtonsEvent(sf::Event event){
+  if(event.type == sf::Event::KeyPressed){
+    if(event.key.code == sf::Keyboard::Right){
+      m_menuButtons.toNext();
+    }else if(event.key.code == sf::Keyboard::Left){
+      m_menuButtons.toPrevious();
+    }else if(event.key.code == sf::Keyboard::Return){
+      m_hero.initHero(static_cast<HERO_CLASS>(m_menuButtons.getIndex()));
+      m_gameState = GAME_STATE::GAME_RUN;
+    }
+  }
 }
