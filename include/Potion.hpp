@@ -25,6 +25,13 @@ private:
 
 public:
 	PotionBag();
+  
+  void addPotHP(PotHP);
+  void addPotMP(PotMP);
+  void addPotATK(PotATK);
+  void addPotDEF(PotDEF);
+  void addPotSPD(PotSPD);
+
 	bool isFull();
 
 };
