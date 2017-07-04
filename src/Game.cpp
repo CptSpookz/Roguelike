@@ -27,6 +27,7 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
 
   loadUI();
 
@@ -59,7 +60,7 @@ void Game::run(){
 void Game::update(float delta){
   sf::Vector2i zero(0, 0);
   sf::Vector2i healthSize(240*m_hero.getHP()/m_hero.getMaxHP(), 16);
-  sf::Vector2i manaSize(240*100/100, 16);
+  sf::Vector2i manaSize(240*m_hero.getMP()/m_hero.getMaxMP(), 16);
 
   if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
     m_gameState = GAME_STATE::GAME_END;
@@ -74,6 +75,7 @@ void Game::update(float delta){
       m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
 
       m_attackValue.setString(std::to_string(m_hero.getDmg()));
+      m_defenseValue.setString(std::to_string(m_hero.getDef()));
       m_speedValue.setString(std::to_string(m_hero.getMovSpd()));
 
       m_hero.update(m_level, delta);

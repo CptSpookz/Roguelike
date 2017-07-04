@@ -49,6 +49,7 @@ enum class HERO_CLASS{
   ARCHER,
   THIEF,
   PALADIN,
+  VALKYRIE,
   COUNT
 };
 

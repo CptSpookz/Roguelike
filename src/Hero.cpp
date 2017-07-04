@@ -1,11 +1,16 @@
 #include <Hero.hpp>
 
 Hero::Hero(){
-  m_charMaxHp = 200;
+  m_charMaxHp = 300;
   m_charHp = m_charMaxHp;
+  m_charMaxMp = 150;
+  m_charMp = m_charMaxMp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
+  m_charBaseDef = 10;
+  m_charBuffDef = 1;
   m_charSpeed = 200;
+  m_charBuffSpeed = 1;
   m_position = {0.f,0.f};
 }
 
@@ -14,12 +19,14 @@ void Hero::initHero(HERO_CLASS classHero){
     //auto heroTextureId = TextureManager::addTexture("../resources/sprites/players/warrior/warrior_idle_down.png");
     m_className = "warrior";
     m_charBaseDmg *= 2;
-    m_charMaxHp *= 1.5;
+    m_charMaxHp *= 2;
     m_charHp = m_charMaxHp;
   }
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
     m_charBaseDmg *= 2.5;
+    m_charMaxMp *= 3;
+    m_charMp = m_charMaxMp;
   }
   else if (classHero == HERO_CLASS::ARCHER){
     m_className = "archer";
@@ -35,7 +42,16 @@ void Hero::initHero(HERO_CLASS classHero){
     m_className = "paladin";
     m_charMaxHp *= 3;
     m_charHp = m_charMaxHp;
+    m_charBaseDef *= 3;
   }
+  else if (classHero == HERO_CLASS::VALKYRIE){
+    m_className = "valkyrie";
+    m_charMaxHp *= 2;
+    m_charHp = m_charMaxHp;
+    m_charBaseDef *= 2;
+    m_charSpeed = 250;
+  }
+
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_up.png");
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_DOWN)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_down.png");
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_LEFT)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_left.png");
