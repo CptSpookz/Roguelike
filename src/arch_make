@@ -19,5 +19,7 @@ all: $(OBJ)
 run:
 	./$(OUT)
 
+full: all run
+
 clean:
 	rm $(OUT) $(IDIR)/*.gch

@@ -8,8 +8,14 @@ class Enemy: public Char{
   public:
     Enemy();
 
+    virtual void update(Level&, float);
+
+    virtual void attack() override;
+
+    void takeDamage(double);
+
   private:
-    
+
 };
 
 #endif
