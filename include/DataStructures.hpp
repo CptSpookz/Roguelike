@@ -257,7 +257,7 @@ T LinkedList<T>::operator[](int index) {
 	this->toFirst();
 	while (index > 0 && !this->toNext())
 		index--;
-	return this->current.value;
+	return this->current->value;
 }
 
 template<class T>

@@ -11,13 +11,13 @@
 
 class Projectile : public Object{
   public:
-    Projectile();
+    Projectile(int, int);
 
     void update(float);
 
-    bool collidesWall(Level&, sf::Vector2f);
+    bool collidesWall(Level&, sf::Vector2f, sf::Texture&);
 
-    Enemy* collidesEnemy(std::vector<Enemy*>);
+    bool collidesEnemy(std::vector<Enemy*>);
 
   private:
     // distancia maxima
@@ -25,6 +25,15 @@ class Projectile : public Object{
 
     // distancia percorrida
     int m_distPerc;
+
+    // dano do projétil
+    double m_damage;
+
+    // velocidade do projétil
+    sf::Vector2f m_velocity;
+
+    // tamanho do projétil
+    sf::Vector2i m_size;
 };
 
 #endif
