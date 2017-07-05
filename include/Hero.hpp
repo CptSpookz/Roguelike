@@ -15,6 +15,8 @@ class Hero: public Char {
 
     virtual void attack();
 
+    bool canAttack();
+
     void takeDamage(double);
 
     double getMaxMP() const {return m_charMaxMp;};
@@ -33,6 +35,12 @@ class Hero: public Char {
 
     // current MP
     double m_charMp;
+
+    // attack speed
+    double m_attackSpd;
+
+    // time since attack
+    double m_lastAttack;
 };
 
 #endif

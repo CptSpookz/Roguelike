@@ -72,6 +72,8 @@ void Game::update(float delta){
   if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
     m_gameState = GAME_STATE::GAME_END;
 
+  keyboardUpdate();
+
   switch(m_gameState){
     case GAME_STATE::MAIN_MENU:
 
@@ -90,6 +92,8 @@ void Game::update(float delta){
         enemy->calculateSteps(m_level, m_hero.getPosition());
         enemy->update(delta);
       }
+
+      UpdateProjectiles(delta);
 
       updateUI(m_view);
 
@@ -116,6 +120,10 @@ void Game::draw(float delta){
 
       for(Enemy* enemy: m_enemyList){
         enemy->draw(m_window);
+      }
+
+      for(const auto& projectile: m_playerProjectiles){
+        projectile->draw(m_window);
       }
 
       // renderiza a ui
@@ -216,8 +224,74 @@ void Game::menuButtonsEvent(sf::Event event){
     }else if(event.key.code == sf::Keyboard::Left){
       m_menuButtons.toPrevious();
     }else if(event.key.code == sf::Keyboard::Return){
-      m_hero.initHero(static_cast<HERO_CLASS>(m_menuButtons.getIndex()));
+      auto heroClass = static_cast<HERO_CLASS>(m_menuButtons.getIndex());
+      m_hero.initHero(heroClass);
+      switch(heroClass){
+        case HERO_CLASS::WARRIOR:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_sword.png");
+          break;
+        case HERO_CLASS::MAGE:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_magic_ball.png");
+          break;
+        case HERO_CLASS::ARCHER:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_arrow.png");
+          break;
+        case HERO_CLASS::THIEF:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_dagger.png");
+          break;
+        case HERO_CLASS::PALADIN:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_hammer.png");
+          break;
+        case HERO_CLASS::VALKYRIE:
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_spear.png");
+          break;
+      }
       m_gameState = GAME_STATE::GAME_RUN;
     }
+  }
+}
+
+void Game::keyboardUpdate(){
+  sf::Vector2f playerPosition = m_hero.getPosition();
+  if(m_hero.canAttack()){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
+      sf::Vector2f direction = {0, -1};
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      m_playerProjectiles.push_back(std::move(proj));
+      m_hero.attack();
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
+      sf::Vector2f direction = {0, 1};
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      m_playerProjectiles.push_back(std::move(proj));
+      m_hero.attack();
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
+      sf::Vector2f direction = {1, 0};
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      m_playerProjectiles.push_back(std::move(proj));
+      m_hero.attack();
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+      sf::Vector2f direction = {-1, 0};
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      m_playerProjectiles.push_back(std::move(proj));
+      m_hero.attack();
+    }
+  }
+}
+
+void Game::UpdateProjectiles(float delta){
+  auto projectileIterator = m_playerProjectiles.begin();
+  while(projectileIterator != m_playerProjectiles.end()){
+    Projectile& proj = **projectileIterator;
+
+    proj.update(delta);
+
+    auto projTile = m_level.getTile(proj.getPosition());
+    if(!m_level.isFloor(projTile) || !proj.isAlive())
+      projectileIterator = m_playerProjectiles.erase(projectileIterator);
+    else
+      ++projectileIterator;
   }
 }

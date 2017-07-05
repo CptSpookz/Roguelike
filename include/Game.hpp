@@ -6,6 +6,7 @@
 #include <Enemy.hpp>
 #include <Hero.hpp>
 #include <Level.hpp>
+#include <Projectile.hpp>
 #include <TextureManager.hpp>
 
  // Bibliotecas SFML
@@ -36,6 +37,10 @@ class Game {
   protected:
     void menuButtonsEvent(sf::Event);
 
+    void keyboardUpdate();
+
+    void UpdateProjectiles(float);
+
   private:
     // Janela principal
     sf::RenderWindow& m_window;
@@ -49,8 +54,14 @@ class Game {
     // Estado do jogo
     GAME_STATE m_gameState;
 
-    // Lista de inimigos TODO: fazer os inimigos
+    // Lista de inimigos
     std::vector<Enemy*> m_enemyList;
+
+    // Lista de projéteis
+    std::vector<std::unique_ptr<Projectile> > m_playerProjectiles;
+
+    // ID da textura do projétil
+    int m_projectileTextureID;
 
     // Relógio
     sf::Clock m_gameClock;

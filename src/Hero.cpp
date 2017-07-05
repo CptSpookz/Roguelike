@@ -12,6 +12,7 @@ Hero::Hero(){
   m_charSpeed = 200;
   m_charBuffSpeed = 1;
   m_position = {0.f,0.f};
+  m_lastAttack = 0;
 }
 
 void Hero::initHero(HERO_CLASS classHero){
@@ -21,28 +22,33 @@ void Hero::initHero(HERO_CLASS classHero){
     m_charBaseDmg *= 2;
     m_charMaxHp *= 2;
     m_charHp = m_charMaxHp;
+    m_attackSpd = 1.25;
   }
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
     m_charBaseDmg *= 2.5;
     m_charMaxMp *= 3;
     m_charMp = m_charMaxMp;
+    m_attackSpd = .75;
   }
   else if (classHero == HERO_CLASS::ARCHER){
     m_className = "archer";
     m_charBaseDmg *= 3;
     m_charSpeed = 300;
+    m_attackSpd = .5;
   }
   else if (classHero == HERO_CLASS::THIEF){
     m_className = "thief";
     m_charBaseDmg *= 2.5;
     m_charSpeed = 400;
+    m_attackSpd = .75;
   }
   else if (classHero == HERO_CLASS::PALADIN){
     m_className = "paladin";
     m_charMaxHp *= 3;
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 3;
+    m_attackSpd = 1.25;
   }
   else if (classHero == HERO_CLASS::VALKYRIE){
     m_className = "valkyrie";
@@ -50,6 +56,7 @@ void Hero::initHero(HERO_CLASS classHero){
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 2;
     m_charSpeed = 250;
+    m_attackSpd = 1;
   }
 
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_up.png");
@@ -74,19 +81,19 @@ void Hero::update(Level& level, float delta){
   // next sprite after movement
   int animState = m_currentTexID;
 
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
     movement.y += -m_charSpeed * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_UP);
   }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
     movement.y += m_charSpeed * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_DOWN);
   }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
     movement.x += -m_charSpeed * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_LEFT);
   }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
     movement.x += m_charSpeed * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_RIGHT);
   }
@@ -149,9 +156,18 @@ void Hero::update(Level& level, float delta){
       setMovement(true);
     }
   }
+
+  if(m_attackSpd > m_lastAttack)
+    m_lastAttack += delta;
 }
 
-void Hero::attack(){}
+void Hero::attack(){
+  m_lastAttack = 0;
+}
+
+bool Hero::canAttack(){
+  return (m_attackSpd <= m_lastAttack);
+}
 
 void Hero::takeDamage(double damage){
   auto afterHealth = m_charHp - damage;
