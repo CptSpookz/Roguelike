@@ -19,15 +19,20 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
 
   // botões do menu inicial
   auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
-  auto defaultBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_default_border.png");
+  auto warriorBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_warrior_border.png");
+  auto mageBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_mage_border.png");
+  auto archerBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_archer_border.png");
+  auto thiefBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_thief_border.png");
+  auto paladinBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_paladin_border.png");
+  auto valkyrieBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_valkyrie_border.png");
 
   m_menuButtons.setOutline(TextureManager::getTexture(outlineButton));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
-  m_menuButtons.addButton(m_window, TextureManager::getTexture(defaultBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(warriorBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(mageBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(archerBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(thiefBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(paladinBorder));
+  m_menuButtons.addButton(m_window, TextureManager::getTexture(valkyrieBorder));
 
   loadUI();
 
