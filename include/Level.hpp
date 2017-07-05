@@ -25,6 +25,10 @@ struct Tile {
   int columnIndex;
   int rowIndex;
   sf::Sprite sprite;
+  int H;
+  int G;
+  int F;
+  Tile* parentNode;
 };
 
 class Level {
@@ -47,9 +51,19 @@ class Level {
 
     void setColor(int, int, int, int);
 
+    void resetNodes();
+
+    sf::Vector2u getSize();
+
+    sf::Vector2f getActualTileLocation(int, int);
+
     bool isSolid(int, int);
 
+    bool isFloor(Tile*);
+
     Tile* getTile(sf::Vector2f);
+
+    Tile* getTile(int, int);
 
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];

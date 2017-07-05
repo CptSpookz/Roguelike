@@ -68,8 +68,6 @@ protected:
   sf::Vector2f getVel() const {return m_charVel;};
 
   virtual void update(float) override;
-
-  virtual void attack() = 0;
 };
 
 /*class Enemy : public Char{

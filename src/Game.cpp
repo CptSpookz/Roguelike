@@ -15,8 +15,6 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
 
-  m_hero.setPosition(1.3*TILE_SIZE, 1.3*TILE_SIZE);
-
   // botões do menu inicial
   auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
   auto warriorBorder = TextureManager::addTexture("../resources/sprites/buttons/spr_warrior_border.png");
@@ -34,9 +32,13 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_menuButtons.addButton(m_window, TextureManager::getTexture(paladinBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(valkyrieBorder));
 
+  m_enemyList.push_back(new Enemy(10));
+
   loadUI();
 
   m_level.generate();
+
+  m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
 }
 
 void Game::run(){
@@ -79,16 +81,18 @@ void Game::update(float delta){
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
       m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
 
-      m_attackValue.setString(std::to_string(m_hero.getDmg()));
-      m_defenseValue.setString(std::to_string(m_hero.getDef()));
-      m_speedValue.setString(std::to_string(m_hero.getMovSpd()));
-
       m_hero.update(m_level, delta);
 
       m_view.setCenter(m_hero.getCenterPosition());
       m_window.setView(m_view);
 
+      for(Enemy* enemy: m_enemyList){
+        enemy->calculateSteps(m_level, m_hero.getPosition());
+        enemy->update(delta);
+      }
+
       updateUI(m_view);
+
       break;
 
     case GAME_STATE::GAME_END:
@@ -109,6 +113,10 @@ void Game::draw(float delta){
       m_level.draw(m_window);
 
       m_hero.draw(m_window, delta);
+
+      for(Enemy* enemy: m_enemyList){
+        enemy->draw(m_window);
+      }
 
       // renderiza a ui
       drawUI();
@@ -145,47 +153,20 @@ void Game::loadUI(){
   m_manaBar.setTexture(TextureManager::getTexture(manaBarId));
   m_manaBar.setPosition(10, 36);
 
-  // status
-  // texturas
-  auto attackStatId = TextureManager::addTexture("../resources/sprites/ui/attack_stat.png");
-  auto defenseStatId = TextureManager::addTexture("../resources/sprites/ui/defense_stat.png");
-  auto speedStatId = TextureManager::addTexture("../resources/sprites/ui/speed_stat.png");
-  auto luckStatId = TextureManager::addTexture("../resources/sprites/ui/luck_stat.png");
+  // poções
+  auto healthPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_health_potion.png");
+  auto manaPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_mana_potion.png");
+  auto defensePotionId = TextureManager::addTexture("../resources/sprites/ui/spr_defense_potion.png");
+  auto speedPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_speed_potion.png");
 
-  // sprites
-  m_attackStat.setTexture(TextureManager::getTexture(attackStatId));
-  m_attackStat.setPosition(10, m_window.getSize().y - 26);
-  m_defenseStat.setTexture(TextureManager::getTexture(defenseStatId));
-  m_defenseStat.setPosition(148, m_window.getSize().y - 26);
-  m_speedStat.setTexture(TextureManager::getTexture(speedStatId));
-  m_speedStat.setPosition(296, m_window.getSize().y - 26);
-  m_luckStat.setTexture(TextureManager::getTexture(luckStatId));
-  m_luckStat.setPosition(444, m_window.getSize().y - 26);
-
-  // texto
-  m_attackValue.setFont(m_uiFont);
-  m_attackValue.setString("3.5");
-  m_attackValue.setCharacterSize(22);
-  m_attackValue.setFillColor(sf::Color::White);
-  m_attackValue.setPosition(31, m_window.getSize().y - 33);
-
-  m_defenseValue.setFont(m_uiFont);
-  m_defenseValue.setString("4.5");
-  m_defenseValue.setCharacterSize(22);
-  m_defenseValue.setFillColor(sf::Color::White);
-  m_defenseValue.setPosition(169, m_window.getSize().y - 33);
-
-  m_speedValue.setFont(m_uiFont);
-  m_speedValue.setString("6.5");
-  m_speedValue.setCharacterSize(22);
-  m_speedValue.setFillColor(sf::Color::White);
-  m_speedValue.setPosition(317, m_window.getSize().y - 33);
-
-  m_luckValue.setFont(m_uiFont);
-  m_luckValue.setString("0.0");
-  m_luckValue.setCharacterSize(22);
-  m_luckValue.setFillColor(sf::Color::White);
-  m_luckValue.setPosition(465, m_window.getSize().y - 33);
+  m_healthPotion.setTexture(TextureManager::getTexture(healthPotionId));
+  m_healthPotion.setPosition(10, m_window.getSize().y - 55);
+  m_manaPotion.setTexture(TextureManager::getTexture(manaPotionId));
+  m_manaPotion.setPosition(155, m_window.getSize().y - 55);
+  m_defensePotion.setTexture(TextureManager::getTexture(defensePotionId));
+  m_defensePotion.setPosition(300, m_window.getSize().y - 55);
+  m_speedPotion.setTexture(TextureManager::getTexture(speedPotionId));
+  m_speedPotion.setPosition(445, m_window.getSize().y - 55);
 }
 
 void Game::updateUI(sf::View view){
@@ -202,15 +183,11 @@ void Game::updateUI(sf::View view){
   m_manaBar.setPosition(left + 10, top + 36);
 
   // Status no fundo
-  m_blackBar.setPosition(left, down - 36);
-  m_attackStat.setPosition(left + 10, down - 26);
-  m_attackValue.setPosition(left + 31, down - 33);
-  m_defenseStat.setPosition(left + 148, down - 26);
-  m_defenseValue.setPosition(left + 169, down - 33);
-  m_speedStat.setPosition(left + 296, down - 26);
-  m_speedValue.setPosition(left + 317, down - 33);
-  m_luckStat.setPosition(left + 444, down - 26);
-  m_luckValue.setPosition(left + 465, down - 33);
+  m_blackBar.setPosition(left, down - 35);
+  m_healthPotion.setPosition(left + 10, down - 55);
+  m_manaPotion.setPosition(left + 155, down - 55);
+  m_defensePotion.setPosition(left + 300, down - 55);
+  m_speedPotion.setPosition(left + 445, down - 55);
 }
 
 void Game::drawUI(){
@@ -225,16 +202,11 @@ void Game::drawUI(){
   m_window.draw(m_manaBarOutline);
   m_window.draw(m_manaBar);
 
-  // Status
-  m_window.draw(m_attackStat);
-  m_window.draw(m_defenseStat);
-  m_window.draw(m_speedStat);
-  m_window.draw(m_luckStat);
-
-  m_window.draw(m_attackValue);
-  m_window.draw(m_defenseValue);
-  m_window.draw(m_speedValue);
-  m_window.draw(m_luckValue);
+  // poções
+  m_window.draw(m_healthPotion);
+  m_window.draw(m_manaPotion);
+  m_window.draw(m_defensePotion);
+  m_window.draw(m_speedPotion);
 }
 
 void Game::menuButtonsEvent(sf::Event event){

@@ -24,6 +24,11 @@ enum class TILE {
 	COUNT
 };
 
+enum class ENEMY_CLASS {
+  SKELETON,
+  COUNT
+};
+
 enum class GAME_STATE {
   MAIN_MENU,
   GAME_RUN,

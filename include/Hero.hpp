@@ -13,7 +13,7 @@ class Hero: public Char {
 
     virtual void update(Level&, float);
 
-    virtual void attack() override;
+    virtual void attack();
 
     void takeDamage(double);
 

@@ -71,6 +71,7 @@ void Level::generate(){
         m_grid[i][j].sprite.setTexture(TextureManager::getTexture(m_textureIDs[static_cast<int>(TILE::WALL_SINGLE)]));
         m_grid[i][j].type = TILE::WALL_SINGLE;
       }
+      m_grid[i][j].sprite.setOrigin(TILE_SIZE/2, TILE_SIZE/2);
       m_grid[i][j].sprite.setPosition(TILE_SIZE*i,TILE_SIZE*j);
     }
   }
@@ -152,13 +153,40 @@ void Level::setColor(int r, int g, int b, int a){
   }
 }
 
+void Level::resetNodes(){
+  for(int i = 0; i < GRID_HEIGHT; i++){
+    for(int j = 0; j < GRID_WIDTH; j++){
+      m_grid[i][j].parentNode = nullptr;
+      m_grid[i][j].H = 0;
+      m_grid[i][j].G = 0;
+      m_grid[i][j].F = 0;
+    }
+  }
+}
+
+sf::Vector2u Level::getSize(){
+  return sf::Vector2u(GRID_WIDTH, GRID_HEIGHT);
+}
+
+sf::Vector2f Level::getActualTileLocation(int x, int y){
+  return sf::Vector2f(m_grid[x][y].sprite.getPosition().x, m_grid[x][y].sprite.getPosition().y);
+}
+
 bool Level::isSolid(int columnIndex, int rowIndex){
   return (m_grid[columnIndex][rowIndex].type != TILE::FLOOR && m_grid[columnIndex][rowIndex].type != TILE::FLOOR_ALT);
 }
 
+bool Level::isFloor(Tile* tile){
+  return (tile->type == TILE::FLOOR || tile->type == TILE::FLOOR_ALT);
+}
+
 Tile* Level::getTile(sf::Vector2f position){
-  int i = static_cast<int>(position.x)/TILE_SIZE;
-  int j = static_cast<int>(position.y)/TILE_SIZE;
+  int i = static_cast<int>(position.x+TILE_SIZE/2)/TILE_SIZE;
+  int j = static_cast<int>(position.y+TILE_SIZE/2)/TILE_SIZE;
 
   return &m_grid[i][j];
+}
+
+Tile* Level::getTile(int x, int y){
+  return &m_grid[x][y];
 }

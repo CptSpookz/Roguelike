@@ -3,6 +3,7 @@
 
 // Bibliotecas Roguelike
 #include <ButtonList.hpp>
+#include <Enemy.hpp>
 #include <Hero.hpp>
 #include <Level.hpp>
 #include <TextureManager.hpp>
@@ -48,6 +49,9 @@ class Game {
     // Estado do jogo
     GAME_STATE m_gameState;
 
+    // Lista de inimigos TODO: fazer os inimigos
+    std::vector<Enemy*> m_enemyList;
+
     // Relógio
     sf::Clock m_gameClock;
 
@@ -73,19 +77,11 @@ class Game {
     sf::Sprite m_manaBarOutline;
     sf::Sprite m_manaBar;
 
-    // Status do herói
-    sf::Sprite m_attackStat;
-    sf::Sprite m_defenseStat;
-    sf::Sprite m_speedStat;
-    sf::Sprite m_luckStat;
-
-    // Texto UI
-    // Status do herói
-    sf::Text m_attackValue;
-    sf::Text m_defenseValue;
-    sf::Text m_speedValue;
-    sf::Text m_luckValue;
-
+    // Poções
+    sf::Sprite m_healthPotion;
+    sf::Sprite m_manaPotion;
+    sf::Sprite m_defensePotion;
+    sf::Sprite m_speedPotion;
 };
 
 #endif
