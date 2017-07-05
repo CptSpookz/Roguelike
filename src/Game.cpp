@@ -32,7 +32,7 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_menuButtons.addButton(m_window, TextureManager::getTexture(paladinBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(valkyrieBorder));
 
-  m_enemyList.push_back(new Enemy(10));
+  m_enemyList.push_back(new Enemy(75));
 
   loadUI();
 

@@ -20,7 +20,7 @@ m_speed(speed){
   m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_LEFT)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_idle_left.png");
 
   m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_DOWN)]));
-  m_sprite.setPosition(975, 975);
+  m_sprite.setPosition(950, 950);
   m_sprite.setOrigin(15, 15);
 
   m_position = m_sprite.getPosition();
