@@ -174,6 +174,11 @@ void Hero::takeDamage(double damage){
   m_charHp = std::max(afterHealth, 0.0);
 }
 
+void Hero::useMana(double cost){
+  auto currentMana = m_charMp - cost;
+  m_charMp = std::max(currentMana, 0.0);
+}
+
 void Hero::setMP(double mp){
   if (mp >= 0)
     m_charMp = mp;
