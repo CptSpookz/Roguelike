@@ -3,6 +3,8 @@
 
 // Roguelike
 #include <Char.hpp>
+
+// std
 #include <iostream>
 
 class Hero: public Char {
@@ -18,6 +20,7 @@ class Hero: public Char {
     bool canAttack();
 
     void takeDamage(double);
+    void useMana(double);
 
     double getMaxMP() const {return m_charMaxMp;};
   	double getMP() const {return m_charMp;};

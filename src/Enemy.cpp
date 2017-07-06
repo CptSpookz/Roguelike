@@ -1,4 +1,5 @@
 #include <Enemy.hpp>
+#include <cmath>
 
 Enemy::Enemy(double speed):
 m_speed(speed){
