@@ -13,7 +13,7 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
 
   if(!m_uiFont.loadFromFile("../resources/font/uiFont.ttf")){
     std::cout << "Erro ao carregar a fonte" << std::endl;
-  }
+}
 
   // botões do menu inicial
   auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
@@ -256,25 +256,25 @@ void Game::keyboardUpdate(){
   if(m_hero.canAttack()){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
       sf::Vector2f direction = {0, -1};
-      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
       sf::Vector2f direction = {0, 1};
-      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
       sf::Vector2f direction = {1, 0};
-      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
       sf::Vector2f direction = {-1, 0};
-      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 100, 5, direction, playerPosition);
+      std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
