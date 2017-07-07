@@ -8,42 +8,63 @@
 #include <iostream>
 
 class Hero: public Char {
-  public:
-    Hero();
+private:
+  bool collides(sf::Vector2f, Level&);
 
-    void initHero(HERO_CLASS);
+  sf::String m_className;
 
-    virtual void update(Level&, float);
+  // base MP
+  double m_charMaxMp;
 
-    virtual void attack();
+  // current MP
+  double m_charMp;
 
-    bool canAttack();
+  // attack speed
+  double m_attackSpd;
 
-    void takeDamage(double);
-    void useMana(double);
+  // time since attack
+  double m_lastAttack;
 
-    double getMaxMP() const {return m_charMaxMp;};
-  	double getMP() const {return m_charMp;};
-  	void setMP(double);
+  // damage buff
+  double m_charBuffDmg;
 
-    sf::Vector2f getCenterPosition();
+  // defense buff
+  double m_charBuffDef;
 
-  private:
-    bool collides(sf::Vector2f, Level&);
+  // character's buff movement speed
+  int m_charBuffSpeed;
 
-    sf::String m_className;
+public:
+  Hero();
 
-    // base MP
-    double m_charMaxMp;
+  void initHero(HERO_CLASS);
 
-    // current MP
-    double m_charMp;
+  virtual void update(Level&, float);
 
-    // attack speed
-    double m_attackSpd;
+  virtual void attack();
 
-    // time since attack
-    double m_lastAttack;
+  bool canAttack();
+
+  void takeDamage(double);
+  void useMana(double);
+
+  double getMaxMP() const {return m_charMaxMp;};
+  double getMP() const {return m_charMp;};
+  void setMP(double);
+
+  double getBuffDmg() const {return m_charBuffDmg;};
+	void setBuffDmg(double);
+	double getDmg() const {return m_charBaseDmg * m_charBuffDmg;};
+
+	double getBuffDef() const {return m_charBuffDef;};
+	void setBuffDef(double);
+	double getDef() const {return m_charBaseDef * m_charBuffDef;};
+
+  int getBuffSpd() const {return m_charBuffSpeed;};
+  void setBuffSpd(int);
+  int getMovSpd() const {return m_charSpeed * m_charBuffSpeed;};
+
+  sf::Vector2f getCenterPosition();
 };
 
 #endif

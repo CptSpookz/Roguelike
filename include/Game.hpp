@@ -8,8 +8,10 @@
 #include <Level.hpp>
 #include <Projectile.hpp>
 #include <TextureManager.hpp>
+//#include <SoundManager.hpp>
 
  // Bibliotecas SFML
+//#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>

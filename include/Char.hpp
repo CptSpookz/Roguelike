@@ -22,23 +22,14 @@ protected:
     // base damage
     double m_charBaseDmg;
 
-    // damage buff
-    double m_charBuffDmg;
-
     // base defense
     double m_charBaseDef;
-
-    // defense buff
-    double m_charBuffDef;
 
     // character's base movement speed
     int m_charSpeed;
 
-    // character's buff movement speed
-    int m_charBuffSpeed;
-
     // character's current velocity
-    sf::Vector2f m_charVel;
+    sf::Vector2f m_velocity;
 
  public:
   Char();
@@ -49,35 +40,14 @@ protected:
 
 	double getBaseDmg() const {return m_charBaseDmg;};
   void setBaseDmg(double);
-	double getBuffDmg() const {return m_charBuffDmg;};
-	void setBuffDmg(double);
-	double getDmg() const {return m_charBaseDmg * m_charBuffDmg;};
-
   double getBaseDef() const {return m_charBaseDef;};
   void setBaseDef(double);
-	double getBuffDef() const {return m_charBuffDef;};
-	void setBuffDef(double);
-	double getDef() const {return m_charBaseDef * m_charBuffDef;};
-
   int getBaseSpd() const {return m_charSpeed;};
   void setBaseSpd(int);
-  int getBuffSpd() const {return m_charBuffSpeed;};
-  void setBuffSpd(int);
-  int getMovSpd() const {return m_charSpeed * m_charBuffSpeed;};
 
-  sf::Vector2f getVel() const {return m_charVel;};
+  sf::Vector2f getVel() const {return m_velocity;};
 
   virtual void update(float) override;
 };
-
-/*class Enemy : public Char{
-  public:
-    virtual void move() override;
-    virtual void attack() override;
-
-  protected:
-    // base IA tree
-    BSTree<int> m_brain;
-};*/
 
 #endif

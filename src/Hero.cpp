@@ -1,7 +1,7 @@
 #include <Hero.hpp>
 
 Hero::Hero(){
-  m_charMaxHp = 300;
+  m_charMaxHp = 500;
   m_charHp = m_charMaxHp;
   m_charMaxMp = 150;
   m_charMp = m_charMaxMp;
@@ -20,7 +20,7 @@ void Hero::initHero(HERO_CLASS classHero){
     //auto heroTextureId = TextureManager::addTexture("../resources/sprites/players/warrior/warrior_idle_down.png");
     m_className = "warrior";
     m_charBaseDmg *= 2;
-    m_charMaxHp *= 2;
+    m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
     m_attackSpd = 1.25;
   }
@@ -40,19 +40,19 @@ void Hero::initHero(HERO_CLASS classHero){
   else if (classHero == HERO_CLASS::THIEF){
     m_className = "thief";
     m_charBaseDmg *= 2.5;
-    m_charSpeed = 400;
+    m_charSpeed = 350;
     m_attackSpd = .75;
   }
   else if (classHero == HERO_CLASS::PALADIN){
     m_className = "paladin";
-    m_charMaxHp *= 3;
+    m_charMaxHp += 500;
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 3;
     m_attackSpd = 1.25;
   }
   else if (classHero == HERO_CLASS::VALKYRIE){
     m_className = "valkyrie";
-    m_charMaxHp *= 2;
+    m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 2;
     m_charSpeed = 250;
@@ -70,7 +70,9 @@ void Hero::initHero(HERO_CLASS classHero){
 
   setSprite(TextureManager::getTexture(m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)]), 8, 12);
   m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_UP);
+
   m_sprite.setOrigin(sf::Vector2f(13.f, 18.f));
+
   m_position = m_sprite.getPosition();
 }
 
@@ -182,6 +184,21 @@ void Hero::useMana(double cost){
 void Hero::setMP(double mp){
   if (mp >= 0)
     m_charMp = mp;
+}
+
+void Hero::setBuffDmg(double dmgBuff){
+  if(dmgBuff >= 1)
+  m_charBuffDmg = dmgBuff;
+}
+
+void Hero::setBuffDef(double defBuff){
+	if (defBuff >= 1)
+		m_charBuffDef = defBuff;
+}
+
+void Hero::setBuffSpd(int spdBuff){
+	if (spdBuff >= 1)
+		m_charBuffSpeed = spdBuff;
 }
 
 bool Hero::collides(sf::Vector2f movement, Level& level){

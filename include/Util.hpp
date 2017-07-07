@@ -26,12 +26,14 @@ enum class TILE {
 
 enum class ENEMY_CLASS {
   SKELETON,
+  GOBLIN,
   COUNT
 };
 
 enum class GAME_STATE {
   MAIN_MENU,
   GAME_RUN,
+  BOSS_FIGHT,
   GAME_END,
   COUNT
 };
@@ -56,16 +58,6 @@ enum class HERO_CLASS{
   PALADIN,
   VALKYRIE,
   COUNT
-};
-
-// Player traits.
-enum class PLAYER_TRAIT {
-	ATTACK,
-	DEFENSE,
-	STRENGTH,
-	DEXTERITY,
-	STAMINA,
-	COUNT
 };
 
 #endif

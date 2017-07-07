@@ -3,7 +3,7 @@
 
 // Roguelike
 #include <Char.hpp>
-#include <Enemy.hpp>
+#include <Level.hpp>
 
 // std
 #include <climits>
@@ -15,9 +15,7 @@ class Enemy: public Char{
   public:
     Enemy(double);
 
-    void update(float) override;
-
-    void draw(sf::RenderWindow&);
+    virtual void update(float) override;
 
     void calculateSteps(Level&, sf::Vector2f);
   private:
@@ -26,9 +24,6 @@ class Enemy: public Char{
 
     // a posição objetivo atual
     sf::Vector2f m_currentTarget;
-
-    // velocidade de movimento
-    sf::Vector2f m_velocity;
 
     // tile que o personagem estava no update anterior
     Tile* m_playerPrevious;

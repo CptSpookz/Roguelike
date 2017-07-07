@@ -1,26 +1,40 @@
 #include <Enemy.hpp>
+#include <iostream>
 #include <cmath>
 
-Enemy::Enemy(double speed):
-m_speed(speed){
+Enemy::Enemy(double speed){
+  m_charSpeed = speed;
   auto enemy = rand() % static_cast<int>(ENEMY_CLASS::COUNT);
   auto enemyClass = static_cast<ENEMY_CLASS>(enemy);
-  std::string enemyName;
+  sf::String enemyName;
   switch(enemyClass){
     case ENEMY_CLASS::SKELETON:
       enemyName = "skeleton";
+      m_charMaxHp = rand() % 201 + 200; // Skeleton max hp = 200 + 0~200
+      m_charHp = m_charMaxHp;
+      m_charBaseDmg = rand() % 26 + 25; // Skeleton base damage = 25 + 0~25
+      m_charBaseDef = 20;
+      break;
+    case ENEMY_CLASS::GOBLIN:
+      enemyName = "goblin";
+      m_charMaxHp = rand() % 251 + 300; // Goblin max hp = 300 + 0~250
+      m_charHp = m_charMaxHp;
+      m_charBaseDmg = 25;
+      m_charBaseDef = rand() % 21 + 20; // Goblin base defense = 20 + 0~20
       break;
   }
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_walk_up.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_DOWN)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_walk_down.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_RIGHT)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_walk_right.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_LEFT)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_walk_left.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_UP)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_idle_up.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_DOWN)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_idle_down.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_RIGHT)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_idle_right.png");
-  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_LEFT)] = TextureManager::addTexture("../resources/sprites/enemies/skeleton/spr_"+ enemyName +"_idle_left.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_walk_up.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_DOWN)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_walk_down.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_RIGHT)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_walk_right.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_LEFT)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_walk_left.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_UP)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_idle_up.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_DOWN)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_idle_down.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_RIGHT)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_idle_right.png");
+  m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_LEFT)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_idle_left.png");
 
-  m_sprite.setTexture(TextureManager::getTexture(m_textureIDs[static_cast<int>(ANIMATION_STATE::IDLE_DOWN)]));
+  setSprite(TextureManager::getTexture(m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)]), 8, 12);
+  m_currentTexID = static_cast<int>(ANIMATION_STATE::WALK_UP);
+
   m_sprite.setPosition(950, 950);
   m_sprite.setOrigin(15, 15);
 
@@ -29,26 +43,24 @@ m_speed(speed){
 
 void Enemy::update(float delta){
   if(!m_targetPositions.empty()){
-    sf::Vector2f targetLocation = m_targetPositions.front();
-    m_velocity = sf::Vector2f(targetLocation.x - m_position.x, targetLocation.y - m_position.y);
 
-    if(abs(m_velocity.x) < 10.f && abs(m_velocity.y) < 10.f){
-      m_targetPositions.erase(m_targetPositions.begin());
-    }else{
-      float length = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
-      m_velocity.x /= length;
-      m_velocity.y /= length;
+      sf::Vector2f targetLocation = m_targetPositions.front();
+      m_velocity = sf::Vector2f(targetLocation.x - m_position.x, targetLocation.y - m_position.y);
 
-      m_position.x += m_velocity.x * (m_speed * delta);
-      m_position.y += m_velocity.y * (m_speed * delta);
+      if(abs(m_velocity.x) < 10.f && abs(m_velocity.y) < 10.f)
+        m_targetPositions.erase(m_targetPositions.begin());
+      else{
+        float length = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+        m_velocity.x /= length;
+        m_velocity.y /= length;
 
-      m_sprite.setPosition(m_position);
-    }
-  }
-}
+        m_position.x += m_velocity.x * (m_charSpeed * delta);
+        m_position.y += m_velocity.y * (m_charSpeed * delta);
 
-void Enemy::draw(sf::RenderWindow& window){
-  window.draw(m_sprite);
+        m_sprite.setPosition(m_position);
+      }
+   }
+   Char::update(delta);
 }
 
 void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){

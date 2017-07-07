@@ -99,27 +99,32 @@ void Game::update(float delta){
 
       break;
 
+    case GAME_STATE::BOSS_FIGHT:
+    //TODO:trocar música para uma das boss.wav
+    break;
+
     case GAME_STATE::GAME_END:
 
-      break;
+    break;
   }
 }
 
 void Game::draw(float delta){
-  m_window.clear(sf::Color::Black);
+  m_window.clear(sf::Color(0,50,50));
 
   switch(m_gameState){
     case GAME_STATE::MAIN_MENU:
       m_menuButtons.draw(m_window);
       break;
     case GAME_STATE::GAME_RUN:
+      m_window.clear(sf::Color::Black);
       // renderiza o mapa
       m_level.draw(m_window);
 
       m_hero.draw(m_window, delta);
 
       for(Enemy* enemy: m_enemyList){
-        enemy->draw(m_window);
+        enemy->Object::draw(m_window, delta);
       }
 
       for(const auto& projectile: m_playerProjectiles){
@@ -129,6 +134,9 @@ void Game::draw(float delta){
       // renderiza a ui
       drawUI();
 
+      break;
+    case GAME_STATE::BOSS_FIGHT:
+      //TODO: transformar paredes em chão e renderizar o boss
       break;
     case GAME_STATE::GAME_END:
       // código do fim de jogo
@@ -228,7 +236,7 @@ void Game::menuButtonsEvent(sf::Event event){
       m_hero.initHero(heroClass);
       switch(heroClass){
         case HERO_CLASS::WARRIOR:
-          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_sword.png");
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_blade.png");
           break;
         case HERO_CLASS::MAGE:
           m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_magic_ball.png");
@@ -237,7 +245,7 @@ void Game::menuButtonsEvent(sf::Event event){
           m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_arrow.png");
           break;
         case HERO_CLASS::THIEF:
-          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_dagger.png");
+          m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_shuriken.png");
           break;
         case HERO_CLASS::PALADIN:
           m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_hammer.png");

@@ -21,16 +21,14 @@ private:
   bool potMP;
   bool potATK;
   bool potDEF;
-  bool potSPD;
 
 public:
 	PotionBag();
-  
+
   void addPotHP(PotHP);
   void addPotMP(PotMP);
   void addPotATK(PotATK);
   void addPotDEF(PotDEF);
-  void addPotSPD(PotSPD);
 
 	bool isFull();
 
@@ -58,12 +56,6 @@ class PotDEF : public Potion{
   void usePot() override;
 public:
   PotDEF();
-};
-
-class PotSPD : public Potion {
-  void usePot() override;
-public:
-  PotSPD();
 };
 
 #endif
