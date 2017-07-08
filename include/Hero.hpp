@@ -25,6 +25,9 @@ private:
   // time since attack
   double m_lastAttack;
 
+  // time since last damage taken
+  double m_lastDamage;
+
   // damage buff
   double m_charBuffDmg;
 
@@ -44,6 +47,7 @@ public:
   virtual void attack();
 
   bool canAttack();
+  bool canDamage();
 
   void takeDamage(double);
   void useMana(double);

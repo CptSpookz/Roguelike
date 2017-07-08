@@ -70,6 +70,9 @@ class Game {
     // Contador de inimigos no mapa
     int m_liveEnemies;
 
+    // Contador de inimigos mortos
+    int m_enemiesDead;
+
     // Lista de projéteis
     std::vector<std::unique_ptr<Projectile>> m_playerProjectiles;
 
@@ -88,6 +91,12 @@ class Game {
     // Botões do menu inicial
     ButtonList m_menuButtons;
 
+    // Sprite de inimigos mortos
+    sf::Sprite m_enemiesKilled;
+
+    // Texto de inimigos mortos
+    sf::Text m_numberEnemies;
+
     // Sprites UI
     // Barra preta no fundo da tela
     sf::RectangleShape m_blackBar;
@@ -96,10 +105,6 @@ class Game {
     // Vida
     sf::Sprite m_healthBarOutline;
     sf::Sprite m_healthBar;
-
-    // Mana
-    sf::Sprite m_manaBarOutline;
-    sf::Sprite m_manaBar;
 
     // Poções
     sf::Sprite m_healthPotion;

@@ -161,6 +161,9 @@ void Hero::update(Level& level, float delta){
 
   if(m_attackSpd > m_lastAttack)
     m_lastAttack += delta;
+
+  if(INV_TIME > m_lastDamage)
+    m_lastDamage += delta;
 }
 
 void Hero::attack(){
@@ -171,9 +174,14 @@ bool Hero::canAttack(){
   return (m_attackSpd <= m_lastAttack);
 }
 
+bool Hero::canDamage(){
+  return (INV_TIME <= m_lastDamage);
+}
+
 void Hero::takeDamage(double damage){
   auto afterHealth = m_charHp - damage;
   m_charHp = std::max(afterHealth, 0.0);
+  m_lastDamage = 0;
 }
 
 void Hero::useMana(double cost){

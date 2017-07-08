@@ -77,7 +77,6 @@ void Game::run(){
 void Game::update(float delta){
   sf::Vector2i zero(0, 0);
   sf::Vector2i healthSize(240*m_hero.getHP()/m_hero.getMaxHP(), 16);
-  sf::Vector2i manaSize(240*m_hero.getMP()/m_hero.getMaxMP(), 16);
 
   if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
     m_gameState = GAME_STATE::GAME_END;
@@ -100,7 +99,6 @@ void Game::update(float delta){
 
     case GAME_STATE::GAME_RUN:
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
-      m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));
 
       m_hero.update(m_level, delta);
 
@@ -168,6 +166,15 @@ void Game::loadUI(){
   m_blackBar.setPosition(0, m_window.getSize().y - 36);
   m_blackBar.setFillColor(sf::Color::Black);
 
+  // inimigos mortos
+  auto enemiesKilledId = TextureManager::addTexture("../resources/sprites/ui/spr_enemies_killed.png");
+  m_enemiesKilled.setTexture(TextureManager::getTexture(enemiesKilledId));
+  m_enemiesKilled.setPosition(260, 10);
+
+  m_numberEnemies.setFont(m_uiFont);
+  m_numberEnemies.setFillColor(sf::Color::White);
+  m_numberEnemies.setCharacterSize(16);
+
   // carrega as texturas das barras e altera os sprites
   // texturas
   auto barOutlineId = TextureManager::addTexture("../resources/sprites/ui/outline_bar.png");
@@ -180,11 +187,6 @@ void Game::loadUI(){
   m_healthBarOutline.setPosition(10, 10);
   m_healthBar.setTexture(TextureManager::getTexture(healthBarId));
   m_healthBar.setPosition(10, 10);
-  // barra de mana
-  m_manaBarOutline.setTexture(TextureManager::getTexture(barOutlineId));
-  m_manaBarOutline.setPosition(10, 36);
-  m_manaBar.setTexture(TextureManager::getTexture(manaBarId));
-  m_manaBar.setPosition(10, 36);
 
   // poções
   auto healthPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_health_potion.png");
@@ -208,14 +210,14 @@ void Game::updateUI(sf::View view){
   auto top = viewTranslation.y;
   auto down = view.getSize().y + top;
 
+  // inimigos mortos
+  m_enemiesKilled.setPosition(left + 260, top + 10);
+  m_numberEnemies.setPosition(left + 286, top + 6);
+  m_numberEnemies.setString(std::to_string(m_enemiesDead));
+
   // Barras no topo
   m_healthBarOutline.setPosition(left + 10, top + 10);
   m_healthBar.setPosition(left + 10, top + 10);
-
-  m_manaBarOutline.setPosition(left + 10, top + 36);
-  m_manaBar.setPosition(left + 10, top + 36);
-
-  //TODO: Contador de quantos inimigos ainda estão vivos
 
   // Status no fundo
   m_blackBar.setPosition(left, down - 35);
@@ -229,13 +231,14 @@ void Game::drawUI(){
   // barra preta
   m_window.draw(m_blackBar);
 
+  // inimigos mortos
+  m_window.draw(m_enemiesKilled);
+  m_window.draw(m_numberEnemies);
+
   // barras
   // vida
   m_window.draw(m_healthBarOutline);
   m_window.draw(m_healthBar);
-  // mana
-  m_window.draw(m_manaBarOutline);
-  m_window.draw(m_manaBar);
 
   // poções
   m_window.draw(m_healthPotion);
@@ -296,6 +299,7 @@ void Game::menuButtonsEvent(sf::Event event){
           break;
       }
       m_track.play();
+      m_enemiesDead = 0;
       m_gameState = GAME_STATE::GAME_RUN;
     }
   }
@@ -374,9 +378,15 @@ void Game::updateEnemy(float delta){
     if(!enemy.isAlive()){
       enemyIterator = m_enemyList.erase(enemyIterator);
       m_liveEnemies--;
+      m_enemiesDead++;
     }
-    else
+    else{
+      auto enemyTile = m_level.getTile(enemy.getPosition());
+      auto heroTile = m_level.getTile(m_hero.getPosition());
+      if(enemyTile == heroTile && m_hero.canDamage())
+        m_hero.takeDamage(enemy.getBaseDmg());
       ++enemyIterator;
+    }
   }
 }
 
