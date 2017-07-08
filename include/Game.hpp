@@ -8,10 +8,9 @@
 #include <Level.hpp>
 #include <Projectile.hpp>
 #include <TextureManager.hpp>
-//#include <SoundManager.hpp>
 
  // Bibliotecas SFML
-//#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -37,6 +36,8 @@ class Game {
     void updateUI(sf::View);
 
     void drawUI();
+
+    void setMusic(GAME_STATE);
 
     void menuButtonsEvent(sf::Event);
 
@@ -64,10 +65,13 @@ class Game {
     GAME_STATE m_gameState;
 
     // Lista de inimigos
-    std::vector<std::unique_ptr<Enemy> > m_enemyList;
+    std::vector<std::unique_ptr<Enemy>> m_enemyList;
+
+    // Contador de inimigos no mapa
+    int m_liveEnemies;
 
     // Lista de projéteis
-    std::vector<std::unique_ptr<Projectile> > m_playerProjectiles;
+    std::vector<std::unique_ptr<Projectile>> m_playerProjectiles;
 
     // ID da textura do projétil
     int m_projectileTextureID;

@@ -1,5 +1,8 @@
 #include <Game.hpp>
 #include <iostream>
+#include <string>
+
+sf::Music m_track;
 
 Game::Game(sf::RenderWindow* window):
 m_window(*window),
@@ -13,7 +16,12 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
 
   if(!m_uiFont.loadFromFile("../resources/font/uiFont.ttf")){
     std::cout << "Erro ao carregar a fonte" << std::endl;
-}
+  }
+
+  //TODO: desenhar titulo do jogo "Rand()venture"
+  /*m_title = TextureManager::addTexture("../resources/sprites/ui/spr_title.png");
+    m_title.setPosition() <-- posicionar acima dos botões de herois
+    m_window.draw(m_title);*/
 
   // botões do menu inicial
   auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
@@ -31,6 +39,8 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_menuButtons.addButton(m_window, TextureManager::getTexture(thiefBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(paladinBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(valkyrieBorder));
+
+  setMusic(m_gameState);
 
   loadUI();
 
@@ -72,6 +82,15 @@ void Game::update(float delta){
   if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
     m_gameState = GAME_STATE::GAME_END;
 
+  if(m_gameState == GAME_STATE::GAME_RUN && m_liveEnemies == 0){
+    m_track.stop();
+    setMusic(m_gameState);
+    m_gameState = GAME_STATE::BOSS_FIGHT;
+  }
+
+  if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0)
+    m_gameState = GAME_STATE::GAME_END;
+
   keyboardUpdate();
 
   switch(m_gameState){
@@ -94,10 +113,13 @@ void Game::update(float delta){
 
       updateUI(m_view);
 
+      std::cout << "Music is looping? " << m_track.getLoop() << std::endl;
       break;
 
     case GAME_STATE::BOSS_FIGHT:
-    //TODO:trocar música para uma das boss.wav
+      if (!m_track.getStatus())
+        m_track.play();
+    //TODO: desenhar o boss, mudar os tiles de wall pra floor
     break;
 
     case GAME_STATE::GAME_END:
@@ -136,7 +158,7 @@ void Game::draw(float delta){
       //TODO: transformar paredes em chão e renderizar o boss
       break;
     case GAME_STATE::GAME_END:
-      // código do fim de jogo
+      //TODO: tela de fim de jogo
       break;
   }
 
@@ -195,6 +217,8 @@ void Game::updateUI(sf::View view){
   m_manaBarOutline.setPosition(left + 10, top + 36);
   m_manaBar.setPosition(left + 10, top + 36);
 
+  //TODO: Contador de quantos inimigos ainda estão vivos
+
   // Status no fundo
   m_blackBar.setPosition(left, down - 35);
   m_healthPotion.setPosition(left + 10, down - 55);
@@ -220,6 +244,28 @@ void Game::drawUI(){
   m_window.draw(m_manaPotion);
   m_window.draw(m_defensePotion);
   m_window.draw(m_speedPotion);
+}
+
+void Game::setMusic(GAME_STATE state){
+  std::string label;
+  switch (state) {
+    case GAME_STATE::MAIN_MENU:
+      label = "level_";
+    break;
+    case GAME_STATE::GAME_RUN:
+      label = "boss_";
+    break;
+  }
+
+  int trackNum = rand() % 5 + 1;
+
+  std::string trackPath = "../resources/music/"+ label + std::to_string(trackNum) + ".wav";
+
+  if(!m_track.openFromFile(trackPath))
+    std::cout << "Erro ao carregar musica!" << std::endl;
+
+  m_track.setVolume(75);
+  m_track.setLoop(true);
 }
 
 void Game::menuButtonsEvent(sf::Event event){
@@ -251,6 +297,7 @@ void Game::menuButtonsEvent(sf::Event event){
           m_projectileTextureID = TextureManager::addTexture("../resources/sprites/projectiles/spr_spear.png");
           break;
       }
+      m_track.play();
       m_gameState = GAME_STATE::GAME_RUN;
     }
   }
@@ -326,8 +373,10 @@ void Game::updateEnemy(float delta){
       enemy.calculateSteps(m_level, m_hero.getPosition());
 
     enemy.update(delta);
-    if(!enemy.isAlive())
+    if(!enemy.isAlive()){
       enemyIterator = m_enemyList.erase(enemyIterator);
+      m_liveEnemies--;
+    }
     else
       ++enemyIterator;
   }
@@ -335,6 +384,7 @@ void Game::updateEnemy(float delta){
 
 void Game::populateLevel(){
   auto numEnemies = rand() % MIN_ENEMIES + (MAX_ENEMIES - MIN_ENEMIES);
+  m_liveEnemies = numEnemies;
   for(int i = 0; i < numEnemies; i++){
     std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
     auto spawnLocation = m_level.getRandomSpawnLocation();

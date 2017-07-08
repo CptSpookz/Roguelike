@@ -7,18 +7,18 @@
 #include <SFML/Graphics.hpp>
 
 class TextureManager {
-  public:
-    TextureManager();
+public:
+  TextureManager();
 
-    static int addTexture(sf::String);
+  static int addTexture(sf::String);
 
-    static void removeTexture(int);
+  static void removeTexture(int);
 
-    static sf::Texture& getTexture(int);
+  static sf::Texture& getTexture(int);
 
-  private:
-    static std::map<sf::String, std::pair<int, std::unique_ptr<sf::Texture> > > m_textures;
-    static int m_currentId;
+private:
+  static std::map<sf::String, std::pair<int, std::unique_ptr<sf::Texture> > > m_textures;
+  static int m_currentId;
 };
 
 #endif
