@@ -112,8 +112,6 @@ void Game::update(float delta){
       updateEnemy(delta);
 
       updateUI(m_view);
-
-      std::cout << "Music is looping? " << m_track.getLoop() << std::endl;
       break;
 
     case GAME_STATE::BOSS_FIGHT:
