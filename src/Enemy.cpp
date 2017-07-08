@@ -2,8 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Enemy::Enemy(double speed){
-  m_charSpeed = speed;
+Enemy::Enemy(){
   auto enemy = rand() % static_cast<int>(ENEMY_CLASS::COUNT);
   auto enemyClass = static_cast<ENEMY_CLASS>(enemy);
   sf::String enemyName;
@@ -14,6 +13,7 @@ Enemy::Enemy(double speed){
       m_charHp = m_charMaxHp;
       m_charBaseDmg = rand() % 26 + 25; // Skeleton base damage = 25 + 0~25
       m_charBaseDef = 20;
+      m_charSpeed = 75;
       break;
     case ENEMY_CLASS::GOBLIN:
       enemyName = "goblin";
@@ -21,6 +21,7 @@ Enemy::Enemy(double speed){
       m_charHp = m_charMaxHp;
       m_charBaseDmg = 25;
       m_charBaseDef = rand() % 21 + 20; // Goblin base defense = 20 + 0~20
+      m_charSpeed = 100;
       break;
   }
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/enemies/" + enemyName + "/spr_" + enemyName +"_walk_up.png");
@@ -59,6 +60,8 @@ void Enemy::update(float delta){
 
         m_sprite.setPosition(m_position);
       }
+   }else{
+     m_velocity = sf::Vector2f(0, 0);
    }
    Char::update(delta);
 }
@@ -230,4 +233,12 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 
 	// Reverse the target position as we read them from goal to origin and we need them the other way around.
 	std::reverse(m_targetPositions.begin(), m_targetPositions.end());
+}
+
+void Enemy::takeDamage(double damage){
+  m_charHp -= damage;
+}
+
+bool Enemy::isAlive(){
+  return (m_charHp > 0);
 }

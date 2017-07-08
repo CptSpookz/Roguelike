@@ -32,13 +32,13 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
   m_menuButtons.addButton(m_window, TextureManager::getTexture(paladinBorder));
   m_menuButtons.addButton(m_window, TextureManager::getTexture(valkyrieBorder));
 
-  m_enemyList.push_back(new Enemy(75));
-
   loadUI();
 
   m_level.generate();
 
   m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
+
+  populateLevel();
 }
 
 void Game::run(){
@@ -88,12 +88,9 @@ void Game::update(float delta){
       m_view.setCenter(m_hero.getCenterPosition());
       m_window.setView(m_view);
 
-      for(Enemy* enemy: m_enemyList){
-        enemy->calculateSteps(m_level, m_hero.getPosition());
-        enemy->update(delta);
-      }
+      updateProjectiles(delta);
 
-      UpdateProjectiles(delta);
+      updateEnemy(delta);
 
       updateUI(m_view);
 
@@ -123,7 +120,7 @@ void Game::draw(float delta){
 
       m_hero.draw(m_window, delta);
 
-      for(Enemy* enemy: m_enemyList){
+      for(const auto& enemy: m_enemyList){
         enemy->Object::draw(m_window, delta);
       }
 
@@ -289,7 +286,7 @@ void Game::keyboardUpdate(){
   }
 }
 
-void Game::UpdateProjectiles(float delta){
+void Game::updateProjectiles(float delta){
   auto projectileIterator = m_playerProjectiles.begin();
   while(projectileIterator != m_playerProjectiles.end()){
     Projectile& proj = **projectileIterator;
@@ -299,7 +296,54 @@ void Game::UpdateProjectiles(float delta){
     auto projTile = m_level.getTile(proj.getPosition());
     if(!m_level.isFloor(projTile) || !proj.isAlive())
       projectileIterator = m_playerProjectiles.erase(projectileIterator);
-    else
-      ++projectileIterator;
+    else{
+      bool projDestroy = false;
+      auto enemyIterator = m_enemyList.begin();
+      while(enemyIterator != m_enemyList.end()){
+        Enemy& enemy = **enemyIterator;
+
+        auto enemyTile = m_level.getTile(enemy.getPosition());
+        if(projTile == enemyTile){
+          enemy.takeDamage(m_hero.getDmg());
+          projectileIterator = m_playerProjectiles.erase(projectileIterator);
+          projDestroy = true;
+          break;
+        }else
+          ++enemyIterator;
+      }
+      if(!projDestroy)
+        ++projectileIterator;
+    }
   }
+}
+
+void Game::updateEnemy(float delta){
+  auto enemyIterator = m_enemyList.begin();
+  while(enemyIterator != m_enemyList.end()){
+    Enemy& enemy = **enemyIterator;
+
+    if(calculateDistance(m_hero.getPosition(), enemy.getPosition()) < 200.0f)
+      enemy.calculateSteps(m_level, m_hero.getPosition());
+
+    enemy.update(delta);
+    if(!enemy.isAlive())
+      enemyIterator = m_enemyList.erase(enemyIterator);
+    else
+      ++enemyIterator;
+  }
+}
+
+void Game::populateLevel(){
+  auto numEnemies = rand() % MIN_ENEMIES + (MAX_ENEMIES - MIN_ENEMIES);
+  for(int i = 0; i < numEnemies; i++){
+    std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
+    auto spawnLocation = m_level.getRandomSpawnLocation();
+    enemy->setPosition(spawnLocation.x, spawnLocation.y);
+
+    m_enemyList.push_back(std::move(enemy));
+  }
+}
+
+double Game::calculateDistance(sf::Vector2f firstPos, sf::Vector2f secondPos){
+  return sqrt((firstPos.x-secondPos.x)*(firstPos.x-secondPos.x)+(firstPos.y-secondPos.y)*(firstPos.y-secondPos.y));
 }

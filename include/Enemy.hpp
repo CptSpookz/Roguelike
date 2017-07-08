@@ -13,11 +13,15 @@
 
 class Enemy: public Char{
   public:
-    Enemy(double);
+    Enemy();
 
     virtual void update(float) override;
 
     void calculateSteps(Level&, sf::Vector2f);
+
+    void takeDamage(double);
+
+    bool isAlive();
   private:
     // as posições para o inimigo
     std::vector<sf::Vector2f> m_targetPositions;

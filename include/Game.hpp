@@ -17,6 +17,7 @@
 #include <SFML/System.hpp>
 
 // Bibliotecas std
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -26,6 +27,7 @@ class Game {
 
     void run();
 
+  protected:
     void draw(float);
 
     void update(float);
@@ -36,12 +38,17 @@ class Game {
 
     void drawUI();
 
-  protected:
     void menuButtonsEvent(sf::Event);
 
     void keyboardUpdate();
 
-    void UpdateProjectiles(float);
+    void updateProjectiles(float);
+
+    void updateEnemy(float);
+
+    void populateLevel();
+
+    double calculateDistance(sf::Vector2f, sf::Vector2f);
 
   private:
     // Janela principal
@@ -57,7 +64,7 @@ class Game {
     GAME_STATE m_gameState;
 
     // Lista de inimigos
-    std::vector<Enemy*> m_enemyList;
+    std::vector<std::unique_ptr<Enemy> > m_enemyList;
 
     // Lista de projéteis
     std::vector<std::unique_ptr<Projectile> > m_playerProjectiles;

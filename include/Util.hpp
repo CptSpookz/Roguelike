@@ -1,6 +1,11 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#define MIN_ENEMIES 10
+#define MAX_ENEMIES 20
+
+#define NUMBER_ROOMS 6
+
 enum class TILE {
   WALL_SINGLE,
 	WALL_TOP_END,

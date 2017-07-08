@@ -76,7 +76,7 @@ void Level::generate(){
     }
   }
   createPath(1, 1);
-  createRooms(4);
+  createRooms(NUMBER_ROOMS);
   calculateWalls();
 
   m_roomNumber++;
@@ -189,4 +189,16 @@ Tile* Level::getTile(sf::Vector2f position){
 
 Tile* Level::getTile(int x, int y){
   return &m_grid[x][y];
+}
+
+sf::Vector2f Level::getRandomSpawnLocation(){
+  int columnIndex = 0;
+  int rowIndex = 0;
+
+  while(!isFloor(getTile(columnIndex, rowIndex))){
+    columnIndex = rand() % GRID_HEIGHT;
+    rowIndex = rand() % GRID_WIDTH;
+  }
+
+  return getActualTileLocation(columnIndex, rowIndex);
 }

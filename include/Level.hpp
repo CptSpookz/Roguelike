@@ -65,6 +65,8 @@ class Level {
 
     Tile* getTile(int, int);
 
+    sf::Vector2f getRandomSpawnLocation();
+
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];
 

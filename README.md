@@ -39,3 +39,11 @@ Para um maior aprofundamento, utilize os links a seguir:
 * http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
 * http://www.redblobgames.com/pathfinding/a-star/introduction.html
 * http://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
+
+### Geração do mapa
+Para a geração do mapa aleatório, foi utilizado o algoritmo "Recursive Backtracker", que gera um labirinto delimitado pelos extremos do mapa, e logo em seguida, são criadas salas vazias nesse labirinto.
+
+Alguns materiais do Recursive Backtracker:
+
+* http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
+* https://scratch.mit.edu/projects/17358777/
