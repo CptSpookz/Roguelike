@@ -3,8 +3,8 @@
 Hero::Hero(){
   m_charMaxHp = 500;
   m_charHp = m_charMaxHp;
-  m_charMaxMp = 150;
-  m_charMp = m_charMaxMp;
+//  m_charMaxMp = 150;
+//  m_charMp = m_charMaxMp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
   m_charBaseDef = 10;
@@ -17,7 +17,6 @@ Hero::Hero(){
 
 void Hero::initHero(HERO_CLASS classHero){
   if(classHero == HERO_CLASS::WARRIOR){
-    //auto heroTextureId = TextureManager::addTexture("../resources/sprites/players/warrior/warrior_idle_down.png");
     m_className = "warrior";
     m_charBaseDmg *= 2;
     m_charMaxHp += 250;
@@ -27,8 +26,7 @@ void Hero::initHero(HERO_CLASS classHero){
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
     m_charBaseDmg *= 2.5;
-    m_charMaxMp *= 3;
-    m_charMp = m_charMaxMp;
+    m_charBaseDef *= 1.5;
     m_attackSpd = .75;
   }
   else if (classHero == HERO_CLASS::ARCHER){
@@ -184,7 +182,7 @@ void Hero::takeDamage(double damage){
   m_lastDamage = 0;
 }
 
-void Hero::useMana(double cost){
+/*void Hero::useMana(double cost){
   auto currentMana = m_charMp - cost;
   m_charMp = std::max(currentMana, 0.0);
 }
@@ -192,7 +190,7 @@ void Hero::useMana(double cost){
 void Hero::setMP(double mp){
   if (mp >= 0)
     m_charMp = mp;
-}
+}*/
 
 void Hero::setBuffDmg(double dmgBuff){
   if(dmgBuff >= 1)

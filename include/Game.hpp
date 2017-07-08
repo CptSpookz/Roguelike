@@ -88,6 +88,10 @@ class Game {
     // Fonte 8-bit
     sf::Font m_uiFont;
 
+    // Sprites do menu
+    sf::Sprite m_title;
+    sf::Sprite m_controls;
+
     // Botões do menu inicial
     ButtonList m_menuButtons;
 
@@ -101,14 +105,20 @@ class Game {
     // Barra preta no fundo da tela
     sf::RectangleShape m_blackBar;
 
+
     // Barra de vida e mana
     // Vida
     sf::Sprite m_healthBarOutline;
     sf::Sprite m_healthBar;
 
+    // Mana
+  /*sf::Sprite m_manaBarOutline;
+    sf::Sprite m_manaBar;*/
+
     // Poções
     sf::Sprite m_healthPotion;
-    sf::Sprite m_manaPotion;
+    //sf::Sprite m_manaPotion;
+    sf::Sprite m_damagePotion;
     sf::Sprite m_defensePotion;
     sf::Sprite m_speedPotion;
 };

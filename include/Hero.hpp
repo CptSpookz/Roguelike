@@ -14,10 +14,10 @@ private:
   sf::String m_className;
 
   // base MP
-  double m_charMaxMp;
+  //double m_charMaxMp;
 
   // current MP
-  double m_charMp;
+  //double m_charMp;
 
   // attack speed
   double m_attackSpd;
@@ -50,11 +50,11 @@ public:
   bool canDamage();
 
   void takeDamage(double);
-  void useMana(double);
+  /*void useMana(double);
 
   double getMaxMP() const {return m_charMaxMp;};
   double getMP() const {return m_charMp;};
-  void setMP(double);
+  void setMP(double);*/
 
   double getBuffDmg() const {return m_charBuffDmg;};
 	void setBuffDmg(double);

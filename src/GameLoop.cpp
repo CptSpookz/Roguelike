@@ -6,7 +6,7 @@
 int main(){
   std::srand(time(NULL));
 
-  Game game = Game(new sf::RenderWindow(sf::VideoMode(500, 500), "roguelike"/*, sf::Style::Fullscreen*/));
+  Game game = Game(new sf::RenderWindow(sf::VideoMode(500, 500), "rand()venture"/*, sf::Style::Fullscreen*/));
 
   game.run();
 
