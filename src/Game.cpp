@@ -18,10 +18,20 @@ m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
     std::cout << "Erro ao carregar a fonte" << std::endl;
   }
 
-  //TODO: desenhar titulo do jogo "Rand()venture"
-  /*m_title = TextureManager::addTexture("../resources/sprites/ui/spr_title.png");
-    m_title.setPosition() <-- posicionar acima dos botões de herois
-    m_window.draw(m_title);*/
+  // titulo do jogo
+  auto titleId = TextureManager::addTexture("../resources/sprites/ui/spr_title.png");
+  sf::Vector2u titleSize = TextureManager::getTexture(titleId).getSize();
+  sf::Vector2u windowSize = m_window.getSize();
+  m_title.setTexture(TextureManager::getTexture(titleId));
+  m_title.setOrigin(titleSize.x/2, titleSize.y/2);
+  m_title.setPosition(windowSize.x/2, windowSize.y/2 - 150);
+
+  // tutorial do jogo
+  auto controlsId = TextureManager::addTexture("../resources/sprites/ui/spr_controls.png");
+  sf::Vector2u controlsSize = TextureManager::getTexture(controlsId).getSize();
+  m_controls.setTexture(TextureManager::getTexture(controlsId));
+  m_controls.setOrigin(controlsSize.x/2, controlsSize.y/2);
+  m_controls.setPosition(windowSize.x/2, windowSize.y/2 + 150);
 
   // botões do menu inicial
   auto outlineButton = TextureManager::addTexture("../resources/sprites/buttons/spr_outline_button.png");
@@ -78,6 +88,7 @@ void Game::run(){
 void Game::update(float delta){
   sf::Vector2i zero(0, 0);
   sf::Vector2i healthSize(240*m_hero.getHP()/m_hero.getMaxHP(), 16);
+  /*sf::Vector2i manaSize(240*m_hero.getMP()/m_hero.getMaxMP(), 16);*/
 
   if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0){
     m_gameState = GAME_STATE::GAME_END;
@@ -102,6 +113,7 @@ void Game::update(float delta){
 
     case GAME_STATE::GAME_RUN:
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
+       /*m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));*/
 
       m_hero.update(m_level, delta);
 
@@ -129,10 +141,15 @@ void Game::update(float delta){
 }
 
 void Game::draw(float delta){
-  m_window.clear(sf::Color(0,50,50));
-
   switch(m_gameState){
     case GAME_STATE::MAIN_MENU:
+      // fundo cinza na tela do menu
+      m_window.clear(sf::Color(49,47,44));
+      // titulo do jogo
+      m_window.draw(m_title);
+      // controles do jogo
+      m_window.draw(m_controls);
+      // botões do menu
       m_menuButtons.draw(m_window);
       break;
     case GAME_STATE::GAME_RUN:
@@ -183,7 +200,7 @@ void Game::loadUI(){
   // texturas
   auto barOutlineId = TextureManager::addTexture("../resources/sprites/ui/outline_bar.png");
   auto healthBarId = TextureManager::addTexture("../resources/sprites/ui/health_bar.png");
-  auto manaBarId = TextureManager::addTexture("../resources/sprites/ui/mana_bar.png");
+  /*auto manaBarId = TextureManager::addTexture("../resources/sprites/ui/mana_bar.png");*/
 
   // sprites
   // barra de vida
@@ -191,17 +208,25 @@ void Game::loadUI(){
   m_healthBarOutline.setPosition(10, 10);
   m_healthBar.setTexture(TextureManager::getTexture(healthBarId));
   m_healthBar.setPosition(10, 10);
+  // barra de mana
+  /*m_manaBarOutline.setTexture(TextureManager::getTexture(barOutlineId));
+  m_manaBarOutline.setPosition(10, 36);
+  m_manaBar.setTexture(TextureManager::getTexture(manaBarId));
+  m_manaBar.setPosition(10, 36);*/
 
   // poções
   auto healthPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_health_potion.png");
-  auto manaPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_mana_potion.png");
+  //auto manaPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_mana_potion.png");
+  auto damagePotionId = TextureManager::addTexture("../resources/sprites/ui/spr_damage_potion.png");
   auto defensePotionId = TextureManager::addTexture("../resources/sprites/ui/spr_defense_potion.png");
   auto speedPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_speed_potion.png");
 
   m_healthPotion.setTexture(TextureManager::getTexture(healthPotionId));
   m_healthPotion.setPosition(10, m_window.getSize().y - 55);
-  m_manaPotion.setTexture(TextureManager::getTexture(manaPotionId));
-  m_manaPotion.setPosition(155, m_window.getSize().y - 55);
+  /*m_manaPotion.setTexture(TextureManager::getTexture(manaPotionId));
+  m_manaPotion.setPosition(10, m_window.getSize().y - 55);*/
+  m_damagePotion.setTexture(TextureManager::getTexture(damagePotionId));
+  m_damagePotion.setPosition(155, m_window.getSize().y - 55);
   m_defensePotion.setTexture(TextureManager::getTexture(defensePotionId));
   m_defensePotion.setPosition(300, m_window.getSize().y - 55);
   m_speedPotion.setTexture(TextureManager::getTexture(speedPotionId));
@@ -223,10 +248,14 @@ void Game::updateUI(sf::View view){
   m_healthBarOutline.setPosition(left + 10, top + 10);
   m_healthBar.setPosition(left + 10, top + 10);
 
+  /*m_manaBarOutline.setPosition(left + 10, top + 36);
+  m_manaBar.setPosition(left + 10, top + 36);*/
+
   // Status no fundo
   m_blackBar.setPosition(left, down - 35);
   m_healthPotion.setPosition(left + 10, down - 55);
-  m_manaPotion.setPosition(left + 155, down - 55);
+  //m_manaPotion.setPosition();
+  m_damagePotion.setPosition(left + 155, down - 55);
   m_defensePotion.setPosition(left + 300, down - 55);
   m_speedPotion.setPosition(left + 445, down - 55);
 }
@@ -243,10 +272,14 @@ void Game::drawUI(){
   // vida
   m_window.draw(m_healthBarOutline);
   m_window.draw(m_healthBar);
+  // mana
+  /*m_window.draw(m_manaBarOutline);
+  m_window.draw(m_manaBar);*/
 
   // poções
   m_window.draw(m_healthPotion);
-  m_window.draw(m_manaPotion);
+  //m_window.draw(m_manaPotion);
+  m_window.draw(m_damagePotion);
   m_window.draw(m_defensePotion);
   m_window.draw(m_speedPotion);
 }
