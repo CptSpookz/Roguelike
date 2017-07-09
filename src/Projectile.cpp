@@ -8,7 +8,7 @@ m_velocity(direction){
   m_position = initialPos;
 
   m_sprite.setTexture(texture);
-  m_sprite.setOrigin(0, texture.getSize().y);
+  m_sprite.setOrigin(texture.getSize().x, texture.getSize().y/2);
   m_sprite.setPosition(m_position);
 
   if(direction.x == 1){

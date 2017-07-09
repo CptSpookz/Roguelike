@@ -6,7 +6,7 @@ CFLAGS = -I$(IDIR) -I$(ISFML) -L$(LSFML) -std=c++14
 
 LIBS = -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = GameLoop.cpp Game.cpp TextureManager.cpp Level.cpp Hero.cpp Char.cpp Object.cpp ButtonList.cpp Enemy.cpp Projectile.cpp
+OBJ = GameLoop.cpp Game.cpp TextureManager.cpp Level.cpp Hero.cpp Char.cpp Object.cpp ButtonList.cpp Enemy.cpp Projectile.cpp Potion.cpp
 
 OUT = game.out
 

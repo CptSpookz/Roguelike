@@ -104,7 +104,7 @@ void Game::update(float delta){
     m_level.generate();
     populateLevel();
     m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
-    m_hero.setHP(m_hero.getMaxHP());
+    //m_hero.setHP(m_hero.getMaxHP());
     m_healthPotion.refill();
     m_damagePotion.refill();
     m_defensePotion.refill();
@@ -359,19 +359,19 @@ void Game::keyboardUpdate(){
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
       sf::Vector2f direction = {0, 1};
       std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)){
       sf::Vector2f direction = {1, 0};
       std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
       m_hero.attack();
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
       sf::Vector2f direction = {-1, 0};
       std::unique_ptr<Projectile> proj = std::make_unique<Projectile>(TextureManager::getTexture(m_projectileTextureID), 200, 5, direction, playerPosition);
       m_playerProjectiles.push_back(std::move(proj));
