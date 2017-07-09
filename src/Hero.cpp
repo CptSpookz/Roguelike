@@ -195,7 +195,7 @@ void Hero::setMP(double mp){
   if (mp >= 0){
     m_charMp = mp;
   }
-}
+}*/
 
 void Hero::setBuffDmg(double dmgBuff){
   if(dmgBuff >= 1){
