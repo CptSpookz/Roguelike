@@ -39,16 +39,18 @@ void Object::setPosition(double posX, double posY) {
 }
 
 void Object::setSpeed(int speed){
-	if(speed > 0)
+	if(speed > 0){
 		m_animSpeed = speed;
+	}
 }
 
 // Sets the animation state of the object.
 void Object::setMovement(bool isAnimated) {
 	m_isMoving = isAnimated;
 
-	if (m_isMoving)
+	if(m_isMoving){
 		m_currentFrame = 0;
+	}
 
 	else
 		// set the texture rect of the first frame
@@ -77,10 +79,11 @@ void Object::draw(sf::RenderWindow &window, float timeDelta)
 // Advances the sprite forward a frame.
 void Object::nextFrame(){
 	// check if we reached the last frame
-	if (m_currentFrame == (m_frameNum - 1))
+	if (m_currentFrame == (m_frameNum - 1)){
 		m_currentFrame = 0;
-	else
+	}else{
 		m_currentFrame++;
+	}
 
 	// update the texture rect
 	m_sprite.setTextureRect(sf::IntRect(m_frameWidth * m_currentFrame, 0, m_frameWidth, m_frameHeight));

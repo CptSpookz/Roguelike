@@ -28,8 +28,8 @@
   São Carlos - SP, 2017.
 */
 
-#ifndef _DATA_STRUCTURES_HPP_
-#define _DATA_STRUCTURES_HPP_
+#ifndef DATA_STRUCTURES_HPP
+#define DATA_STRUCTURES_HPP
 
 template<class T>
 class Node {
@@ -202,8 +202,9 @@ template<class T>
 bool LinkedList<T>::toNext() {
 	if (!this->isEmpty()) {
 		this->current = this->current->next;
-		if (this->current == &this->header)
+		if (this->current == &this->header){
 			this->current = this->current->next;
+		}
 	}
 	return this->current->next == &this->header;
 }
@@ -239,8 +240,9 @@ bool LinkedList<T>::find(T element) {
 	while (this->current->value != element)
 		this->toNext();
 
-	if (this->current->value == element)
+	if (this->current->value == element){
 		return true;
+	}
 	return false;
 
 }
@@ -322,12 +324,13 @@ void BSTree<T>::insert(KeyNode<T>* leaf, int key, T data, bool& ok) {
 		leaf->left = nullptr;
 		ok = true;
 	}
-	else if (key == leaf->key)
+	else if (key == leaf->key){
 		ok = false;
-	else if (key > leaf->key)
+	}else if (key > leaf->key){
 		insert(leaf->right, key, data, ok);
-	else if (key < leaf->key)
+	}else if (key < leaf->key){
 		insert(leaf->left, key, data, ok);
+	}
 }
 
 template<class T>
@@ -337,38 +340,42 @@ KeyNode<T>* BSTree<T>::find(int key) const {
 
 template<class T>
 KeyNode<T>* BSTree<T>::find(KeyNode<T>* leaf, int key) const {
-	if (leaf == nullptr)
+	if (leaf == nullptr){
 		return nullptr;
-	else if (key == leaf->key)
+	}else if (key == leaf->key){
 		return leaf;
-	else if (key < leaf->key)
+	}else if (key < leaf->key){
 		return find(leaf->left, key);
-	else if (key > leaf->key)
+	}else if (key > leaf->key){
 		return find(leaf->right, key);
+	}
 }
 
 template<class T>
 KeyNode<T>* BSTree<T>::getMax(KeyNode<T>* leaf) const {
-	if (leaf->right == nullptr)
+	if (leaf->right == nullptr){
 		return leaf->right;
-	else
+	}else{
 		return getMax(leaf->right);
+	}
 }
 
 template<class T>
 KeyNode<T>* BSTree<T>::getMin(KeyNode<T>* leaf) const {
-	if (leaf->left == nullptr)
+	if (leaf->left == nullptr){
 		return leaf->left;
-	else
+	}else{
 		return getMin(leaf->left);
+	}
 }
 
 template<class T>
 void BSTree<T>::remove(int key, bool& ok) {
 	ok = false;
 
-	if ((!this->isEmpty()) && (this->find(root, key) != nullptr))
+	if ((!this->isEmpty()) && (this->find(root, key) != nullptr)){
 		this->remove(find(root, key), ok);
+	}
 }
 
 template<class T>
@@ -404,11 +411,13 @@ void BSTree<T>::remove(KeyNode<T>* leaf, bool& ok) {
 template<class T>
 void BSTree<T>::purge(KeyNode<T>* leaf) {
 	if(!this->isEmpty()){
-		if (leaf->left != nullptr)
+		if (leaf->left != nullptr){
 			purge(leaf->left);
+		}
 
-		if (leaf->right != nullptr)
+		if (leaf->right != nullptr){
 			purge(leaf->right);
+		}
 
 		delete leaf;
 	}
@@ -457,8 +466,9 @@ template<class T>
 int AVLTree<T>::getHeight(KeyNode<T>* subtree) const {
 	// Case 1: empty subtree
 
-	if (subtree == nullptr)
+	if (subtree == nullptr){
 		return 0;
+	}
 
 	//Case 2: height equals to 1 + greatest value between left and right branches
 
@@ -472,14 +482,14 @@ KeyNode<T>* AVLTree<T>::getParentNode(KeyNode<T>* leaf, int childkey) const{
 	//Searches for leaf node's parent, considering the leaf node is already in the tree
 
 	if (childkey != this->root->key) {
-		if (childkey == leaf->left->key || childkey == leaf->right->key)
+		if (childkey == leaf->left->key || childkey == leaf->right->key){
 			return leaf;
-		else{
-			if (childkey > leaf->key)
+		}else{
+			if (childkey > leaf->key){
 				return getParentNode(leaf->right, childkey);
-
-			else if (childkey < leaf->key)
+			}	else if (childkey < leaf->key){
 				return getParentNode(leaf->left, childkey);
+			}
 		}
 	}
 
@@ -488,27 +498,30 @@ KeyNode<T>* AVLTree<T>::getParentNode(KeyNode<T>* leaf, int childkey) const{
 
 template<class T>
 KeyNode<T>* AVLTree<T>::getMax(KeyNode<T>* leaf) const {
-	if (leaf->right == nullptr)
+	if (leaf->right == nullptr){
 		return leaf->right;
-	else
+	}else{
 		return getMax(leaf->right);
+	}
 }
 
 template<class T>
 KeyNode<T>* AVLTree<T>::getMin(KeyNode<T>* leaf) const {
-	if (leaf->left == nullptr)
+	if (leaf->left == nullptr){
 		return leaf->left;
-	else
+	}else{
 		return getMin(leaf->left);
+	}
 }
 
 template<class T>
 bool AVLTree<T>::isBalanced(KeyNode<T>* subtree) const{
-	if (subtree == nullptr)
+	if (subtree == nullptr){
 		return true;
-	else{
-		if (getBF(subtree) < -1 || getBF(subtree) > 1)
+	}else{
+		if (getBF(subtree) < -1 || getBF(subtree) > 1){
 			return false;
+		}
 		return isBalanced(subtree->right) && isBalanced(subtree->left);
 	}
 }
@@ -554,20 +567,24 @@ void AVLTree<T>::rebalance_ins(KeyNode<T>* leaf) {
 		}
 		//Check which of the rotation cases will be needed and rotate the nodes
 			//Case 1: Left-Left Rotation
-			if (BalNode->left == tempX && tempX->left == tempY)
+			if (BalNode->left == tempX && tempX->left == tempY){
 				this->rotateLL(BalNode, tempX);
+			}
 
 			//Case 2: Right-Right Rotation
-			else if (BalNode->right == tempX && tempX->right == tempY)
+			else if (BalNode->right == tempX && tempX->right == tempY){
 				this->rotateRR(BalNode, tempX);
+			}
 
 			//Case 3: Left-Right Rotation
-			else if (BalNode->left == tempX && tempX->right == tempY)
+			else if (BalNode->left == tempX && tempX->right == tempY){
 				this->rotateLR(BalNode, tempX, tempY);
+			}
 
 			//Case 4: Right-Left Rotation
-			else if (BalNode->right == tempX && tempX->left == tempY)
+			else if (BalNode->right == tempX && tempX->left == tempY){
 				this->rotateRL(BalNode, tempX, tempY);
+			}
 	}
 }
 
@@ -583,20 +600,24 @@ void AVLTree<T>::rebalance_rem(KeyNode<T>* BalNode){
 		KeyNode<T>* tempY = (getHeight(tempX->left) > getHeight(tempX->right)) ? tempX->left : tempX->right;
 		//Check which of the rotation cases will be needed and rotate the nodes
 			//Case 1: Left-Left Rotation
-			if (BalNode->left == tempX && tempX->left == tempY)
+			if (BalNode->left == tempX && tempX->left == tempY){
 				this->rotateLL(BalNode, tempX);
+			}
 
 			//Case 2: Right-Right Rotation
-			else if (BalNode->right == tempX && tempX->right == tempY)
+			else if (BalNode->right == tempX && tempX->right == tempY){
 				this->rotateRR(BalNode, tempX);
+			}
 
 			//Case 3: Left-Right Rotation
-			else if (BalNode->left == tempX && tempX->right == tempY)
+			else if (BalNode->left == tempX && tempX->right == tempY){
 				this->rotateLR(BalNode, tempX, tempY);
+			}
 
 			//Case 4: Right-Left Rotation
-			else if (BalNode->right == tempX && tempX->left == tempY)
+			else if (BalNode->right == tempX && tempX->left == tempY){
 				this->rotateRL(BalNode, tempX, tempY);
+			}
 
 	}
 }
@@ -608,14 +629,15 @@ KeyNode<T>* AVLTree<T>::find(int key) const {
 
 template<class T>
 KeyNode<T>* AVLTree<T>::find(KeyNode<T>* leaf, int key) const {
-	if (leaf == nullptr)
+	if (leaf == nullptr){
 		return nullptr;
-	else if (key == leaf->key)
+	}else if (key == leaf->key){
 		return leaf;
-	else if (key < leaf->key)
+	}else if (key < leaf->key){
 		return find(leaf->left, key);
-	else if (key > leaf->key)
+	}else if (key > leaf->key){
 		return find(leaf->right, key);
+	}
 }
 
 template<class T>
@@ -634,24 +656,27 @@ void AVLTree<T>::insert(KeyNode<T>* leaf, int key, T data, bool& ok){
 		leaf->left = nullptr;
 		ok = true;
 	}
-	else if (key == leaf->key)
+	else if (key == leaf->key){
 		ok = false;
-	else if (key > leaf->key)
+	}else if (key > leaf->key){
 		insert(leaf->right, key, data, ok);
-	else if (key < leaf->key)
+	}else if (key < leaf->key){
 		insert(leaf->left, key, data, ok);
+	}
 
 	//If insertion is successful, check if tree needs balancing
-	if (ok)
+	if (ok){
 		this->rebalance_ins(leaf);
+	}
 }
 
 template<class T>
 void AVLTree<T>::remove(int key, bool& ok) {
 	ok = false;
 
-	if ((!this->isEmpty()) && (this->find(root, key) != nullptr))
+	if ((!this->isEmpty()) && (this->find(root, key) != nullptr)){
 		this->remove(find(root, key), ok);
+	}
 }
 
 template<class T>
@@ -686,9 +711,9 @@ void AVLTree<T>::remove(KeyNode<T>* leaf, bool& ok) {
 		remove(aux, ok);
 	}
 
-	if (this->isEmpty())
+	if (this->isEmpty()){
 		ok = true;
-	else {
+	} else {
 		//After removal, not only the parent node may be unbalanced, but the ancestors too
 		if (pNode != nullptr) {
 			do {
@@ -703,11 +728,13 @@ void AVLTree<T>::remove(KeyNode<T>* leaf, bool& ok) {
 template<class T>
 void AVLTree<T>::purge(KeyNode<T>* leaf) {
 	if (!this->isEmpty()) {
-		if (leaf->left != nullptr)
+		if (leaf->left != nullptr){
 			purge(leaf->left);
+		}
 
-		if (leaf->right != nullptr)
+		if (leaf->right != nullptr){
 			purge(leaf->right);
+		}
 
 		delete leaf;
 	}

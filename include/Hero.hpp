@@ -1,5 +1,5 @@
-#ifndef _HERO_HPP_
-#define _HERO_HPP_
+#ifndef HERO_HPP
+#define HERO_HPP
 
 // Roguelike
 #include <Char.hpp>

@@ -1,5 +1,5 @@
-#ifndef _CHAR_HPP_
-#define _CHAR_HPP_
+#ifndef CHAR_HPP
+#define CHAR_HPP
 
 // Roguelike
 #include <DataStructures.hpp>

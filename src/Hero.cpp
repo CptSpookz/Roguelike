@@ -100,15 +100,17 @@ void Hero::update(Level& level, float delta){
     animState = static_cast<int>(ANIMATION_STATE::WALK_RIGHT);
   }
 
-  if(collides(sf::Vector2f(movement.x ,0), level))
+  if(collides(sf::Vector2f(movement.x ,0), level)){
     newPosition.x = m_position.x;
-  else
+  }else{
     newPosition.x += movement.x;
+  }
 
-  if(collides(sf::Vector2f(0, movement.y), level))
+  if(collides(sf::Vector2f(0, movement.y), level)){
     newPosition.y = m_position.y;
-  else
+  }else{
     newPosition.y += movement.y;
+  }
 
   m_position = newPosition;
   m_sprite.setPosition(m_position);
@@ -159,11 +161,13 @@ void Hero::update(Level& level, float delta){
     }
   }
 
-  if(m_attackSpd > m_lastAttack)
+  if(m_attackSpd > m_lastAttack){
     m_lastAttack += delta;
+  }
 
-  if(INV_TIME > m_lastDamage)
+  if(INV_TIME > m_lastDamage){
     m_lastDamage += delta;
+  }
 }
 
 void Hero::attack(){
@@ -190,23 +194,27 @@ void Hero::useMana(double cost){
 }
 
 void Hero::setMP(double mp){
-  if (mp >= 0)
+  if (mp >= 0){
     m_charMp = mp;
+  }
 }
 
 void Hero::setBuffDmg(double dmgBuff){
-  if(dmgBuff >= 1)
-  m_charBuffDmg = dmgBuff;
+  if(dmgBuff >= 1){
+    m_charBuffDmg = dmgBuff;
+  }
 }
 
 void Hero::setBuffDef(double defBuff){
-	if (defBuff >= 1)
+	if (defBuff >= 1){
 		m_charBuffDef = defBuff;
+  }
 }
 
 void Hero::setBuffSpd(int spdBuff){
-	if (spdBuff >= 1)
+	if (spdBuff >= 1){
 		m_charBuffSpeed = spdBuff;
+  }
 }
 
 bool Hero::collides(sf::Vector2f movement, Level& level){
@@ -223,8 +231,9 @@ bool Hero::collides(sf::Vector2f movement, Level& level){
   checkTiles[3] = level.getTile(sf::Vector2f(newPosition.x - 5, newPosition.y + 15));
 
   for(int i = 0; i < 4; i++){
-    if(level.isSolid(checkTiles[i]->columnIndex, checkTiles[i]->rowIndex))
+    if(level.isSolid(checkTiles[i]->columnIndex, checkTiles[i]->rowIndex)){
       return true;
+    }
   }
   return false;
 }

@@ -48,9 +48,9 @@ void Enemy::update(float delta){
       sf::Vector2f targetLocation = m_targetPositions.front();
       m_velocity = sf::Vector2f(targetLocation.x - m_position.x, targetLocation.y - m_position.y);
 
-      if(abs(m_velocity.x) < 10.f && abs(m_velocity.y) < 10.f)
+      if(abs(m_velocity.x) < 10.f && abs(m_velocity.y) < 10.f){
         m_targetPositions.erase(m_targetPositions.begin());
-      else{
+      }else{
         float length = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
         m_velocity.x /= length;
         m_velocity.y /= length;
@@ -126,8 +126,9 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 
 		// Remove the current node from the open list and add it to the closed list.
 		position = std::find(openList.begin(), openList.end(), currentNode);
-		if (position != openList.end())
+		if (position != openList.end()){
 			openList.erase(position);
+    }
 
 		closedList.push_back(currentNode);
 

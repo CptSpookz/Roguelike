@@ -57,8 +57,9 @@ void Game::run(){
   while(m_window.isOpen()){
     sf::Event event;
     while(m_window.pollEvent(event)){
-      if(event.type == sf::Event::Closed)
+      if(event.type == sf::Event::Closed){
         m_window.close();
+      }
       if(m_gameState == GAME_STATE::MAIN_MENU){
         menuButtonsEvent(event);
       }
@@ -78,8 +79,9 @@ void Game::update(float delta){
   sf::Vector2i zero(0, 0);
   sf::Vector2i healthSize(240*m_hero.getHP()/m_hero.getMaxHP(), 16);
 
-  if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0)
+  if(m_gameState == GAME_STATE::GAME_RUN && m_hero.getHP() == 0){
     m_gameState = GAME_STATE::GAME_END;
+  }
 
   if(m_gameState == GAME_STATE::GAME_RUN && m_liveEnemies == 0){
     m_track.stop();
@@ -87,8 +89,9 @@ void Game::update(float delta){
     m_gameState = GAME_STATE::BOSS_FIGHT;
   }
 
-  if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0)
+  if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0){
     m_gameState = GAME_STATE::GAME_END;
+  }
 
   keyboardUpdate();
 
@@ -113,8 +116,9 @@ void Game::update(float delta){
       break;
 
     case GAME_STATE::BOSS_FIGHT:
-      if (!m_track.getStatus())
+      if (!m_track.getStatus()){
         m_track.play();
+      }
     //TODO: desenhar o boss, mudar os tiles de wall pra floor
     break;
 
@@ -262,8 +266,9 @@ void Game::setMusic(GAME_STATE state){
 
   std::string trackPath = "../resources/music/"+ label + std::to_string(trackNum) + ".wav";
 
-  if(!m_track.openFromFile(trackPath))
+  if(!m_track.openFromFile(trackPath)){
     std::cout << "Erro ao carregar musica!" << std::endl;
+  }
 
   m_track.setVolume(75);
   m_track.setLoop(true);
@@ -360,8 +365,9 @@ void Game::updateProjectiles(float delta){
         }else
           ++enemyIterator;
       }
-      if(!projDestroy)
+      if(!projDestroy){
         ++projectileIterator;
+      }
     }
   }
 }
@@ -371,8 +377,9 @@ void Game::updateEnemy(float delta){
   while(enemyIterator != m_enemyList.end()){
     Enemy& enemy = **enemyIterator;
 
-    if(calculateDistance(m_hero.getPosition(), enemy.getPosition()) < 200.0f)
+    if(calculateDistance(m_hero.getPosition(), enemy.getPosition()) < 200.0f){
       enemy.calculateSteps(m_level, m_hero.getPosition());
+    }
 
     enemy.update(delta);
     if(!enemy.isAlive()){
@@ -383,8 +390,9 @@ void Game::updateEnemy(float delta){
     else{
       auto enemyTile = m_level.getTile(enemy.getPosition());
       auto heroTile = m_level.getTile(m_hero.getPosition());
-      if(enemyTile == heroTile && m_hero.canDamage())
+      if(enemyTile == heroTile && m_hero.canDamage()){
         m_hero.takeDamage(enemy.getBaseDmg());
+      }
       ++enemyIterator;
     }
   }

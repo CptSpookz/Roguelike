@@ -1,5 +1,5 @@
-#ifndef _OBJECT_HPP_
-#define _OBJECT_HPP_
+#ifndef OBJECT_HPP
+#define OBJECT_HPP
 //SFML
 #include <SFML/Graphics.hpp>
 

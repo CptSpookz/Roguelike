@@ -11,14 +11,15 @@ m_velocity(direction){
   m_sprite.setOrigin(0, texture.getSize().y);
   m_sprite.setPosition(m_position);
 
-  if(direction.x == 1)
+  if(direction.x == 1){
     m_sprite.setRotation(0);
-  else if(direction.x == -1)
+  }else if(direction.x == -1){
     m_sprite.setRotation(180);
-  else if(direction.y == 1)
+  }else if(direction.y == 1){
     m_sprite.setRotation(90);
-  else if(direction.y == -1)
+  }else if(direction.y == -1){
     m_sprite.setRotation(270);
+  }
 }
 
 void Projectile::update(float delta){

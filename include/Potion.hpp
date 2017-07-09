@@ -1,5 +1,5 @@
-#ifndef _POTION_HPP_
-#define _POTION_HPP_
+#ifndef POTION_HPP
+#define POTION_HPP
 
 // Roguelike
 #include <Object.hpp>

@@ -9,23 +9,27 @@
 	m_velocity({0.f,0.f}){}
 
 void Char::setHP(double hpVal){
-	if(hpVal >= 0)
+	if(hpVal >= 0){
 		m_charHp = hpVal;
+	}
 }
 
 void Char::setBaseDmg(double dmgVal){
-	if (dmgVal > 0)
+	if (dmgVal > 0){
 		m_charBaseDmg = dmgVal;
+	}
 }
 
 void Char::setBaseDef(double defVal){
-	if (defVal > 0)
+	if (defVal > 0){
 		m_charBaseDef = defVal;
+	}
 }
 
 void Char::setBaseSpd(int spdVal){
-	if (spdVal > 50)
+	if (spdVal > 50){
 		m_charSpeed = spdVal;
+	}
 }
 
 void Char::update(float timeDelta){
@@ -34,16 +38,18 @@ void Char::update(float timeDelta){
 	//Set animation state
 	if(m_velocity.x != 0 && m_velocity.y != 0){
 		if (abs(m_velocity.x) > abs(m_velocity.y)){
-			if (m_velocity.x <= 0)
+			if (m_velocity.x <= 0){
 				animState = ANIMATION_STATE::WALK_LEFT;
-			else
+			}else{
 				animState = ANIMATION_STATE::WALK_RIGHT;
+			}
 		}
 		else{
-			if (m_velocity.y <= 0)
+			if (m_velocity.y <= 0){
 				animState = ANIMATION_STATE::WALK_UP;
-			else
+			}else{
 				animState = ANIMATION_STATE::WALK_DOWN;
+			}
 		}
 	}
 

@@ -54,10 +54,11 @@ void Level::draw(sf::RenderWindow& window){
 int Level::addTile(std::string filePath, TILE tileType){
   int textureID = TextureManager::addTexture(filePath);
 
-  if(textureID < 0)
+  if(textureID < 0){
     return -1;
-  else
+  }else{
     this->m_textureIDs[static_cast<int>(tileType)] = textureID;
+  }
 
   return textureID;
 }
@@ -130,14 +131,18 @@ void Level::calculateWalls(){
     for(int j = 0; j < GRID_WIDTH; j++){
       if(m_grid[i][j].type != TILE::FLOOR){
         int score = 0;
-        if(i > 0)
+        if(i > 0){
           score += (m_grid[i-1][j].type != TILE::FLOOR)?8:0;
-        if(j < GRID_WIDTH-1)
+        }
+        if(j < GRID_WIDTH-1){
           score += (m_grid[i][j+1].type != TILE::FLOOR)?4:0;
-        if(i < GRID_HEIGHT-1)
+        }
+        if(i < GRID_HEIGHT-1){
           score += (m_grid[i+1][j].type != TILE::FLOOR)?2:0;
-        if(j > 0)
+        }
+        if(j > 0){
           score += (m_grid[i][j-1].type != TILE::FLOOR)?1:0;
+        }
         m_grid[i][j].type = static_cast<TILE>(score);
         m_grid[i][j].sprite.setTexture(TextureManager::getTexture(m_textureIDs[score]));
       }

@@ -33,15 +33,17 @@ void ButtonList::draw(sf::RenderWindow& window){
 
 void ButtonList::toNext(){
   m_actualIndex++;
-  if(m_actualIndex >= m_buttonSprites.getSize())
+  if(m_actualIndex >= m_buttonSprites.getSize()){
     m_actualIndex = 0;
+  }
   m_outlineSprite.setPosition(m_buttonSprites[m_actualIndex]->getPosition());
 }
 
 void ButtonList::toPrevious(){
   m_actualIndex--;
-  if(m_actualIndex < 0)
+  if(m_actualIndex < 0){
     m_actualIndex = m_buttonSprites.getSize()-1;
+  }
   m_outlineSprite.setPosition(m_buttonSprites[m_actualIndex]->getPosition());
 }
 
