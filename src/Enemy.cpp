@@ -237,7 +237,7 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 }
 
 void Enemy::takeDamage(double damage){
-  m_charHp -= damage;
+  m_charHp -= (damage - getBaseDef());
 }
 
 bool Enemy::isAlive(){

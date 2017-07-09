@@ -3,59 +3,33 @@
 
 // Roguelike
 #include <Object.hpp>
+#include <Hero.hpp>
 #include <DataStructures.hpp>
 
-// SFML
-#include <SFML/Graphics.hpp>
-
 class Potion : public Object {
+protected:
+    //potion type
+    POTION_TYPE m_type;
+
+    //potion state
+    bool m_isUsed;
+
+    //potion textures' index array
+    int m_textureIDs[static_cast<int>(POTION_STATE::COUNT)];
+
+    //potion current texture index
+    int m_currentTexID;
+
 public:
-    Potion();
-    virtual void usePot() = 0;
+    Potion(POTION_TYPE);
+
+    void use(Hero&);
+    void refill();
     void update(float);
-};
+    void draw(sf::RenderWindow&);
 
-class PotionBag : public LinkedList<Potion>{
-private:
-	bool potHP;
-  bool potMP;
-  bool potATK;
-  bool potDEF;
-
-public:
-	PotionBag();
-
-  void addPotHP(PotHP);
-  void addPotMP(PotMP);
-  void addPotATK(PotATK);
-  void addPotDEF(PotDEF);
-
-	bool isFull();
-
-};
-
-class PotHP : public Potion{
-  void usePot() override;
-public:
-  PotHP();
-};
-
-class PotMP : public Potion{
-  void usePot() override;
-public:
-  PotMP();
-};
-
-class PotATK : public Potion{
-  void usePot() override;
-public:
-  PotATK();
-};
-
-class PotDEF : public Potion{
-  void usePot() override;
-public:
-  PotDEF();
+    void setPosition(double,double);
+    bool isUsed() const {return m_isUsed;};
 };
 
 #endif

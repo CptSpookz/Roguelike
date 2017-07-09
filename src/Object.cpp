@@ -44,7 +44,7 @@ void Object::setSpeed(int speed){
 	}
 }
 
-// Sets the animation state of the object.
+// set the animation state of the object
 void Object::setMovement(bool isAnimated) {
 	m_isMoving = isAnimated;
 
@@ -57,12 +57,12 @@ void Object::setMovement(bool isAnimated) {
 		m_sprite.setTextureRect(sf::IntRect(0, 0, m_frameWidth, m_frameHeight));
 }
 
-// Draws the object to the given render window.
+// draw the object to the given render window.
 void Object::draw(sf::RenderWindow &window, float timeDelta)
 {
 	// check if the sprite is animated
 	if (m_isMoving) {
-		// add the elapsed time since the last draw call to the aggregate
+		// add the elapsed time since the last draw() call
 		m_timeDelta += timeDelta;
 
 		// check if the frame should be updated

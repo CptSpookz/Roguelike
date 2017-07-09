@@ -13,11 +13,11 @@ private:
 
   sf::String m_className;
 
-  // base MP
-  //double m_charMaxMp;
+  /*// base MP
+  double m_charMaxMp;
 
   // current MP
-  //double m_charMp;
+  double m_charMp;*/
 
   // attack speed
   double m_attackSpd;
@@ -30,12 +30,24 @@ private:
 
   // damage buff
   double m_charBuffDmg;
+  // max damage buff duration
+  float m_atkBuffLimit;
+  // current damage buff time
+  sf::Time m_atkBuffCurrent;
 
   // defense buff
   double m_charBuffDef;
+  // max defense buff duration
+  float m_defBuffLimit;
+  // current defense buff time
+  sf::Time m_defBuffCurrent;
 
-  // character's buff movement speed
+  // movement speed buff
   int m_charBuffSpeed;
+  // max speed buff duration
+  float m_spdBuffLimit;
+  // current speed buff time
+  sf::Time m_spdBuffCurrent;
 
 public:
   Hero();
@@ -50,8 +62,8 @@ public:
   bool canDamage();
 
   void takeDamage(double);
-  /*void useMana(double);
 
+  /*void useMana(double);
   double getMaxMP() const {return m_charMaxMp;};
   double getMP() const {return m_charMp;};
   void setMP(double);*/
@@ -66,7 +78,7 @@ public:
 
   int getBuffSpd() const {return m_charBuffSpeed;};
   void setBuffSpd(int);
-  int getMovSpd() const {return m_charSpeed * m_charBuffSpeed;};
+  int getMovSpd() const {return m_charSpeed + m_charBuffSpeed;};
 
   sf::Vector2f getCenterPosition();
 };

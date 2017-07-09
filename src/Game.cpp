@@ -8,7 +8,11 @@ Game::Game(sf::RenderWindow* window):
 m_window(*window),
 m_gameState(GAME_STATE::MAIN_MENU),
 m_level(Level(*window)),
-m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))){
+m_blackBar(sf::RectangleShape(sf::Vector2f(window->getSize().x, 36))),
+m_healthPotion(Potion(POTION_TYPE::HP_POT)),
+m_damagePotion(Potion(POTION_TYPE::ATK_POT)),
+m_defensePotion(Potion(POTION_TYPE::DEF_POT)),
+m_speedPotion(Potion(POTION_TYPE::SPD_POT)){
   m_view.reset(sf::FloatRect(0, 0, 500, 500));
 
   m_window.setFramerateLimit(60);
@@ -100,11 +104,16 @@ void Game::update(float delta){
     m_level.generate();
     populateLevel();
     m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
+    m_hero.setHP(m_hero.getMaxHP());
+    m_healthPotion.refill();
+    m_damagePotion.refill();
+    m_defensePotion.refill();
+    m_speedPotion.refill();
   }
 
-  if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0){
+  /*if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0){
     m_gameState = GAME_STATE::GAME_END;
-  }
+  }*/
 
   keyboardUpdate();
 
@@ -115,7 +124,7 @@ void Game::update(float delta){
 
     case GAME_STATE::GAME_RUN:
       m_healthBar.setTextureRect(sf::IntRect(zero, healthSize));
-       /*m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));*/
+      /*m_manaBar.setTextureRect(sf::IntRect(zero, manaSize));*/
 
       m_hero.update(m_level, delta);
 
@@ -126,7 +135,7 @@ void Game::update(float delta){
 
       updateEnemy(delta);
 
-      updateUI(m_view);
+      updateUI(m_view, delta);
       break;
 
     case GAME_STATE::BOSS_FIGHT:
@@ -153,7 +162,7 @@ void Game::draw(float delta){
       m_window.draw(m_controls);
       // botões do menu
       m_menuButtons.draw(m_window);
-      break;
+    break;
     case GAME_STATE::GAME_RUN:
       m_window.clear(sf::Color::Black);
       // renderiza o mapa
@@ -172,13 +181,14 @@ void Game::draw(float delta){
       // renderiza a ui
       drawUI();
 
-      break;
+    break;
     case GAME_STATE::BOSS_FIGHT:
       //TODO: transformar paredes em chão e renderizar o boss
-      break;
+    break;
     case GAME_STATE::GAME_END:
       //TODO: tela de fim de jogo
-      break;
+      m_window.clear(sf::Color::Black);
+    break;
   }
 
   m_window.display();
@@ -217,25 +227,13 @@ void Game::loadUI(){
   m_manaBar.setPosition(10, 36);*/
 
   // poções
-  auto healthPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_health_potion.png");
-  //auto manaPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_mana_potion.png");
-  auto damagePotionId = TextureManager::addTexture("../resources/sprites/ui/spr_damage_potion.png");
-  auto defensePotionId = TextureManager::addTexture("../resources/sprites/ui/spr_defense_potion.png");
-  auto speedPotionId = TextureManager::addTexture("../resources/sprites/ui/spr_speed_potion.png");
-
-  m_healthPotion.setTexture(TextureManager::getTexture(healthPotionId));
-  m_healthPotion.setPosition(10, m_window.getSize().y - 55);
-  /*m_manaPotion.setTexture(TextureManager::getTexture(manaPotionId));
-  m_manaPotion.setPosition(10, m_window.getSize().y - 55);*/
-  m_damagePotion.setTexture(TextureManager::getTexture(damagePotionId));
-  m_damagePotion.setPosition(155, m_window.getSize().y - 55);
-  m_defensePotion.setTexture(TextureManager::getTexture(defensePotionId));
-  m_defensePotion.setPosition(300, m_window.getSize().y - 55);
-  m_speedPotion.setTexture(TextureManager::getTexture(speedPotionId));
-  m_speedPotion.setPosition(445, m_window.getSize().y - 55);
+  m_healthPotion.setPosition(100, m_window.getSize().y - 55);
+  m_damagePotion.setPosition(200, m_window.getSize().y - 55);
+  m_defensePotion.setPosition(350, m_window.getSize().y - 55);
+  m_speedPotion.setPosition(450, m_window.getSize().y - 55);
 }
 
-void Game::updateUI(sf::View view){
+void Game::updateUI(sf::View view, float delta){
   auto viewTranslation = view.getCenter() - view.getSize()/2.f;
   auto left = viewTranslation.x;
   auto top = viewTranslation.y;
@@ -255,11 +253,15 @@ void Game::updateUI(sf::View view){
 
   // Status no fundo
   m_blackBar.setPosition(left, down - 35);
-  m_healthPotion.setPosition(left + 10, down - 55);
+  m_healthPotion.update(delta);
+  m_healthPotion.setPosition(left + 50, down - 55);
   //m_manaPotion.setPosition();
-  m_damagePotion.setPosition(left + 155, down - 55);
-  m_defensePotion.setPosition(left + 300, down - 55);
-  m_speedPotion.setPosition(left + 445, down - 55);
+  m_damagePotion.update(delta);
+  m_damagePotion.setPosition(left + 150, down - 55);
+  m_defensePotion.update(delta);
+  m_defensePotion.setPosition(left + 350, down - 55);
+  m_speedPotion.update(delta);
+  m_speedPotion.setPosition(left + 450, down - 55);
 }
 
 void Game::drawUI(){
@@ -279,11 +281,11 @@ void Game::drawUI(){
   m_window.draw(m_manaBar);*/
 
   // poções
-  m_window.draw(m_healthPotion);
-  //m_window.draw(m_manaPotion);
-  m_window.draw(m_damagePotion);
-  m_window.draw(m_defensePotion);
-  m_window.draw(m_speedPotion);
+  m_healthPotion.draw(m_window);
+  //m_manaPotion.draw(m_window);
+  m_damagePotion.draw(m_window);
+  m_defensePotion.draw(m_window);
+  m_speedPotion.draw(m_window);
 }
 
 void Game::setMusic(GAME_STATE state){
@@ -293,6 +295,9 @@ void Game::setMusic(GAME_STATE state){
       label = "level_";
     break;
     case GAME_STATE::GAME_RUN:
+      label = "level_";
+    break;
+    case GAME_STATE::BOSS_FIGHT:
       label = "boss_";
     break;
   }
@@ -373,6 +378,14 @@ void Game::keyboardUpdate(){
       m_hero.attack();
     }
   }
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1))
+    m_healthPotion.use(m_hero);
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2))
+    m_damagePotion.use(m_hero);
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3))
+    m_defensePotion.use(m_hero);
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4))
+    m_speedPotion.use(m_hero);
 }
 
 void Game::updateProjectiles(float delta){

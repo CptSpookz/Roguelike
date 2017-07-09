@@ -1,4 +1,5 @@
 #include <Hero.hpp>
+#include <iostream>
 
 Hero::Hero(){
   m_charMaxHp = 500;
@@ -7,10 +8,13 @@ Hero::Hero(){
 //  m_charMp = m_charMaxMp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
+  m_atkBuffLimit = 30;
   m_charBaseDef = 10;
   m_charBuffDef = 1;
+  m_defBuffLimit = 30;
   m_charSpeed = 200;
-  m_charBuffSpeed = 1;
+  m_charBuffSpeed = 0;
+  m_spdBuffLimit = 15;
   m_position = {0.f,0.f};
   m_lastAttack = 0;
 }
@@ -19,14 +23,17 @@ void Hero::initHero(HERO_CLASS classHero){
   if(classHero == HERO_CLASS::WARRIOR){
     m_className = "warrior";
     m_charBaseDmg *= 2;
+    m_charBaseDef *= 2;
     m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
-    m_attackSpd = 1.25;
+    m_attackSpd = 1;
   }
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
     m_charBaseDmg *= 2.5;
     m_charBaseDef *= 1.5;
+    m_charMaxHp += 150;
+    m_charHp = m_charMaxHp;
     m_attackSpd = .75;
   }
   else if (classHero == HERO_CLASS::ARCHER){
@@ -46,7 +53,7 @@ void Hero::initHero(HERO_CLASS classHero){
     m_charMaxHp += 500;
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 3;
-    m_attackSpd = 1.25;
+    m_attackSpd = 1;
   }
   else if (classHero == HERO_CLASS::VALKYRIE){
     m_className = "valkyrie";
@@ -54,7 +61,7 @@ void Hero::initHero(HERO_CLASS classHero){
     m_charHp = m_charMaxHp;
     m_charBaseDef *= 2;
     m_charSpeed = 250;
-    m_attackSpd = 1;
+    m_attackSpd = 0.8;
   }
 
   m_textureIDs[static_cast<int>(ANIMATION_STATE::WALK_UP)] = TextureManager::addTexture("../resources/sprites/players/" + m_className + "/spr_" + m_className + "_walk_up.png");
@@ -75,6 +82,29 @@ void Hero::initHero(HERO_CLASS classHero){
 }
 
 void Hero::update(Level& level, float delta){
+  // check if hero is buffed and update buff timer
+  if(m_charBuffDmg > 1){
+    m_atkBuffCurrent += sf::seconds(delta);
+    if(m_atkBuffCurrent.asSeconds() >= m_atkBuffLimit){
+      m_charBuffDmg = 1;
+      m_atkBuffCurrent = sf::seconds(0.0f);
+    }
+  }
+  if(m_charBuffDef > 1){
+    m_defBuffCurrent += sf::seconds(delta);
+    if(m_defBuffCurrent.asSeconds() >= m_defBuffLimit){
+      m_charBuffDef = 1;
+      m_defBuffCurrent = sf::seconds(0.0f);
+    }
+  }
+  if(m_charBuffSpeed > 0){
+    m_spdBuffCurrent += sf::seconds(delta);
+    if(m_spdBuffCurrent.asSeconds() >= m_spdBuffLimit){
+      m_charBuffSpeed = 0;
+      m_spdBuffCurrent = sf::seconds(0.0f);
+    }
+  }
+
   sf::Vector2f newPosition = m_position;
   sf::Vector2f movement({0.f, 0.f});
 
@@ -82,19 +112,19 @@ void Hero::update(Level& level, float delta){
   int animState = m_currentTexID;
 
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
-    movement.y += -m_charSpeed * delta;
+    movement.y += -getMovSpd() * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_UP);
   }
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
-    movement.y += m_charSpeed * delta;
+    movement.y += getMovSpd() * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_DOWN);
   }
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-    movement.x += -m_charSpeed * delta;
+    movement.x += -getMovSpd() * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_LEFT);
   }
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-    movement.x += m_charSpeed * delta;
+    movement.x += getMovSpd() * delta;
     animState = static_cast<int>(ANIMATION_STATE::WALK_RIGHT);
   }
 
@@ -181,7 +211,7 @@ bool Hero::canDamage(){
 }
 
 void Hero::takeDamage(double damage){
-  auto afterHealth = m_charHp - damage;
+  auto afterHealth = m_charHp - (damage - getDef());
   m_charHp = std::max(afterHealth, 0.0);
   m_lastDamage = 0;
 }
@@ -198,9 +228,8 @@ void Hero::setMP(double mp){
 }*/
 
 void Hero::setBuffDmg(double dmgBuff){
-  if(dmgBuff >= 1){
+  if(dmgBuff >= 1)
     m_charBuffDmg = dmgBuff;
-  }
 }
 
 void Hero::setBuffDef(double defBuff){
@@ -210,9 +239,8 @@ void Hero::setBuffDef(double defBuff){
 }
 
 void Hero::setBuffSpd(int spdBuff){
-	if (spdBuff >= 1){
+	if (spdBuff >= 0)
 		m_charBuffSpeed = spdBuff;
-  }
 }
 
 bool Hero::collides(sf::Vector2f movement, Level& level){

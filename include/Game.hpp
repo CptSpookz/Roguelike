@@ -3,6 +3,7 @@
 
 // Bibliotecas Roguelike
 #include <ButtonList.hpp>
+#include <Potion.hpp>
 #include <Enemy.hpp>
 #include <Hero.hpp>
 #include <Level.hpp>
@@ -33,7 +34,7 @@ class Game {
 
     void loadUI();
 
-    void updateUI(sf::View);
+    void updateUI(sf::View,float);
 
     void drawUI();
 
@@ -116,11 +117,11 @@ class Game {
     sf::Sprite m_manaBar;*/
 
     // Poções
-    sf::Sprite m_healthPotion;
-    //sf::Sprite m_manaPotion;
-    sf::Sprite m_damagePotion;
-    sf::Sprite m_defensePotion;
-    sf::Sprite m_speedPotion;
+    Potion m_healthPotion;
+    //Potion m_manaPotion;
+    Potion m_damagePotion;
+    Potion m_defensePotion;
+    Potion m_speedPotion;
 };
 
 #endif

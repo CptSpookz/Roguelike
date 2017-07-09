@@ -67,5 +67,20 @@ enum class HERO_CLASS{
   COUNT
 };
 
+enum class POTION_TYPE{
+  HP_POT,
+//  MP_POT,
+  ATK_POT,
+  DEF_POT,
+  SPD_POT,
+  COUNT
+};
+
+enum class POTION_STATE{
+  EMPTY,
+  FULL,
+  COUNT
+};
+
 
 #endif
