@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e4fe8eb2f924767a0ee0e6752d35dda)](https://www.codacy.com/app/explodingnuggets/Roguelike?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=explodingnuggets/Roguelike&amp;utm_campaign=Badge_Grade)
 # Roguelike
 ### Descrição do projeto
 Este projeto foi feito para a matéria de Estruturas de Dados, buscando aplicar os conceitos de implementação de uma lista encadeada, ou ainda árvores binárias. Para isso, implementamos um jogo de temática Roguelike.

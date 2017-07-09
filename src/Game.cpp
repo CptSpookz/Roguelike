@@ -97,7 +97,9 @@ void Game::update(float delta){
   if(m_gameState == GAME_STATE::GAME_RUN && m_liveEnemies == 0){
     m_track.stop();
     setMusic(m_gameState);
-    m_gameState = GAME_STATE::BOSS_FIGHT;
+    m_level.generate();
+    populateLevel();
+    m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
   }
 
   if(m_gameState == GAME_STATE::BOSS_FIGHT && m_hero.getHP() == 0){
@@ -432,7 +434,7 @@ void Game::updateEnemy(float delta){
 }
 
 void Game::populateLevel(){
-  auto numEnemies = rand() % MIN_ENEMIES + (MAX_ENEMIES - MIN_ENEMIES);
+  auto numEnemies = rand() % (MIN_ENEMIES + (m_level.getRoomNumber() - 1) * 5) + (MAX_ENEMIES - MIN_ENEMIES + (m_level.getRoomNumber() - 1) * 5);
   m_liveEnemies = numEnemies;
   for(int i = 0; i < numEnemies; i++){
     std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();

@@ -67,6 +67,8 @@ class Level {
 
     sf::Vector2f getRandomSpawnLocation();
 
+    int getRoomNumber();
+
   private:
     Tile m_grid[GRID_HEIGHT][GRID_WIDTH];
 

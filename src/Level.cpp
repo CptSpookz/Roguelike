@@ -3,7 +3,8 @@
 Level::Level(){}
 
 Level::Level(sf::RenderWindow& window):
-m_origin({0, 0}){
+m_origin({0, 0}),
+m_roomNumber(0){
   // Load floor textures
   this->addTile("../resources/sprites/tile/floor.png", TILE::FLOOR);
   this->addTile("../resources/sprites/tile/floor_alt.png", TILE::FLOOR_ALT);
@@ -206,4 +207,8 @@ sf::Vector2f Level::getRandomSpawnLocation(){
   }
 
   return getActualTileLocation(columnIndex, rowIndex);
+}
+
+int Level::getRoomNumber(){
+  return m_roomNumber;
 }
