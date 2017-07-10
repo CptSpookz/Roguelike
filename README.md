@@ -3,6 +3,18 @@
 ### Descrição do projeto
 Este projeto foi feito para a matéria de Estruturas de Dados, buscando aplicar os conceitos de implementação de uma lista encadeada, ou ainda árvores binárias. Para isso, implementamos um jogo de temática Roguelike.
 
+## Instalação
+### Linux
+1. Baixe os arquivos para [Linux](http://www.github.com/explodingnuggets//Roguelike/releases/latest);
+2. Coloque os arquivos na pasta que desejar;
+3. Antes de executar, utilize o comando ```export LD_LIBRARY_PATH="../SFML/lib"``` na pasta de instalação, ou então, instale a biblioteca SFML.
+4. Execute o arquivo ```randventure.out```.
+
+### Windows
+1. Baixe os arquivos para [Windows](http://www.github.com/explodingnuggets//Roguelike/releases/latest);
+2. Coloque os arquivos na pasta que desejar;
+3. Execute o arquivo ```randventure.exe```.
+
 ### Aplicação da lista encadeada
 Os conceitos de lista encadeada foram aplicadas na seleção da classe personagem, sendo que criaram-se os seguintes métodos de percorrimento para a lista de seleção:
 ```c++

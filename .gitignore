@@ -17,3 +17,8 @@
 *.exe
 *.out
 *.app
+
+# Compression files
+*.rar
+*.tar.gz
+*.zip

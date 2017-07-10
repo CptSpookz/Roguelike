@@ -8,7 +8,7 @@ LIBS = -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 OBJ = GameLoop.cpp Game.cpp TextureManager.cpp Level.cpp Hero.cpp Char.cpp Object.cpp ButtonList.cpp Enemy.cpp Projectile.cpp Potion.cpp
 
-OUT = game.out
+OUT = randventure.out
 
 %.o: $.c
 	$(CC) -c -o  $@ $< $(CFLAGS)
@@ -17,4 +17,4 @@ all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(CFLAGS) $(LIBS)
 
 run:
-	LD_LIBRARY_PATH="../SFML/lib:$LD_LIBRARY_PATH" ./$(OUT)
+	LD_LIBRARY_PATH="../SFML/lib" ./$(OUT)
