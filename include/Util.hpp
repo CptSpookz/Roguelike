@@ -6,7 +6,7 @@
 
 #define NUMBER_ROOMS 6
 
-#define INV_TIME 0.75
+#define INV_TIME 0.20
 
 enum class TILE {
   WALL_SINGLE,

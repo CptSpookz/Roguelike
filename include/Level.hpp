@@ -39,6 +39,8 @@ class Level {
 
     void draw(sf::RenderWindow&);
 
+    void reset();
+
     int addTile(std::string, TILE);
 
     void generate();

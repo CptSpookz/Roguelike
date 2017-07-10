@@ -63,6 +63,8 @@ public:
 
   void takeDamage(double);
 
+  void reset();
+
   /*void useMana(double);
   double getMaxMP() const {return m_charMaxMp;};
   double getMP() const {return m_charMp;};

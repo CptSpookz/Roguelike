@@ -101,6 +101,7 @@ void Game::update(float delta){
   if(m_gameState == GAME_STATE::GAME_RUN && m_liveEnemies == 0){
     m_track.stop();
     setMusic(m_gameState);
+    m_track.play();
     m_level.generate();
     populateLevel();
     m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
@@ -146,7 +147,10 @@ void Game::update(float delta){
     break;
 
     case GAME_STATE::GAME_END:
-
+      if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+        m_gameState = GAME_STATE::MAIN_MENU;
+        m_window.setView(m_window.getDefaultView());
+      }
     break;
   }
 }
@@ -187,7 +191,12 @@ void Game::draw(float delta){
     break;
     case GAME_STATE::GAME_END:
       //TODO: tela de fim de jogo
-      m_window.clear(sf::Color::Black);
+      m_window.clear(sf::Color(49,47,44));
+
+      m_window.draw(m_gameOver);
+      m_window.draw(m_pressReset);
+      m_window.draw(m_enemiesFinal);
+      m_window.draw(m_roomFinal);
     break;
   }
 
@@ -231,6 +240,31 @@ void Game::loadUI(){
   m_damagePotion.setPosition(200, m_window.getSize().y - 55);
   m_defensePotion.setPosition(350, m_window.getSize().y - 55);
   m_speedPotion.setPosition(450, m_window.getSize().y - 55);
+
+  // Textos da tela de Game over
+  m_gameOver.setFont(m_uiFont);
+  m_gameOver.setFillColor(sf::Color::White);
+  m_gameOver.setCharacterSize(40);
+  m_gameOver.setString("Fim de jogo");
+
+  auto gameOverBounds = m_gameOver.getLocalBounds();
+  m_gameOver.setOrigin(gameOverBounds.left + gameOverBounds.width/2.0f, gameOverBounds.top + gameOverBounds.height/2.0f);
+
+  m_pressReset.setFont(m_uiFont);
+  m_pressReset.setFillColor(sf::Color::White);
+  m_pressReset.setCharacterSize(40);
+  m_pressReset.setString("Aperte R");
+
+  auto pressResetBounds = m_pressReset.getLocalBounds();
+  m_pressReset.setOrigin(pressResetBounds.left + pressResetBounds.width/2.0f, pressResetBounds.top + pressResetBounds.height/2.0f);
+
+  m_enemiesFinal.setFont(m_uiFont);
+  m_enemiesFinal.setFillColor(sf::Color::White);
+  m_enemiesFinal.setCharacterSize(40);
+
+  m_roomFinal.setFont(m_uiFont);
+  m_roomFinal.setFillColor(sf::Color::White);
+  m_roomFinal.setCharacterSize(40);
 }
 
 void Game::updateUI(sf::View view, float delta){
@@ -262,6 +296,20 @@ void Game::updateUI(sf::View view, float delta){
   m_defensePotion.setPosition(left + 350, down - 55);
   m_speedPotion.update(delta);
   m_speedPotion.setPosition(left + 450, down - 55);
+
+  // textos da tela de game over
+  m_gameOver.setPosition(left + 250, top + 130);
+  m_pressReset.setPosition(left + 250, top + 210);
+
+  m_enemiesFinal.setString("Inimigos mortos: " + std::to_string(m_enemiesDead));
+  auto enemiesBound = m_enemiesFinal.getLocalBounds();
+  m_enemiesFinal.setOrigin(enemiesBound.left + enemiesBound.width/2.0f, enemiesBound.top + enemiesBound.height/2.0f);
+  m_enemiesFinal.setPosition(left + 250, top + 290);
+
+  m_roomFinal.setString("Andar final: " + std::to_string(m_level.getRoomNumber()));
+  auto roomBound = m_roomFinal.getLocalBounds();
+  m_roomFinal.setOrigin(roomBound.left + roomBound.width/2.0f, roomBound.top + roomBound.height/2.0f);
+  m_roomFinal.setPosition(left + 250, top + 370);
 }
 
 void Game::drawUI(){
@@ -321,6 +369,7 @@ void Game::menuButtonsEvent(sf::Event event){
     }else if(event.key.code == sf::Keyboard::Left){
       m_menuButtons.toPrevious();
     }else if(event.key.code == sf::Keyboard::Return){
+      resetLevel();
       auto heroClass = static_cast<HERO_CLASS>(m_menuButtons.getIndex());
       m_hero.initHero(heroClass);
       switch(heroClass){
@@ -407,6 +456,7 @@ void Game::updateProjectiles(float delta){
         auto enemyTile = m_level.getTile(enemy.getPosition());
         if(projTile == enemyTile){
           enemy.takeDamage(m_hero.getDmg());
+          std::cout << m_hero.getDmg() << std::endl;
           projectileIterator = m_playerProjectiles.erase(projectileIterator);
           projDestroy = true;
           break;
@@ -456,6 +506,16 @@ void Game::populateLevel(){
 
     m_enemyList.push_back(std::move(enemy));
   }
+}
+
+void Game::resetLevel(){
+  m_enemyList.clear();
+  m_playerProjectiles.clear();
+  m_level.reset();
+  m_level.generate();
+  populateLevel();
+  m_hero.reset();
+  m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
 }
 
 double Game::calculateDistance(sf::Vector2f firstPos, sf::Vector2f secondPos){

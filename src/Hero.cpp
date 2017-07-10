@@ -4,8 +4,8 @@
 Hero::Hero(){
   m_charMaxHp = 500;
   m_charHp = m_charMaxHp;
-//  m_charMaxMp = 150;
-//  m_charMp = m_charMaxMp;
+  //  m_charMaxMp = 150;
+  //  m_charMp = m_charMaxMp;
   m_charBaseDmg = 25;
   m_charBuffDmg = 1;
   m_atkBuffLimit = 30;
@@ -24,7 +24,7 @@ void Hero::initHero(HERO_CLASS classHero){
     m_className = "warrior";
     m_charBaseDmg *= 2;
     m_charBaseDef *= 2;
-    m_charMaxHp += 250;
+      m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
     m_attackSpd = 1;
   }
@@ -211,9 +211,27 @@ bool Hero::canDamage(){
 }
 
 void Hero::takeDamage(double damage){
-  auto afterHealth = m_charHp - (damage - getDef());
+  auto afterHealth = m_charHp + std::min(0.0, -(damage - getDef()));
   m_charHp = std::max(afterHealth, 0.0);
   m_lastDamage = 0;
+}
+
+void Hero::reset(){
+  m_charMaxHp = 500;
+  m_charHp = m_charMaxHp;
+  //  m_charMaxMp = 150;
+  //  m_charMp = m_charMaxMp;
+  m_charBaseDmg = 25;
+  m_charBuffDmg = 1;
+  m_atkBuffLimit = 30;
+  m_charBaseDef = 10;
+  m_charBuffDef = 1;
+  m_defBuffLimit = 30;
+  m_charSpeed = 200;
+  m_charBuffSpeed = 0;
+  m_spdBuffLimit = 15;
+  m_position = {0.f,0.f};
+  m_lastAttack = 0;
 }
 
 /*void Hero::useMana(double cost){

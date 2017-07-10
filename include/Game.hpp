@@ -50,6 +50,8 @@ class Game {
 
     void populateLevel();
 
+    void resetLevel();
+
     double calculateDistance(sf::Vector2f, sf::Vector2f);
 
   private:
@@ -101,6 +103,12 @@ class Game {
 
     // Texto de inimigos mortos
     sf::Text m_numberEnemies;
+
+    // Textos da tela de game over
+    sf::Text m_gameOver;
+    sf::Text m_pressReset;
+    sf::Text m_enemiesFinal;
+    sf::Text m_roomFinal;
 
     // Sprites UI
     // Barra preta no fundo da tela

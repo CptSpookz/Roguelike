@@ -52,6 +52,10 @@ void Level::draw(sf::RenderWindow& window){
   }
 }
 
+void Level::reset(){
+  m_roomNumber = 0;
+}
+
 int Level::addTile(std::string filePath, TILE tileType){
   int textureID = TextureManager::addTexture(filePath);
 
