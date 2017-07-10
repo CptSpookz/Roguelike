@@ -23,7 +23,7 @@ void Hero::initHero(HERO_CLASS classHero){
   if(classHero == HERO_CLASS::WARRIOR){
     m_className = "warrior";
     m_charBaseDmg *= 2;
-    m_charBaseDef *= 2;
+    m_charBaseDef *= 1.5;
       m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
     m_attackSpd = 1;
@@ -31,7 +31,7 @@ void Hero::initHero(HERO_CLASS classHero){
   else if (classHero == HERO_CLASS::MAGE){
     m_className = "mage";
     m_charBaseDmg *= 2.5;
-    m_charBaseDef *= 1.5;
+    m_charBaseDef *= 1.25;
     m_charMaxHp += 150;
     m_charHp = m_charMaxHp;
     m_attackSpd = .75;
@@ -52,14 +52,14 @@ void Hero::initHero(HERO_CLASS classHero){
     m_className = "paladin";
     m_charMaxHp += 500;
     m_charHp = m_charMaxHp;
-    m_charBaseDef *= 3;
+    m_charBaseDef *= 1.75;
     m_attackSpd = 1;
   }
   else if (classHero == HERO_CLASS::VALKYRIE){
     m_className = "valkyrie";
     m_charMaxHp += 250;
     m_charHp = m_charMaxHp;
-    m_charBaseDef *= 2;
+    m_charBaseDef *= 1.5;
     m_charSpeed = 250;
     m_attackSpd = 0.8;
   }

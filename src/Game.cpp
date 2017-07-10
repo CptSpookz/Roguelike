@@ -456,7 +456,6 @@ void Game::updateProjectiles(float delta){
         auto enemyTile = m_level.getTile(enemy.getPosition());
         if(projTile == enemyTile){
           enemy.takeDamage(m_hero.getDmg());
-          std::cout << m_hero.getDmg() << std::endl;
           projectileIterator = m_playerProjectiles.erase(projectileIterator);
           projDestroy = true;
           break;
