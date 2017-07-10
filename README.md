@@ -1,10 +1,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e4fe8eb2f924767a0ee0e6752d35dda)](https://www.codacy.com/app/explodingnuggets/Roguelike?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=explodingnuggets/Roguelike&amp;utm_campaign=Badge_Grade)
 # Roguelike
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e4fe8eb2f924767a0ee0e6752d35dda)](https://www.codacy.com/app/explodingnuggets/Roguelike?utm_source=github.com&utm_medium=referral&utm_content=explodingnuggets/Roguelike&utm_campaign=badger)
-
 ### Descrição do projeto
-Este projeto foi feito para a matéria de Estruturas de Dados, buscando aplicar os conceitos de implementação de uma lista encadeada, ou ainda árvores binárias. Para isso, implementamos um jogo de temática Roguelike.
+Este projeto foi feito para a matéria de Estruturas de Dados, buscando aplicar os conceitos de implementação de uma lista encadeada. Para isso, implementamos um jogo de temática Roguelike.
 
 ## Instalação
 ### Linux
@@ -45,7 +43,7 @@ T LinkedList<T>::operator[](int index) {
 	return this->current->value;
 }
 ```
-Esse código, reseta o ponteiro da lista para o início, e então, vai iterando até chegar no índice desejado.
+Esse código reseta o ponteiro da lista para o início, e então, vai iterando até chegar no índice desejado.
 
 ## Mecânicas do jogo
 ### Inimigos
