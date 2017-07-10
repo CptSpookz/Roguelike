@@ -16,6 +16,8 @@ Este projeto foi feito para a matéria de Estruturas de Dados, buscando aplicar 
 3. Execute o arquivo ```randventure.exe```.
 
 ### Aplicação da lista encadeada
+![Arquitetura](https://dl.dropboxusercontent.com/sh/t21x4vitadfju4f/AACSVcQ4iDY9HmL9GFeRIrv7a/Roguelike/rogue_arch.png?dl=0)
+
 Os conceitos de lista encadeada foram aplicadas na seleção da classe personagem, sendo que criaram-se os seguintes métodos de percorrimento para a lista de seleção:
 ```c++
 void ButtonList::toNext(){
@@ -60,3 +62,19 @@ Alguns materiais do Recursive Backtracker:
 
 * http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 * https://scratch.mit.edu/projects/17358777/
+
+## Ferramentas utilizadas
+* [SFML](http://sfml-dev.org)
+
+
+## Autores
+* Alisson Nunes - [GitHub](https://github.com/Alynva)
+* Gabriel Alves - [GitHub](https://github.com/CptSpookz)
+* Matheus Bortoleto - [GitHub](https://github.com/explodingnuggets)
+* Rafael Sales - [GitHub](https://github.com/rsaless)
+
+## Créditos
+* Alisson Nunes - Interface e parte gráfica.
+* Gabriel Alves - Implementação da estrutura dos dados e controles.
+* Matheus Bortoleto - Parte gráfica e controles.
+* Rafael Sales - Documentação.
