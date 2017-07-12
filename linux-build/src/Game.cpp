@@ -105,7 +105,7 @@ void Game::update(float delta){
     m_level.generate();
     populateLevel();
     m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
-    //m_hero.setHP(m_hero.getMaxHP());
+    m_hero.setHP(m_hero.getMaxHP());
     m_healthPotion.refill();
     m_damagePotion.refill();
     m_defensePotion.refill();
@@ -514,6 +514,10 @@ void Game::resetLevel(){
   m_level.generate();
   populateLevel();
   m_hero.reset();
+  m_healthPotion.refill();
+  m_damagePotion.refill();
+  m_defensePotion.refill();
+  m_speedPotion.refill();
   m_hero.setPosition(m_level.getActualTileLocation(1, 1).x, m_level.getActualTileLocation(1, 1).y);
 }
 

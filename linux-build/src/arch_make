@@ -8,7 +8,7 @@ LIBS = -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 OBJ = GameLoop.cpp Game.cpp TextureManager.cpp Level.cpp Object.cpp Char.cpp Hero.cpp ButtonList.cpp Enemy.cpp Projectile.cpp Potion.cpp
 
-OUT = game.out
+OUT = ../bin/game.out
 
 %.o: $.c
 	$(CC) -c -o  $@ $< $(CFLAGS)
