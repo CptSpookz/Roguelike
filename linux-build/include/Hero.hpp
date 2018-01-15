@@ -71,12 +71,12 @@ public:
   void setMP(double);*/
 
   double getBuffDmg() const {return m_charBuffDmg;};
-	void setBuffDmg(double);
-	double getDmg() const {return m_charBaseDmg * m_charBuffDmg;};
+  void setBuffDmg(double);
+  double getDmg() const {return m_charBaseDmg * m_charBuffDmg;};
 
-	double getBuffDef() const {return m_charBuffDef;};
-	void setBuffDef(double);
-	double getDef() const {return m_charBaseDef * m_charBuffDef;};
+  double getBuffDef() const {return m_charBuffDef;};
+  void setBuffDef(double);
+  double getDef() const {return m_charBaseDef * m_charBuffDef;};
 
   int getBuffSpd() const {return m_charBuffSpeed;};
   void setBuffSpd(int);
