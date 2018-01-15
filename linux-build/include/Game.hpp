@@ -1,7 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-// Bibliotecas Roguelike
+// Roguelike Libs
 #include <ButtonList.hpp>
 #include <Potion.hpp>
 #include <Enemy.hpp>
@@ -10,13 +10,13 @@
 #include <Projectile.hpp>
 #include <TextureManager.hpp>
 
- // Bibliotecas SFML
+ // SFML Libs
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
-// Bibliotecas std
+// Standard C++ Libs
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -55,53 +55,53 @@ class Game {
     double calculateDistance(sf::Vector2f, sf::Vector2f);
 
   private:
-    // Janela principal
+    // Main Window
     sf::RenderWindow& m_window;
 
-    // Level para o jogo
+    // Main Game level
     Level m_level;
 
-    // Heroi
+    // Main Character
     Hero m_hero;
 
-    // Estado do jogo
+    // Game State
     GAME_STATE m_gameState;
 
-    // Lista de inimigos
+    // Enemies list
     std::vector<std::unique_ptr<Enemy>> m_enemyList;
 
-    // Contador de inimigos no mapa
+    // Currently alive enemies counter
     int m_liveEnemies;
 
-    // Contador de inimigos mortos
+    // Currently dead enemies counter
     int m_enemiesDead;
 
-    // Lista de projéteis
+    // Projectiles list
     std::vector<std::unique_ptr<Projectile>> m_playerProjectiles;
 
-    // ID da textura do projétil
+    // Projectile Texture's ID
     int m_projectileTextureID;
 
-    // Relógio
+    // Game Clock
     sf::Clock m_gameClock;
 
     // View
     sf::View m_view;
 
-    // Fonte 8-bit
+    // UI 8-bit font
     sf::Font m_uiFont;
 
-    // Sprites do menu
+    // Main menu sprites
     sf::Sprite m_title;
     sf::Sprite m_controls;
 
-    // Botões do menu inicial
+    // Main menu buttons
     ButtonList m_menuButtons;
 
-    // Sprite de inimigos mortos
+    // Dead enemies sprites
     sf::Sprite m_enemiesKilled;
 
-    // Texto de inimigos mortos
+    // Dead enemies text
     sf::Text m_numberEnemies;
 
     // Textos da tela de game over
@@ -110,13 +110,13 @@ class Game {
     sf::Text m_enemiesFinal;
     sf::Text m_roomFinal;
 
-    // Sprites UI
-    // Barra preta no fundo da tela
+    // UI Sprites
+    // Lower Screen black bar
     sf::RectangleShape m_blackBar;
 
 
-    // Barra de vida e mana
-    // Vida
+    // Health and Mana Bars
+    // Health
     sf::Sprite m_healthBarOutline;
     sf::Sprite m_healthBar;
 
@@ -124,7 +124,7 @@ class Game {
   /*sf::Sprite m_manaBarOutline;
     sf::Sprite m_manaBar;*/
 
-    // Poções
+    // Potions
     Potion m_healthPotion;
     //Potion m_manaPotion;
     Potion m_damagePotion;
