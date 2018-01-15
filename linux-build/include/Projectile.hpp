@@ -14,16 +14,16 @@ class Projectile: public Object{
 
     bool isAlive();
   private:
-    // velocidade do projétil
+    // projectile speed ammount
     double m_speed;
 
-    // direção do projétil
+    // projectile direction ammount
     sf::Vector2f m_velocity;
 
-    // tempo de vida
+    // projectile's lifetime limit
     double m_lifeTime;
 
-    // tempo passado
+    // projectile's current lifetime
     double m_lifeTimePassed;
 };
 
