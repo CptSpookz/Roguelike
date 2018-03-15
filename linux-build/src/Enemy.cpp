@@ -82,8 +82,7 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 	Tile* goalNode = level.getTile(playerPosition);
 
 	// Check we have a valid path to find. If not we can just end the function as there's no path to find.
-	if (startNode == goalNode)
-	{
+	if (startNode == goalNode){
 		// Clear the vector of target positions.
 		m_targetPositions.clear();
 
@@ -92,10 +91,8 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 	}
 
 	// Pre-compute our H cost (estimated cost to goal) for each node.
-	for (int i = 0; i < level.getSize().x; i++)
-	{
-		for (int j = 0; j < level.getSize().y; j++)
-		{
+	for (int i = 0; i < level.getSize().x; i++){
+		for (int j = 0; j < level.getSize().y; j++){
 			int rowOffset, heightOffset;
 			Tile* node = level.getTile(i, j);
 
@@ -110,15 +107,11 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 	openList.push_back(startNode);
 
 	// While we have values to check in the open list.
-	while (!openList.empty())
-	{
+	while (!openList.empty()){
 		// Find the node in the open list with the lowest F value and mark it as current.
 		int lowestF = INT_MAX;
-
-		for (Tile* tile : openList)
-		{
-			if (tile->F < lowestF)
-			{
+		for (Tile* tile : openList){
+			if (tile->F < lowestF){
 				lowestF = tile->F;
 				currentNode = tile;
 			}
@@ -128,8 +121,7 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 		position = std::find(openList.begin(), openList.end(), currentNode);
 		if (position != openList.end()){
 			openList.erase(position);
-    }
-
+    		}
 		closedList.push_back(currentNode);
 
 		// Find all valid adjacent nodes.
@@ -138,44 +130,37 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 
 		// Top.
 		node = level.getTile(currentNode->columnIndex, currentNode->rowIndex - 1);
-		if ((node != nullptr) && (level.isFloor(node)))
-		{
+		if ((node != nullptr) && (level.isFloor(node))){
 			adjacentTiles.push_back(level.getTile(currentNode->columnIndex, currentNode->rowIndex - 1));
 		}
 
 		// Right.
 		node = level.getTile(currentNode->columnIndex + 1, currentNode->rowIndex);
-		if ((node != nullptr) && (level.isFloor(node)))
-		{
+		if ((node != nullptr) && (level.isFloor(node))){
 			adjacentTiles.push_back(level.getTile(currentNode->columnIndex + 1, currentNode->rowIndex));
 		}
 
 		// Bottom.
 		node = level.getTile(currentNode->columnIndex, currentNode->rowIndex + 1);
-		if ((node != nullptr) && (level.isFloor(node)))
-		{
+		if ((node != nullptr) && (level.isFloor(node))){
 			adjacentTiles.push_back(level.getTile(currentNode->columnIndex, currentNode->rowIndex + 1));
 		}
 
 		// Left.
 		node = level.getTile(currentNode->columnIndex - 1, currentNode->rowIndex);
-		if ((node != nullptr) && (level.isFloor(node)))
-		{
+		if ((node != nullptr) && (level.isFloor(node))){
 			adjacentTiles.push_back(level.getTile(currentNode->columnIndex - 1, currentNode->rowIndex));
 		}
 
 		// For all adjacent nodes.
-		for (Tile* node : adjacentTiles)
-		{
+		for (Tile* node : adjacentTiles){
 			// If the node is our goal node.
-			if (node == goalNode)
-			{
+			if (node == goalNode){
 				// Parent the goal node to current.
 				node->parentNode = currentNode;
 
 				// Store the current path.
-				while (node->parentNode != nullptr)
-				{
+				while (node->parentNode != nullptr){
 					pathList.push_back(node);
 					node = node->parentNode;
 				}
@@ -184,16 +169,13 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 				openList.clear();
 				break;
 			}
-			else
-			{
+			else{
 				// If the node is not in the closed list.
 				position = std::find(closedList.begin(), closedList.end(), node);
-				if (position == closedList.end())
-				{
+				if (position == closedList.end()){
 					// If the node is not in the open list.
 					position = std::find(openList.begin(), openList.end(), node);
-					if (position == openList.end())
-					{
+					if (position == openList.end()){
 						// Add the node to the open list.
 						openList.push_back(node);
 
@@ -206,14 +188,12 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 						// Calculate the F (total movement cost + heuristic) cost.
 						node->F = node->G + node->H;
 					}
-					else
-					{
+					else{
 						// Check if this path is quicker that the other.
 						int tempG = currentNode->G + 10;
 
 						// Check if tempG is faster than the other. I.e, whether it's faster to go A->C->B that A->C.
-						if (tempG < node->G)
-						{
+						if (tempG < node->G){
 							// Re-parent node to this one.
 							node->parentNode = currentNode;
 						}
@@ -227,8 +207,7 @@ void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
 	m_targetPositions.clear();
 
 	// Store the node locations as the enemies target locations.
-	for (Tile* tile : pathList)
-	{
+	for (Tile* tile : pathList){
 		m_targetPositions.push_back(level.getActualTileLocation(tile->columnIndex, tile->rowIndex));
 	}
 
