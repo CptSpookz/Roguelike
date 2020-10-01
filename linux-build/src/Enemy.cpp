@@ -67,7 +67,7 @@ void Enemy::update(float delta){
 }
 
 void Enemy::calculateSteps(Level& level, sf::Vector2f playerPosition){
-  // Create all variables.
+        // Create all variables.
 	std::vector<Tile*> openList;
 	std::vector<Tile*> closedList;
 	std::vector<Tile*> pathList;
